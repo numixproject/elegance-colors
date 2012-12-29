@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Elegance Colors Process
+Icon=preferences-desktop-theme
+Comment=Background process for Elegance Colors Gnome Shell theme
+Exec=elegance-colors
+Terminal=false
+Type=Application
+Categories=GNOME;Settings;
+OnlyShowIn=GNOME;
