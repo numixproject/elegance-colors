@@ -132,6 +132,10 @@ class EleganceColorsWindow : ApplicationWindow {
 	// Others
 	Notebook notebook;
 
+	TreeView treeview;
+
+	ListStore liststore;
+
 	Button apply_button;
 	Button revert_button;
 	Button close_button;
@@ -140,6 +144,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	ToggleButton panel_tab;
 	ToggleButton menu_tab;
 	ToggleButton dialog_tab;
+	ToggleButton presets_tab;
 
 	Entry name_box;
 
@@ -180,6 +185,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		var quit_action = new SimpleAction ("quit", null);
 		quit_action.activate.connect (this.quit_window);
 		this.add_action (quit_action);
+
+		// Set variables
+		config_dir = File.new_for_path (Environment.get_user_config_dir ());
+		config_file = config_dir.get_child ("elegance-colors").get_child ("elegance-colors.ini");
+		presets_dir_usr = config_dir.get_child ("elegance-colors").get_child ("presets");
+		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
 
 		// Methods
 		create_widgets ();
@@ -314,13 +325,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void set_config () {
 
-		// Set the path of config file
-		config_dir = File.new_for_path (Environment.get_user_config_dir ());
-		config_file = config_dir.get_child ("elegance-colors").get_child ("elegance-colors.ini");
-
+		// Read the config file
 		key_file = new KeyFile ();
 
-		// Read the config file
 		try {
 			key_file.load_from_file (config_file.get_path(), KeyFileFlags.NONE);
 		} catch (Error e) {
@@ -330,11 +337,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		set_states ();
 	}
 
-	void list_presets () {
-
-		// Set path of presets directories
-		presets_dir_usr = config_dir.get_child ("elegance-colors").get_child ("presets");
-		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
+	void read_presets () {
 
 		// Read presets
 		try {
@@ -359,22 +362,13 @@ class EleganceColorsWindow : ApplicationWindow {
 			stderr.printf ("Could not open user presets directory: %s\n", e.message);
 		}
 
-		var liststore = new ListStore (1, typeof (string));
+		liststore = new ListStore (1, typeof (string));
 
 		for (int i = 0; i < presets.length; i++){
 			Gtk.TreeIter iter;
 			liststore.append (out iter);
 			liststore.set (iter, 0, presets[i]);
 		}
-
-		combobox = new ComboBox.with_model (liststore);
-
-		CellRendererText cell = new CellRendererText ();
-
-		combobox.pack_start (cell, false);
-		combobox.set_attributes (cell, "text", 0);
-		combobox.set_active (0);
-		combobox.set_halign (Gtk.Align.END);
 	}
 
 	void set_states () {
@@ -382,7 +376,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		try {
 			var mode = key_file.get_string ("Settings", "mode");
 
-			color_value = "rgba(26,111,200,0.9)";
+			color_value = "rgba(74,144,217,0.9)";
 
 			if (mode == "wallpaper") {
 				match_wallpaper.set_active (true);
@@ -639,19 +633,37 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		dialog_borderop_value.set_halign (Gtk.Align.END);
 
+		// Presets
+		read_presets ();
+
+		var cell = new CellRendererText ();
+
+		combobox = new ComboBox.with_model (liststore);
+		combobox.pack_start (cell, false);
+		combobox.set_attributes (cell, "text", 0);
+		combobox.set_active (0);
+		combobox.set_halign (Gtk.Align.END);
+
+		treeview = new TreeView.with_model (liststore);
+		treeview.set_headers_visible (false);
+		treeview.insert_column_with_attributes (-1, "Presets", cell, "text", 0);
+
+		var frame = new Frame (null);
+		frame.add (treeview);
+
 		apply_button = new Button.from_stock (Stock.APPLY);
 		revert_button = new Button.from_stock(Stock.REVERT_TO_SAVED);
-		close_button = new Button.from_stock (Stock.CLOSE);
+		close_button = new Button.from_stock(Stock.CLOSE);
 
 		general_tab = new ToggleButton.with_label ("General");
 		panel_tab = new ToggleButton.with_label ("Panel");
 		menu_tab = new ToggleButton.with_label ("Menu");
 		dialog_tab = new ToggleButton.with_label ("Dialogs");
+		presets_tab = new ToggleButton.with_label ("Presets");
 
 		// Setup widgets
 		set_config ();
 		set_colors ();
-		list_presets ();
 
 		// Layout widgets
 
@@ -752,6 +764,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid3.attach (dialog_borderop_label, 0, 7, 2, 1);
 		grid3.attach_next_to (dialog_borderop_value, dialog_borderop_label, Gtk.PositionType.RIGHT, 1, 1);
 
+		// Presets
+		var grid4 = new Grid ();
+		grid4.set_column_homogeneous (true);
+		grid4.set_column_spacing (10);
+		grid4.set_row_spacing (10);
+		grid4.attach (frame, 0, 0, 3, 1);
+
 		// Buttons
 		var buttons = new Box (Gtk.Orientation.HORIZONTAL, 10);
 		buttons.pack_start (apply_button, true, true, 0);
@@ -766,6 +785,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		tabs.add (panel_tab);
 		tabs.add (menu_tab);
 		tabs.add (dialog_tab);
+		tabs.add (presets_tab);
 
 		notebook = new Notebook ();
 		notebook.set_show_tabs (false);
@@ -773,6 +793,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		notebook.append_page (grid1, new Label ("Panel"));
 		notebook.append_page (grid2, new Label ("Menu"));
 		notebook.append_page (grid3, new Label ("Dialogs"));
+		notebook.append_page (grid4, new Label ("Presets"));
 
 		var vbox = new Box (Gtk.Orientation.VERTICAL, 10);
 		vbox.add (tabs);
@@ -791,6 +812,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		general_tab.toggled.connect (() => {
 			if (general_tab.get_active ()) {
 				notebook.set_current_page (0);
+				presets_tab.set_active (false);
 				panel_tab.set_active (false);
 				menu_tab.set_active (false);
 				dialog_tab.set_active (false);
@@ -799,6 +821,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_tab.toggled.connect (() => {
 			if (panel_tab.get_active ()) {
 				notebook.set_current_page (1);
+				presets_tab.set_active (false);
 				general_tab.set_active (false);
 				menu_tab.set_active (false);
 				dialog_tab.set_active (false);
@@ -807,6 +830,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_tab.toggled.connect (() => {
 			if (menu_tab.get_active ()) {
 				notebook.set_current_page (2);
+				presets_tab.set_active (false);
 				general_tab.set_active (false);
 				panel_tab.set_active (false);
 				dialog_tab.set_active (false);
@@ -815,9 +839,19 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_tab.toggled.connect (() => {
 			if (dialog_tab.get_active ()) {
 				notebook.set_current_page (3);
+				presets_tab.set_active (false);
 				general_tab.set_active (false);
 				panel_tab.set_active (false);
 				menu_tab.set_active (false);
+			}
+		});
+		presets_tab.toggled.connect (() => {
+			if (presets_tab.get_active ()) {
+				notebook.set_current_page (4);
+				general_tab.set_active (false);
+				panel_tab.set_active (false);
+				menu_tab.set_active (false);
+				dialog_tab.set_active (false);
 			}
 		});
 		combobox.changed.connect (() => {
@@ -973,7 +1007,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			revert_button.set_sensitive (false);
 		});
 		close_button.clicked.connect (() => {
-			destroy ();
+			quit_window ();
 		});
 	}
 
