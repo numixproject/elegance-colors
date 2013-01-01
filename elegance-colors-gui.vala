@@ -16,8 +16,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	ComboBox combobox;
 
-	ToolButton presets_button;
-
 	RadioButton match_wallpaper;
 	RadioButton match_theme;
 	RadioButton custom_color;
@@ -134,14 +132,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	// Others
 	Notebook notebook;
 
-	TreeView treeview;
-
-	ListStore liststore;
-	
-	ToolButton add_preset;
-	ToolButton remove_preset;
-	ToolButton save_preset;
-
 	Button apply_button;
 	Button revert_button;
 	Button close_button;
@@ -158,8 +148,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	KeyFile key_file;
 
-	string preset_name;
-
 	internal EleganceColorsWindow (EleganceColorsPref app) {
 		Object (application: app, title: "Elegance Colors Preferences");
 
@@ -172,7 +160,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		try {
 			this.icon = IconTheme.get_default ().load_icon ("preferences-desktop-theme", 48, 0);
 		} catch (Error e) {
-			stderr.printf ("Could not load application icon: %s\n", e.message);
+			stderr.printf ("Failed to load application icon: %s\n", e.message);
 		}
 
 		// Prefer dark theme
@@ -182,6 +170,14 @@ class EleganceColorsWindow : ApplicationWindow {
 		var export_action = new SimpleAction ("export", null);
 		export_action.activate.connect (this.export_theme);
 		this.add_action (export_action);
+
+		var exsettings_action = new SimpleAction ("exsettings", null);
+		exsettings_action.activate.connect (this.export_settings);
+		this.add_action (exsettings_action);
+
+		var impsettings_action = new SimpleAction ("impsettings", null);
+		impsettings_action.activate.connect (this.import_settings);
+		this.add_action (impsettings_action);
 
 		var about_action = new SimpleAction ("about", null);
 		about_action.activate.connect (this.show_about);
@@ -247,6 +243,63 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 	}
 
+	void import_settings () {
+
+		var importsettings = new FileChooserDialog ("Import preset", this,
+								FileChooserAction.OPEN,
+								Stock.CANCEL, ResponseType.CANCEL,
+								Stock.OPEN, ResponseType.ACCEPT, null);
+
+		var filter = new FileFilter ();
+		filter.add_pattern ("*.ini");
+
+		importsettings.set_filter (filter);
+
+		if (importsettings.run () == ResponseType.ACCEPT) {
+			try {
+				var importpath = File.new_for_path (importsettings.get_file ().get_path ());
+
+				if (importpath.query_exists ()) {
+					key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
+				}
+			} catch (Error e) {
+				stderr.printf ("Failed to import settings: %s\n", e.message);
+			}
+		}
+
+		importsettings.close ();
+
+		set_states ();
+	}
+
+	void export_settings () {
+
+		var exportsettings = new FileChooserDialog ("Export settings", this,
+								FileChooserAction.SAVE,
+								Stock.CANCEL, ResponseType.CANCEL,
+								Stock.SAVE, ResponseType.ACCEPT, null);
+
+		var filter = new FileFilter ();
+		filter.add_pattern ("*.ini");
+
+		exportsettings.set_filter (filter);
+		exportsettings.set_current_name ("elegance-colors-custom.ini");
+		exportsettings.set_do_overwrite_confirmation(true);
+
+		if (exportsettings.run () == ResponseType.ACCEPT) {
+			try {
+				var exportpath = File.new_for_path (exportsettings.get_file ().get_path ());
+
+				config_file.copy (exportpath, FileCopyFlags.NONE);
+				
+			} catch (Error e) {
+				stderr.printf ("Failed to export settings: %s\n", e.message);
+			}
+		}
+
+		exportsettings.close ();
+	}
+
 	void on_response (Dialog dialog, int response_id) {
 
 		switch (response_id) {
@@ -291,44 +344,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		try {
 			key_file.load_from_file (config_file.get_path(), KeyFileFlags.NONE);
 		} catch (Error e) {
-			stderr.printf ("Could not read configuration: %s\n", e.message);
+			stderr.printf ("Failed to read configuration: %s\n", e.message);
 		}
 
 		set_states ();
-	}
-
-	void read_presets () {
-
-		// Read presets
-		try {
-			var dir = Dir.open(presets_dir_sys.get_path());
-
-			string preset = "";
-			while ((preset = dir.read_name()) != null) {
-				this.presets += preset;
-			}
-		} catch (Error e) {
-			stderr.printf ("Could not open user presets directory: %s\n", e.message);
-		}
-
-		try {
-			var dir = Dir.open(presets_dir_usr.get_path());
-
-			string preset = "";
-			while ((preset = dir.read_name()) != null) {
-				this.presets += preset;
-			}
-		} catch (Error e) {
-			stderr.printf ("Could not open user presets directory: %s\n", e.message);
-		}
-
-		liststore = new ListStore (1, typeof (string));
-
-		for (int i = 0; i < presets.length; i++){
-			TreeIter iter;
-			liststore.append (out iter);
-			liststore.set (iter, 0, presets[i]);
-		}
 	}
 
 	void set_states () {
@@ -398,7 +417,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			dialog_opacity_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_opacity");
 			dialog_borderop_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_borderop");
 		} catch (Error e) {
-			stderr.printf ("Could not set properties: %s\n", e.message);
+			stderr.printf ("Failed to set properties: %s\n", e.message);
 		}
 	}
 
@@ -457,8 +476,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		// General
 		presets_label = new Label.with_mnemonic ("Load from preset");
 		presets_label.set_halign (Align.START);
-		presets_button = new ToolButton.from_stock (Stock.EDIT);
-		presets_button.set_halign (Align.END);
 		mode_label = new Label.with_mnemonic ("Derive color from");
 		mode_label.set_halign (Align.START);
 		match_wallpaper = new RadioButton (null);
@@ -604,12 +621,26 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_tab = new ToggleButton.with_label ("Menu");
 		dialog_tab = new ToggleButton.with_label ("Dialogs");
 
-		// Setup widgets
-		read_presets ();
-		set_config ();
-		set_colors ();
+		// Read presets
+		try {
+			var dir = Dir.open(presets_dir_sys.get_path());
 
-		// Presets
+			string preset = "";
+			while ((preset = dir.read_name()) != null) {
+				this.presets += preset;
+			}
+		} catch (Error e) {
+			stderr.printf ("Failed to open presets directory: %s\n", e.message);
+		}
+
+		var liststore = new ListStore (1, typeof (string));
+
+		for (int i = 0; i < presets.length; i++){
+			TreeIter iter;
+			liststore.append (out iter);
+			liststore.set (iter, 0, presets[i]);
+		}
+
 		var cell = new CellRendererText ();
 
 		combobox = new ComboBox.with_model (liststore);
@@ -617,30 +648,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		combobox.set_attributes (cell, "text", 0);
 		combobox.set_active (0);
 		combobox.set_halign (Align.END);
-
-		treeview = new TreeView.with_model (liststore);
-		treeview.set_headers_visible (false);
-		treeview.insert_column_with_attributes (-1, "Presets", cell, "text", 0);
-
-		var frame = new Frame (null);
-		frame.add (treeview);
-
-		var toolbar = new Toolbar ();
-		toolbar.get_style_context().add_class( STYLE_CLASS_INLINE_TOOLBAR );
-		toolbar.set_icon_size ( IconSize.SMALL_TOOLBAR );
-		add_preset = new ToolButton (null, null);
-		add_preset.set_icon_name ("list-add-symbolic");
-		remove_preset = new ToolButton (null, null);
-		remove_preset.set_icon_name ("list-remove-symbolic");
-		save_preset = new ToolButton (null, null);
-		save_preset.set_icon_name ("document-save-symbolic");
-		toolbar.add (add_preset);
-		toolbar.add (remove_preset);
-		toolbar.add (save_preset);
-
-		var presetsbox = new Box (Orientation.VERTICAL, 0);
-		presetsbox.add (frame);
-		presetsbox.add (toolbar);
 
 		// Layout widgets
 
@@ -650,8 +657,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid0.set_column_spacing (10);
 		grid0.set_row_spacing (10);
 		grid0.attach (presets_label, 0, 0, 1, 1);
-		grid0.attach_next_to (presets_button, presets_label, PositionType.RIGHT, 1, 1);
-		grid0.attach_next_to (combobox, presets_button, PositionType.RIGHT, 1, 1);
+		grid0.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
 		grid0.attach (mode_label, 0, 1, 1, 1);
 		grid0.attach_next_to (match_wallpaper, mode_label, PositionType.RIGHT, 1, 1);
 		grid0.attach_next_to (match_theme, match_wallpaper, PositionType.RIGHT, 1, 1);
@@ -763,47 +769,24 @@ class EleganceColorsWindow : ApplicationWindow {
 		notebook.append_page (grid1, new Label ("Panel"));
 		notebook.append_page (grid2, new Label ("Menu"));
 		notebook.append_page (grid3, new Label ("Dialogs"));
-		notebook.append_page (presetsbox, new Label ("Presets"));
 
 		var vbox = new Box (Orientation.VERTICAL, 10);
 		vbox.add (tabs);
 		vbox.add (notebook);
 		vbox.add (buttons);
 
+		// Setup widgets
+		set_config ();
+		set_colors ();
+
 		notebook.set_current_page (0);
 		general_tab.set_active (true);
-		remove_preset.set_sensitive (false);
-		save_preset.set_sensitive (false);
 		apply_button.set_sensitive (false);
 
 		this.add (vbox);
 	}
 
 	void connect_signals () {
-		treeview.get_selection ().changed.connect (() => {
-			TreeModel model;
-			TreeIter iter;
-
-			if (treeview.get_selection ().get_selected (out model, out iter)) {
-				model.get (iter, 0, out preset_name);
-			}
-			if (preset_name == "Current") {
-				remove_preset.set_sensitive (false);
-				save_preset.set_sensitive (true);
-			} else {
-				remove_preset.set_sensitive (true);
-				save_preset.set_sensitive (false);
-			}
-		});
-		add_preset.clicked.connect (() => {
-			on_preset_import ();
-		});
-		remove_preset.clicked.connect (() => {
-			on_preset_remove ();
-		});
-		save_preset.clicked.connect (() => {
-			stdout.printf ("Save " + preset_name + "\n");
-		});
 		general_tab.toggled.connect (() => {
 			if (general_tab.get_active ()) {
 				notebook.set_current_page (0);
@@ -836,13 +819,6 @@ class EleganceColorsWindow : ApplicationWindow {
 				menu_tab.set_active (false);
 			}
 		});
-		presets_button.clicked.connect (() => {
-			notebook.set_current_page (4);
-			general_tab.set_active (false);
-			panel_tab.set_active (false);
-			menu_tab.set_active (false);
-			dialog_tab.set_active (false);
-		});
 		combobox.changed.connect (() => {
 			on_preset_selected ();
 		});
@@ -869,13 +845,13 @@ class EleganceColorsWindow : ApplicationWindow {
 				try {
 					Process.spawn_command_line_sync("elegance-colors");
 				} catch (Error e) {
-					stderr.printf ("Could not start background process: %s\n", e.message);
+					stderr.printf ("Failed to start background process: %s\n", e.message);
 				}
 			} else {
 				try {
 					Process.spawn_command_line_sync("elegance-colors stop");
 				} catch (Error e) {
-					stderr.printf ("Could not stop background process: %s\n", e.message);
+					stderr.printf ("Failed to stop background process: %s\n", e.message);
 				}
 			}
 			apply_button.set_sensitive (true);
@@ -1055,58 +1031,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_bordercol_value = "%s".printf (docolor.to_string());
 	}
 
-	void on_preset_import () {
-
-		var importpreset = new FileChooserDialog ("Import preset", this,
-								FileChooserAction.OPEN,
-								Stock.CANCEL, ResponseType.CANCEL,
-								Stock.OPEN, ResponseType.ACCEPT, null);
-
-		var filter = new FileFilter ();
-		filter.set_filter_name ("Elegance Colors Preset");
-		filter.add_pattern ("*.ini");
-
-		importpreset.set_filter (filter);
-
-		if (importpreset.run () == ResponseType.ACCEPT) {
-			string preset_path = importpreset.get_file ().get_path ();
-			string preset_file = importpreset.get_file ().get_basename();
-
-			if (presets_dir_usr.get_child (preset_file).query_exists ()) {
-				try {
-					presets_dir_usr.get_child (preset_file).delete ();
-				} catch (Error e) {
-					stderr.printf ("Could not delete existing preset: %s\n", e.message);
-				}
-			}
-
-			try {
-				var importpath = File.new_for_path (preset_path);
-				importpath.copy (presets_dir_usr.get_child (preset_file), FileCopyFlags.NONE);
-			} catch (Error e) {
-				stderr.printf ("Could not import preset: %s\n", e.message);
-			}
-		}
-
-		importpreset.close ();
-
-		read_presets ();
-	}
-
-	void on_preset_remove () {
-
-		if (presets_dir_usr.get_child (preset_name).query_exists ()) {
-			try {
-				presets_dir_usr.get_child (preset_name).delete ();
-			} catch (Error e) {
-				stderr.printf ("Could not delete existing preset: %s\n", e.message);
-			}
-		}
-
-		read_presets ();
-	}
-
 	void on_preset_selected () {
+
 		if (combobox.get_active () !=0) {
 			try {
 				if (presets_dir_usr.get_child (presets [combobox.get_active ()]).query_exists ()) {
@@ -1114,11 +1040,12 @@ class EleganceColorsWindow : ApplicationWindow {
 				} else if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
 					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
 				}
-				set_states ();
 			} catch (Error e) {
-				stderr.printf ("Could not load preset: %s\n", e.message);
+				stderr.printf ("Failed to load preset: %s\n", e.message);
 			}
 		}
+
+		set_states ();
 	}
 
 	void write_config () {
@@ -1178,7 +1105,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			try {
 				config_file.delete ();
 			} catch (Error e) {
-				stderr.printf ("Could not delete old configuration: %s\n", e.message);
+				stderr.printf ("Failed to delete old configuration: %s\n", e.message);
 			}
 		}
 
@@ -1187,13 +1114,13 @@ class EleganceColorsWindow : ApplicationWindow {
 			var dos = new DataOutputStream (config_file.create (FileCreateFlags.REPLACE_DESTINATION));
 			dos.put_string (keyfile_str);
 		} catch (Error e) {
-			stderr.printf ("Could not write configuration: %s\n", e.message);
+			stderr.printf ("Failed to write configuration: %s\n", e.message);
 		}
 
 		try {
 			Process.spawn_command_line_sync("elegance-colors apply");
 		} catch (Error e) {
-			stderr.printf ("Could not apply changes: %s\n", e.message);
+			stderr.printf ("Failed to apply changes: %s\n", e.message);
 		}
 	}
 }
@@ -1214,6 +1141,8 @@ class EleganceColorsPref : Gtk.Application {
 
 		var menu = new GLib.Menu ();
 		menu.append ("Export theme", "win.export");
+		menu.append ("Export settings", "win.exsettings");
+		menu.append ("Import settings", "win.impsettings");
 		menu.append ("About", "win.about");
 		menu.append ("Quit", "win.quit");
 		this.app_menu = menu;
