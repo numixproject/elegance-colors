@@ -821,6 +821,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		combobox.changed.connect (() => {
 			on_preset_selected ();
+			apply_button.set_sensitive (true);
 		});
 		match_wallpaper.toggled.connect (() => {
 			apply_button.set_sensitive (true);
