@@ -64,7 +64,7 @@ if [[ -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
 		themepath="$HOME"
 	else
 		themefile=${1##*/}
-		themename=${themefile%/*.zip}
+		themename=${themefile%*.zip}
 		themepath=${1%/*}
 	fi
 	rm -rf "$tempdir/elegance-colors.tmp"
