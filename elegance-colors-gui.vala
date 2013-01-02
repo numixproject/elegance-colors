@@ -716,8 +716,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		buttons.add (close_button);
 
 		// Tabs
-		var tabs = new ButtonBox (Orientation.HORIZONTAL);
-		tabs.set_layout (ButtonBoxStyle.SPREAD);
+		var tabs = new Box (Orientation.HORIZONTAL, 0);
+		tabs.set_homogeneous (true);
 		tabs.get_style_context().add_class("linked");
 		tabs.add (general_tab);
 		tabs.add (panel_tab);
