@@ -1011,12 +1011,12 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		if (combobox.get_active () !=0) {
 			try {
-				if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
-					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
-				}
+				key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
 			} catch (Error e) {
 				stderr.printf ("Failed to load preset: %s\n", e.message);
 			}
+		} else {
+			set_config ();
 		}
 
 		set_states ();
