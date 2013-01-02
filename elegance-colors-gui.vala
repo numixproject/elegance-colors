@@ -26,7 +26,8 @@ class EleganceColorsWindow : ApplicationWindow {
 	Switch newbutton_switch;
 	Switch entry_switch;
 
-	SpinButton font_size;
+	FontButton fontchooser;
+
 	SpinButton selgradient_size;
 	SpinButton dashgradient_size;
 	SpinButton corner_roundness;
@@ -376,7 +377,8 @@ class EleganceColorsWindow : ApplicationWindow {
 			newbutton_switch.set_active (key_file.get_boolean ("Settings", "newbutton"));
 			entry_switch.set_active (key_file.get_boolean ("Settings", "entry"));
 
-			font_size.adjustment.value = key_file.get_double ("Settings", "fontsize");
+			fontchooser.set_font_name (key_file.get_string ("Settings", "fontname"));
+
 			selgradient_size.adjustment.value = key_file.get_double ("Settings", "selgradient");
 			dashgradient_size.adjustment.value = key_file.get_double ("Settings", "dashgradient");
 			corner_roundness.adjustment.value = key_file.get_double ("Settings", "roundness");
@@ -494,10 +496,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_label.set_halign (Align.START);
 		entry_switch = new Switch ();
 		entry_switch.set_halign (Align.END);
-		font_label = new Label.with_mnemonic ("Font size");
+		font_label = new Label.with_mnemonic ("Display font");
 		font_label.set_halign (Align.START);
-		font_size = new SpinButton.with_range (6, 72, 1);
-		font_size.set_halign (Align.END);
+		fontchooser = new FontButton ();
+		fontchooser.set_title ("Choose a font");
+		fontchooser.set_use_font (true);
+		fontchooser.set_use_size (true);
+		fontchooser.set_halign (Align.END);
 		selgradient_label = new Label.with_mnemonic ("Selection gradient size");
 		selgradient_label.set_halign (Align.START);
 		selgradient_size = new SpinButton.with_range (0, 255, 1);
@@ -683,8 +688,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid0.attach_next_to (newbutton_switch, newbutton_label, PositionType.RIGHT, 1, 1);
 		grid0.attach (entry_label, 0, 6, 2, 1);
 		grid0.attach_next_to (entry_switch, entry_label, PositionType.RIGHT, 1, 1);
-		grid0.attach (font_label, 0, 7, 2, 1);
-		grid0.attach_next_to (font_size, font_label, PositionType.RIGHT, 1, 1);
+		grid0.attach (font_label, 0, 7, 1, 1);
+		grid0.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
 		grid0.attach (selgradient_label, 0, 8, 2, 1);
 		grid0.attach_next_to (selgradient_size, selgradient_label, PositionType.RIGHT, 1, 1);
 		grid0.attach (dashgradient_label, 0, 9, 2, 1);
@@ -878,7 +883,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_switch.notify["active"].connect (() => {
 			on_state_change ();
 		});
-		font_size.adjustment.value_changed.connect (() => {
+		fontchooser.font_set.connect (() => {
 			on_state_change ();
 		});
 		selgradient_size.adjustment.value_changed.connect (() => {
@@ -1002,6 +1007,21 @@ class EleganceColorsWindow : ApplicationWindow {
 		revert_button.set_sensitive (false);
 	}
 
+	void on_preset_selected () {
+
+		if (combobox.get_active () !=0) {
+			try {
+				if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
+					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
+				}
+			} catch (Error e) {
+				stderr.printf ("Failed to load preset: %s\n", e.message);
+			}
+		}
+
+		set_states ();
+	}
+
 	void on_selected_color_set () {
 		selcolor =  color_button.get_rgba ();
 		color_value = "%s".printf (selcolor.to_string());
@@ -1057,21 +1077,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_bordercol_value = "%s".printf (docolor.to_string());
 	}
 
-	void on_preset_selected () {
-
-		if (combobox.get_active () !=0) {
-			try {
-				if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
-					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
-				}
-			} catch (Error e) {
-				stderr.printf ("Failed to load preset: %s\n", e.message);
-			}
-		}
-
-		set_states ();
-	}
-
 	void write_config () {
 		if (match_wallpaper.get_active()) {
 			key_file.set_string ("Settings", "mode", "wallpaper");
@@ -1085,7 +1090,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_boolean ("Settings", "newbutton", newbutton_switch.get_active());
 		key_file.set_boolean ("Settings", "entry", entry_switch.get_active());
 
-		key_file.set_double ("Settings", "fontsize", font_size.adjustment.value);
+		key_file.set_string ("Settings", "fontname", fontchooser.get_font_name());
+
 		key_file.set_double ("Settings", "selgradient", selgradient_size.adjustment.value);
 		key_file.set_double ("Settings", "dashgradient", dashgradient_size.adjustment.value);
 		key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);

@@ -202,8 +202,8 @@ else
 	sed -i "s/entry-off\*\///g" "$makedir/gnome-shell/gnome-shell.css"
 fi
 # Arrange variables and values in an array
-vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-size" "@overview-bg1" "@overview-bg2" "@overview-border" "@border-radius" "@transition-duration" "@panel-bg1" "@panel-bg2" "@panel-color" "@panel-border" "@panel-shadow" "@corner-radius" "@menu-bg1" "@menu-bg2" "@menu-color" "@menu-border" "@menu-shadow" "@arrow-base" "@arrow-rise" "@dialog-bg1" "@dialog-bg2" "@dialog-color" "@dialog-heading" "@dialog-border" "@dialog-shadow" "@message-bg" "@message-border" )
-values=( "$custom_color1" "$custom_color2" "$text" "$fontsize" "$overviewbg1" "$overviewbg2" "$overviewborder" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
+vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-family" "@font-size" "@overview-bg1" "@overview-bg2" "@overview-border" "@border-radius" "@transition-duration" "@panel-bg1" "@panel-bg2" "@panel-color" "@panel-border" "@panel-shadow" "@corner-radius" "@menu-bg1" "@menu-bg2" "@menu-color" "@menu-border" "@menu-shadow" "@arrow-base" "@arrow-rise" "@dialog-bg1" "@dialog-bg2" "@dialog-color" "@dialog-heading" "@dialog-border" "@dialog-shadow" "@message-bg" "@message-border" )
+values=( "$custom_color1" "$custom_color2" "$text" "$fontfamily" "$fontsize" "$overviewbg1" "$overviewbg2" "$overviewborder" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
 	[[ "${values[i]}" = "" ]] && (( i++ ))
@@ -289,7 +289,7 @@ if [[ -f "$configfile" ]]; then
 	monitor=$(grep monitor $configfile | cut -d '=' -f 2)
 	newbutton=$(grep newbutton $configfile | cut -d '=' -f 2)
 	entry=$(grep entry $configfile | cut -d '=' -f 2)
-	fontsize=$(grep fontsize $configfile | cut -d '=' -f 2)
+	fontname=$(grep fontname $configfile | cut -d '=' -f 2)
 	selgradient=$(grep selgradient $configfile | cut -d '=' -f 2)
 	dashgradient=$(grep dashgradient $configfile | cut -d '=' -f 2)
 	roundness=$(grep roundness $configfile | cut -d '=' -f 2)
@@ -325,7 +325,7 @@ fi
 [[ -z "$monitor" ]] && monitor="true"
 [[ -z "$newbutton" ]] && newbutton="false"
 [[ -z "$entry" ]] && entry="false"
-[[ -z "$fontsize" ]] && fontsize="10"
+[[ -z "$fontname" ]] && fontname="10"
 [[ -z "$selgradient" ]] && selgradient="0"
 [[ -z "$dashgradient" ]] && dashgradient="0"
 [[ -z "$roundness" ]] && roundness="3"
@@ -367,6 +367,9 @@ menu_borderop=$(echo "$menu_borderop" | sed -e 's/,/./g')
 dialog_gradient=$(echo "$dialog_gradient" | sed -e 's/,/./g')
 dialog_opacity=$(echo "$dialog_opacity" | sed -e 's/,/./g')
 dialog_borderop=$(echo "$dialog_borderop" | sed -e 's/,/./g')
+# Set font properties
+fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
+fontsize=$(echo "$fontname" | sed 's/.* //')
 # Add units
 fontsize="${fontsize}pt"
 roundness="${roundness}px"
