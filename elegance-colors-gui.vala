@@ -34,7 +34,8 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	Gdk.RGBA selcolor;
 
-	string[] presets = { "Current" };
+	string[] presets = { "elegance-colors.ini" };
+	string[] titles = { "Current" };
 
 	string color_value;
 
@@ -143,7 +144,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	File config_dir;
 	File config_file;
-	File presets_dir_usr;
 	File presets_dir_sys;
 
 	KeyFile key_file;
@@ -190,7 +190,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Set variables
 		config_dir = File.new_for_path (Environment.get_user_config_dir ());
 		config_file = config_dir.get_child ("elegance-colors").get_child ("elegance-colors.ini");
-		presets_dir_usr = config_dir.get_child ("elegance-colors").get_child ("presets");
 		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
 
 		// Methods
@@ -626,8 +625,23 @@ class EleganceColorsWindow : ApplicationWindow {
 			var dir = Dir.open(presets_dir_sys.get_path());
 
 			string preset = "";
+			string title = "";
 			while ((preset = dir.read_name()) != null) {
 				this.presets += preset;
+
+				try {
+					var dis = new DataInputStream (presets_dir_sys.get_child (preset).read ());
+					string line;
+					while ((line = dis.read_line (null)) != null) {
+						if ("# Name:" in line) {
+							title = line.substring (8, line.length-8);
+						}
+					}
+				} catch (Error e) {
+					stderr.printf ("Could not read preset title: %s\n", e.message);
+				}
+
+				this.titles += title;
 			}
 		} catch (Error e) {
 			stderr.printf ("Failed to open presets directory: %s\n", e.message);
@@ -635,10 +649,10 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var liststore = new ListStore (1, typeof (string));
 
-		for (int i = 0; i < presets.length; i++){
+		for (int i = 0; i < titles.length; i++){
 			TreeIter iter;
 			liststore.append (out iter);
-			liststore.set (iter, 0, presets[i]);
+			liststore.set (iter, 0, titles[i]);
 		}
 
 		var cell = new CellRendererText ();
@@ -1036,9 +1050,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		if (combobox.get_active () !=0) {
 			try {
-				if (presets_dir_usr.get_child (presets [combobox.get_active ()]).query_exists ()) {
-					key_file.load_from_file (presets_dir_usr.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
-				} else if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
+				if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
 					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
 				}
 			} catch (Error e) {

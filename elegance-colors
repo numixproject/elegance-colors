@@ -47,7 +47,7 @@ if [[ $(whoami) = "root" ]]; then
 		cp "$extensiondir/$schemafile" "$schemadir/$schemafile"
 		glib-compile-schemas "$schemadir"
 	else
-		show_err "Could not find schema file. Is user-themes extension installed under '$homedir/.local/share/gnome-shell/extensions/'?"
+		show_err "Schema file could not be found. Is user-themes extension installed under '$homedir/.local/share/gnome-shell/extensions/'?"
 		exit 1
 	fi
 else
@@ -169,7 +169,7 @@ if [[ -d "$installdir/gnome-shell" ]]; then
 	mkdir -p "$makedir"
 	cp -rf "$installdir/gnome-shell" "$makedir"
 else
-	show_err "Could not copy files"
+	show_err "Failed to copy files"
 fi
 show_info "Making the theme"
 # Set app icon style
@@ -212,7 +212,7 @@ do
 done
 # Copy the newly created theme
 if [[ ! -d "$makedir/gnome-shell" || `grep "@" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
-	show_err "Could not make the theme"
+	show_err "Failed to make the theme"
 else
 	rm -rf "$HOME/.themes/elegance-colors"
 	mkdir -p "$HOME/.themes/elegance-colors"
@@ -478,7 +478,7 @@ if [[ -f "$tempdir/elegance-colors.pid" ]]; then
 		show_warn "$pid does not seem to be elegance-colors"
 	fi
 else
-	show_err "No process found"
+	show_warn "No running process found"
 fi
 }
 
@@ -491,7 +491,7 @@ echo "$$" > "$tempdir/elegance-colors.pid"
 while true; do
 	# Don't run as root
 	if [[ $(whoami) = "root" ]]; then
-		show_err "Cannot run as root"
+		show_err "Cannot run process as root"
 		exit 1
 	fi
 	# No need to run in background if Gnome Shell is not running
@@ -501,7 +501,7 @@ while true; do
 	fi
 	# Verify if schema file exists
 	if [[ ! -f "$schemadir/$schemafile" ]]; then
-		show_err "Could not find schema for user-themes. Run 'elegance-colors fix' as root to fix the problem"
+		show_err "Schema for user-themes could not be found, Run 'elegance-colors fix' as root to fix the problem"
 		exit 1
 	fi
 	initialize
