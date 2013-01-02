@@ -3,17 +3,6 @@ using Gtk;
 class EleganceColorsWindow : ApplicationWindow {
 
 	// General
-	Label presets_label;
-	Label mode_label;
-	Label monitor_label;
-	Label newbutton_label;
-	Label entry_label;
-	Label font_label;
-	Label selgradient_label;
-	Label dashgradient_label;
-	Label roundness_label;
-	Label transition_label;
-
 	ComboBox combobox;
 
 	RadioButton match_wallpaper;
@@ -33,22 +22,12 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton corner_roundness;
 	SpinButton transition_duration;
 
+	string color_value;
+
 	string[] presets = { "elegance-colors.ini" };
 	string[] titles = { "Current" };
 
-	string color_value;
-
 	// Panel
-	Label panel_bg_label;
-	Label panel_fg_label;
-	Label panel_bordercol_label;
-	Label panel_gradient_label;
-	Label panel_opacity_label;
-	Label panel_borderop_label;
-	Label panel_corner_label;
-	Label panel_shadow_label;
-	Label panel_icon_label;
-
 	ColorButton panel_bg_color;
 	ColorButton panel_fg_color;
 	ColorButton panel_bordercol_color;
@@ -66,15 +45,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	string panel_bordercol_value;
 
 	// Menu
-	Label menu_bg_label;
-	Label menu_fg_label;
-	Label menu_bordercol_label;
-	Label menu_gradient_label;
-	Label menu_opacity_label;
-	Label menu_borderop_label;
-	Label menu_shadow_label;
-	Label menu_arrow_label;
-
 	ColorButton menu_bg_color;
 	ColorButton menu_fg_color;
 	ColorButton menu_bordercol_color;
@@ -91,15 +61,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	string menu_bordercol_value;
 
 	// Dialogs
-	Label dialog_bg_label;
-	Label dialog_fg_label;
-	Label dialog_heading_label;
-	Label dialog_bordercol_label;
-	Label dialog_gradient_label;
-	Label dialog_shadow_label;
-	Label dialog_opacity_label;
-	Label dialog_borderop_label;
-
 	ColorButton dialog_bg_color;
 	ColorButton dialog_fg_color;
 	ColorButton dialog_heading_color;
@@ -228,35 +189,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 	}
 
-	void import_settings () {
-
-		var importsettings = new FileChooserDialog ("Import preset", this,
-								FileChooserAction.OPEN,
-								Stock.CANCEL, ResponseType.CANCEL,
-								Stock.OPEN, ResponseType.ACCEPT, null);
-
-		var filter = new FileFilter ();
-		filter.add_pattern ("*.ini");
-
-		importsettings.set_filter (filter);
-
-		if (importsettings.run () == ResponseType.ACCEPT) {
-			try {
-				var importpath = File.new_for_path (importsettings.get_file ().get_path ());
-
-				if (importpath.query_exists ()) {
-					key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
-				}
-			} catch (Error e) {
-				stderr.printf ("Failed to import settings: %s\n", e.message);
-			}
-		}
-
-		importsettings.close ();
-
-		set_states ();
-	}
-
 	void export_settings () {
 
 		var exportsettings = new FileChooserDialog ("Export settings", this,
@@ -283,6 +215,35 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 
 		exportsettings.close ();
+	}
+
+	void import_settings () {
+
+		var importsettings = new FileChooserDialog ("Import settings", this,
+								FileChooserAction.OPEN,
+								Stock.CANCEL, ResponseType.CANCEL,
+								Stock.OPEN, ResponseType.ACCEPT, null);
+
+		var filter = new FileFilter ();
+		filter.add_pattern ("*.ini");
+
+		importsettings.set_filter (filter);
+
+		if (importsettings.run () == ResponseType.ACCEPT) {
+			try {
+				var importpath = File.new_for_path (importsettings.get_file ().get_path ());
+
+				if (importpath.query_exists ()) {
+					key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
+				}
+			} catch (Error e) {
+				stderr.printf ("Failed to import settings: %s\n", e.message);
+			}
+		}
+
+		importsettings.close ();
+
+		set_states ();
 	}
 
 	void on_response (Dialog dialog, int response_id) {
@@ -458,143 +419,143 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Create and setup widgets
 
 		// General
-		presets_label = new Label.with_mnemonic ("Load from preset");
+		var presets_label = new Label.with_mnemonic ("Load from preset");
 		presets_label.set_halign (Align.START);
-		mode_label = new Label.with_mnemonic ("Derive color from");
+		var mode_label = new Label.with_mnemonic ("Derive color from");
 		mode_label.set_halign (Align.START);
 		match_wallpaper = new RadioButton (null);
 		match_wallpaper.set_label ("Wallpaper");
 		match_theme = new RadioButton.with_label (match_wallpaper.get_group(),"GTK theme");
 		custom_color = new RadioButton.with_label (match_theme.get_group(),"Custom");
 		color_button = new ColorButton ();
-		monitor_label = new Label.with_mnemonic ("Monitor changes");
+		var monitor_label = new Label.with_mnemonic ("Monitor changes");
 		monitor_label.set_halign (Align.START);
 		monitor_switch = new Switch ();
 		monitor_switch.set_halign (Align.END);
-		newbutton_label = new Label.with_mnemonic ("New button style");
+		var newbutton_label = new Label.with_mnemonic ("New button style");
 		newbutton_label.set_halign (Align.START);
 		newbutton_switch = new Switch ();
 		newbutton_switch.set_halign (Align.END);
-		entry_label = new Label.with_mnemonic ("Light entry style");
+		var entry_label = new Label.with_mnemonic ("Light entry style");
 		entry_label.set_halign (Align.START);
 		entry_switch = new Switch ();
 		entry_switch.set_halign (Align.END);
-		font_label = new Label.with_mnemonic ("Display font");
+		var font_label = new Label.with_mnemonic ("Display font");
 		font_label.set_halign (Align.START);
 		fontchooser = new FontButton ();
 		fontchooser.set_title ("Choose a font");
 		fontchooser.set_use_font (true);
 		fontchooser.set_use_size (true);
 		fontchooser.set_halign (Align.END);
-		selgradient_label = new Label.with_mnemonic ("Selection gradient size");
+		var selgradient_label = new Label.with_mnemonic ("Selection gradient size");
 		selgradient_label.set_halign (Align.START);
 		selgradient_size = new SpinButton.with_range (0, 255, 1);
 		selgradient_size.set_halign (Align.END);
-		dashgradient_label = new Label.with_mnemonic ("Dash gradient size");
+		var dashgradient_label = new Label.with_mnemonic ("Dash gradient size");
 		dashgradient_label.set_halign (Align.START);
 		dashgradient_size = new SpinButton.with_range (0, 255, 1);
 		dashgradient_size.set_halign (Align.END);
-		roundness_label = new Label.with_mnemonic ("Roundness");
+		var roundness_label = new Label.with_mnemonic ("Roundness");
 		roundness_label.set_halign (Align.START);
 		corner_roundness = new SpinButton.with_range (0, 100, 1);
 		corner_roundness.set_halign (Align.END);
-		transition_label = new Label.with_mnemonic ("Transition duration");
+		var transition_label = new Label.with_mnemonic ("Transition duration");
 		transition_label.set_halign (Align.START);
 		transition_duration = new SpinButton.with_range (0, 1000, 1);
 		transition_duration.set_halign (Align.END);
 
 		// Panel
-		panel_bg_label = new Label.with_mnemonic ("Background color");
+		var panel_bg_label = new Label.with_mnemonic ("Background color");
 		panel_bg_label.set_halign (Align.START);
 		panel_bg_color = new ColorButton ();
-		panel_fg_label = new Label.with_mnemonic ("Text color");
+		var panel_fg_label = new Label.with_mnemonic ("Text color");
 		panel_fg_label.set_halign (Align.START);
 		panel_fg_color = new ColorButton ();
-		panel_bordercol_label = new Label.with_mnemonic ("Border color");
+		var panel_bordercol_label = new Label.with_mnemonic ("Border color");
 		panel_bordercol_label.set_halign (Align.START);
 		panel_bordercol_color = new ColorButton ();
-		panel_shadow_label = new Label.with_mnemonic ("Drop shadow");
+		var panel_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		panel_shadow_label.set_halign (Align.START);
 		panel_shadow_switch = new Switch ();
 		panel_shadow_switch.set_halign (Align.END);
-		panel_icon_label = new Label.with_mnemonic ("App icon");
+		var panel_icon_label = new Label.with_mnemonic ("App icon");
 		panel_icon_label.set_halign (Align.START);
 		panel_icon_switch = new Switch ();
 		panel_icon_switch.set_halign (Align.END);
-		panel_gradient_label = new Label.with_mnemonic ("Gradient size");
+		var panel_gradient_label = new Label.with_mnemonic ("Gradient size");
 		panel_gradient_label.set_halign (Align.START);
 		panel_gradient_value = new SpinButton.with_range (0, 255, 1);
 		panel_gradient_value.set_halign (Align.END);
-		panel_opacity_label = new Label.with_mnemonic ("Background opacity");
+		var panel_opacity_label = new Label.with_mnemonic ("Background opacity");
 		panel_opacity_label.set_halign (Align.START);
 		panel_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		panel_opacity_value.set_halign (Align.END);
-		panel_borderop_label = new Label.with_mnemonic ("Border opacity");
+		var panel_borderop_label = new Label.with_mnemonic ("Border opacity");
 		panel_borderop_label.set_halign (Align.START);
 		panel_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		panel_borderop_value.set_halign (Align.END);
-		panel_corner_label = new Label.with_mnemonic ("Corner radius");
+		var panel_corner_label = new Label.with_mnemonic ("Corner radius");
 		panel_corner_label.set_halign (Align.START);
 		panel_corner_value = new SpinButton.with_range (0, 100, 1);
 		panel_corner_value.set_halign (Align.END);
 
 		// Menu
-		menu_bg_label = new Label.with_mnemonic ("Background color");
+		var menu_bg_label = new Label.with_mnemonic ("Background color");
 		menu_bg_label.set_halign (Align.START);
 		menu_bg_color = new ColorButton ();
-		menu_fg_label = new Label.with_mnemonic ("Text color");
+		var menu_fg_label = new Label.with_mnemonic ("Text color");
 		menu_fg_label.set_halign (Align.START);
 		menu_fg_color = new ColorButton ();
-		menu_bordercol_label = new Label.with_mnemonic ("Border color");
+		var menu_bordercol_label = new Label.with_mnemonic ("Border color");
 		menu_bordercol_label.set_halign (Align.START);
 		menu_bordercol_color = new ColorButton ();
-		menu_shadow_label = new Label.with_mnemonic ("Drop shadow");
+		var menu_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		menu_shadow_label.set_halign (Align.START);
 		menu_shadow_switch = new Switch ();
 		menu_shadow_switch.set_halign (Align.END);
-		menu_arrow_label = new Label.with_mnemonic ("Arrow pointer");
+		var menu_arrow_label = new Label.with_mnemonic ("Arrow pointer");
 		menu_arrow_label.set_halign (Align.START);
 		menu_arrow_switch = new Switch ();
 		menu_arrow_switch.set_halign (Align.END);
-		menu_gradient_label = new Label.with_mnemonic ("Gradient size");
+		var menu_gradient_label = new Label.with_mnemonic ("Gradient size");
 		menu_gradient_label.set_halign (Align.START);
 		menu_gradient_value = new SpinButton.with_range (0, 255, 1);
 		menu_gradient_value.set_halign (Align.END);
-		menu_opacity_label = new Label.with_mnemonic ("Background opacity");
+		var menu_opacity_label = new Label.with_mnemonic ("Background opacity");
 		menu_opacity_label.set_halign (Align.START);
 		menu_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		menu_opacity_value.set_halign (Align.END);
-		menu_borderop_label = new Label.with_mnemonic ("Border opacity");
+		var menu_borderop_label = new Label.with_mnemonic ("Border opacity");
 		menu_borderop_label.set_halign (Align.START);
 		menu_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		menu_borderop_value.set_halign (Align.END);
 
 		// Dialogs
-		dialog_bg_label = new Label.with_mnemonic ("Background color");
+		var dialog_bg_label = new Label.with_mnemonic ("Background color");
 		dialog_bg_label.set_halign (Align.START);
 		dialog_bg_color = new ColorButton ();
-		dialog_fg_label = new Label.with_mnemonic ("Text color");
+		var dialog_fg_label = new Label.with_mnemonic ("Text color");
 		dialog_fg_label.set_halign (Align.START);
 		dialog_fg_color = new ColorButton ();
-		dialog_heading_label = new Label.with_mnemonic ("Heading color");
+		var dialog_heading_label = new Label.with_mnemonic ("Heading color");
 		dialog_heading_label.set_halign (Align.START);
 		dialog_heading_color = new ColorButton ();
-		dialog_bordercol_label = new Label.with_mnemonic ("Border color");
+		var dialog_bordercol_label = new Label.with_mnemonic ("Border color");
 		dialog_bordercol_label.set_halign (Align.START);
 		dialog_bordercol_color = new ColorButton ();
-		dialog_shadow_label = new Label.with_mnemonic ("Drop shadow");
+		var dialog_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		dialog_shadow_label.set_halign (Align.START);
 		dialog_shadow_switch = new Switch ();
 		dialog_shadow_switch.set_halign (Align.END);
-		dialog_gradient_label = new Label.with_mnemonic ("Gradient size");
+		var dialog_gradient_label = new Label.with_mnemonic ("Gradient size");
 		dialog_gradient_label.set_halign (Align.START);
 		dialog_gradient_value = new SpinButton.with_range (0, 255, 1);
 		dialog_gradient_value.set_halign (Align.END);
-		dialog_opacity_label = new Label.with_mnemonic ("Background opacity");
+		var dialog_opacity_label = new Label.with_mnemonic ("Background opacity");
 		dialog_opacity_label.set_halign (Align.START);
 		dialog_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		dialog_opacity_value.set_halign (Align.END);
-		dialog_borderop_label = new Label.with_mnemonic ("Border opacity");
+		var dialog_borderop_label = new Label.with_mnemonic ("Border opacity");
 		dialog_borderop_label.set_halign (Align.START);
 		dialog_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
 		dialog_borderop_value.set_halign (Align.END);
