@@ -26,17 +26,13 @@ To derive color from wallpaper, you need to install ImageMagick
 
 Also install the User Theme Extension for Gnome Shell https://extensions.gnome.org/extension/19/user-themes/
 
-After installation, run "elegance-colors" from the terminal to start the process. The process will run in the background, so you won't see any outputs. It will also make a theme basing upon the template and default configuration. If you want to see the outputs, run "elegance-colors start" instead. Run "elegance-colors stop" to stop the running process.
+After installation, run "elegance-colors" from the terminal to start the process in background. The background process detects changes and reloads the theme accordingly. It will also make a theme basing upon the template and default configuration.
 
 To set the theme, run the following commands,
 
-gsettings set org.gnome.shell.extensions.user-theme name "elegance-colors"
+gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'
 
-You can launch the GUI from the menu which lets you customise various aspects of the the theme.
-
-The background process detects changes and reloads the theme accordingly. If you have turned off the background process, you have to run "elegance-colors apply" to apply the changes manually.
-
-To export your customized theme, run "elegance-colors export 'Name'", where 'Name' is the new name of the theme.
+You can launch the GUI from the menu which lets you customise various aspects of the the theme. You can also export your customized theme, import/export settings from the GMenu. Click on the title in the Gnome Shell top bar to get the GMenu.
 
 ---
 
@@ -49,7 +45,21 @@ elegance-colors fix
 To view any error messages produced, stop the background process first and then run the process in Terminal,
 
 elegance-colors stop
-elegance-colors start 
+elegance-colors start
+
+To manually apply changes, run,
+
+elegance-colors apply
+
+To export the theme, run,
+
+elegance-colors export /path/to/themefile.zip
+
+---
+
+Code:
+
+https://github.com/satya164/elegance-colors
 
 ---
 
