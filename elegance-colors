@@ -91,11 +91,15 @@ get_color() {
 if [[ "$mode" = "gtk" ]]; then
 	show_info "GTK theme found at '$gtkpath'"
 	# Get the color values from the gtk.css file
-	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` ]]; then
+	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
 		color=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
+	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
+		color=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
 	fi
-	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` ]]; then
+	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
 		text=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
+	elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
+		text=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Wallpaper found at '$img'"
