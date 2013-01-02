@@ -243,6 +243,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		importsettings.close ();
 
 		set_states ();
+
+		apply_button.set_sensitive (true);
 	}
 
 	void on_response (Dialog dialog, int response_id) {
