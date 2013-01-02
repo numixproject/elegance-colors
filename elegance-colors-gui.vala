@@ -307,7 +307,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			break;
 		case ResponseType.APPLY:
 			write_config ();
-			apply_button.set_sensitive (false);
+			on_state_set ();
 			dialog.destroy ();
 			export_theme ();
 			break;
@@ -796,6 +796,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		notebook.set_current_page (0);
 		general_tab.set_active (true);
 		apply_button.set_sensitive (false);
+		revert_button.set_sensitive (false);
 
 		this.add (vbox);
 	}
@@ -835,13 +836,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		combobox.changed.connect (() => {
 			on_preset_selected ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		match_wallpaper.toggled.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		match_theme.toggled.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		custom_color.toggled.connect (() => {
 			if (custom_color.get_active ()) {
@@ -849,11 +850,11 @@ class EleganceColorsWindow : ApplicationWindow {
 			} else {
 				color_button.set_sensitive (false);
 			}
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		color_button.color_set.connect (() => {
 			on_selected_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		monitor_switch.notify["active"].connect (() => {
 			if (monitor_switch.get_active ()) {
@@ -869,126 +870,136 @@ class EleganceColorsWindow : ApplicationWindow {
 					stderr.printf ("Failed to stop background process: %s\n", e.message);
 				}
 			}
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		newbutton_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		entry_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		font_size.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		selgradient_size.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dashgradient_size.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		corner_roundness.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		transition_duration.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_bg_color.color_set.connect (() => {
 			on_panel_bg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_fg_color.color_set.connect (() => {
 			on_panel_fg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_bordercol_color.color_set.connect (() => {
 			on_panel_bordercol_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_shadow_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_icon_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_gradient_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_borderop_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		panel_corner_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_bg_color.color_set.connect (() => {
 			on_menu_bg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_fg_color.color_set.connect (() => {
 			on_menu_fg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_bordercol_color.color_set.connect (() => {
 			on_menu_bordercol_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_shadow_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_arrow_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_gradient_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		menu_borderop_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_bg_color.color_set.connect (() => {
 			on_dialog_bg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_fg_color.color_set.connect (() => {
 			on_dialog_fg_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_heading_color.color_set.connect (() => {
 			on_dialog_heading_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_bordercol_color.color_set.connect (() => {
 			on_dialog_bordercol_color_set ();
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_shadow_switch.notify["active"].connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_gradient_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		dialog_borderop_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
+			on_state_change ();
 		});
 		apply_button.clicked.connect (() => {
 			write_config ();
-			apply_button.set_sensitive (false);
+			on_state_set ();
 		});
 		revert_button.clicked.connect (() => {
+			combobox.set_active (0);
 			set_config ();
-			apply_button.set_sensitive (false);
-			revert_button.set_sensitive (false);
+			on_state_set ();
 		});
 		close_button.clicked.connect (() => {
 			quit_window ();
 		});
+	}
+
+	void on_state_change () {
+		apply_button.set_sensitive (true);
+		revert_button.set_sensitive (true);
+	}
+
+	void on_state_set () {
+		apply_button.set_sensitive (false);
+		revert_button.set_sensitive (false);
 	}
 
 	void on_selected_color_set () {
