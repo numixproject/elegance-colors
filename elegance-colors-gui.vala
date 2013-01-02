@@ -33,8 +33,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton corner_roundness;
 	SpinButton transition_duration;
 
-	Gdk.RGBA selcolor;
-
 	string[] presets = { "elegance-colors.ini" };
 	string[] titles = { "Current" };
 
@@ -63,10 +61,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton panel_borderop_value;
 	SpinButton panel_corner_value;
 
-	Gdk.RGBA pbcolor;
-	Gdk.RGBA pfcolor;
-	Gdk.RGBA bocolor;
-
 	string panel_bg_value;
 	string panel_fg_value;
 	string panel_bordercol_value;
@@ -92,10 +86,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton menu_opacity_value;
 	SpinButton menu_borderop_value;
 
-	Gdk.RGBA mbcolor;
-	Gdk.RGBA mfcolor;
-	Gdk.RGBA mocolor;
-
 	string menu_bg_value;
 	string menu_fg_value;
 	string menu_bordercol_value;
@@ -120,11 +110,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton dialog_gradient_value;
 	SpinButton dialog_opacity_value;
 	SpinButton dialog_borderop_value;
-
-	Gdk.RGBA dbcolor;
-	Gdk.RGBA dfcolor;
-	Gdk.RGBA dhcolor;
-	Gdk.RGBA docolor;
 
 	string dialog_bg_value;
 	string dialog_fg_value;
@@ -346,12 +331,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		} catch (Error e) {
 			stderr.printf ("Failed to read configuration: %s\n", e.message);
 		}
-
-		set_states ();
 	}
 
 	void set_states () {
 
+		// Read the key-value pairs
 		try {
 			var mode = key_file.get_string ("Settings", "mode");
 
@@ -361,11 +345,13 @@ class EleganceColorsWindow : ApplicationWindow {
 				match_wallpaper.set_active (true);
 				match_theme.set_active (false);
 				custom_color.set_active (false);
+				color_button.set_sensitive (false);
 			} else if (mode == "gtk") {
 				match_theme.set_active (true);
 				match_wallpaper.set_active (false);
 				custom_color.set_active (false);
-			} else if ("mode=#" in mode || "mode=rgb" in mode) {
+				color_button.set_sensitive (false);
+			} else if ("#" in mode || "rgb" in mode) {
 				color_value = mode;
 				custom_color.set_active (true);
 				match_theme.set_active (false);
@@ -420,52 +406,49 @@ class EleganceColorsWindow : ApplicationWindow {
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
 		}
-	}
-
-	void set_colors () {
 
 		// Set colors
-		selcolor = Gdk.RGBA ();
+		var selcolor = Gdk.RGBA ();
 		selcolor.parse ("%s".printf (color_value));
 		color_button.set_rgba (selcolor);
 
-		pbcolor = Gdk.RGBA ();
+		var pbcolor = Gdk.RGBA ();
 		pbcolor.parse ("%s".printf (panel_bg_value));
 		panel_bg_color.set_rgba (pbcolor);
 
-		pfcolor = Gdk.RGBA ();
+		var pfcolor = Gdk.RGBA ();
 		pfcolor.parse ("%s".printf (panel_fg_value));
 		panel_fg_color.set_rgba (pfcolor);
 
-		bocolor = Gdk.RGBA ();
+		var bocolor = Gdk.RGBA ();
 		bocolor.parse ("%s".printf (panel_bordercol_value));
 		panel_bordercol_color.set_rgba (bocolor);
 
-		mbcolor = Gdk.RGBA ();
+		var mbcolor = Gdk.RGBA ();
 		mbcolor.parse ("%s".printf (menu_bg_value));
 		menu_bg_color.set_rgba (mbcolor);
 
-		mfcolor = Gdk.RGBA ();
+		var mfcolor = Gdk.RGBA ();
 		mfcolor.parse ("%s".printf (menu_fg_value));
 		menu_fg_color.set_rgba (mfcolor);
 
-		mocolor = Gdk.RGBA ();
+		var mocolor = Gdk.RGBA ();
 		mocolor.parse ("%s".printf (menu_bordercol_value));
 		menu_bordercol_color.set_rgba (mocolor);
 
-		dbcolor = Gdk.RGBA ();
+		var dbcolor = Gdk.RGBA ();
 		dbcolor.parse ("%s".printf (dialog_bg_value));
 		dialog_bg_color.set_rgba (dbcolor);
 
-		dfcolor = Gdk.RGBA ();
+		var dfcolor = Gdk.RGBA ();
 		dfcolor.parse ("%s".printf (dialog_fg_value));
 		dialog_fg_color.set_rgba (dfcolor);
 
-		dhcolor = Gdk.RGBA ();
+		var dhcolor = Gdk.RGBA ();
 		dhcolor.parse ("%s".printf (dialog_heading_value));
 		dialog_heading_color.set_rgba (dhcolor);
 
-		docolor = Gdk.RGBA ();
+		var docolor = Gdk.RGBA ();
 		docolor.parse ("%s".printf (dialog_bordercol_value));
 		dialog_bordercol_color.set_rgba (docolor);
 	}
@@ -796,7 +779,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Setup widgets
 		set_config ();
-		set_colors ();
+		set_states ();
 
 		notebook.set_current_page (0);
 		general_tab.set_active (true);
@@ -858,7 +841,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_state_change ();
 		});
 		color_button.color_set.connect (() => {
-			on_selected_color_set ();
 			on_state_change ();
 		});
 		monitor_switch.notify["active"].connect (() => {
@@ -899,15 +881,12 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_state_change ();
 		});
 		panel_bg_color.color_set.connect (() => {
-			on_panel_bg_color_set ();
 			on_state_change ();
 		});
 		panel_fg_color.color_set.connect (() => {
-			on_panel_fg_color_set ();
 			on_state_change ();
 		});
 		panel_bordercol_color.color_set.connect (() => {
-			on_panel_bordercol_color_set ();
 			on_state_change ();
 		});
 		panel_shadow_switch.notify["active"].connect (() => {
@@ -929,15 +908,12 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_state_change ();
 		});
 		menu_bg_color.color_set.connect (() => {
-			on_menu_bg_color_set ();
 			on_state_change ();
 		});
 		menu_fg_color.color_set.connect (() => {
-			on_menu_fg_color_set ();
 			on_state_change ();
 		});
 		menu_bordercol_color.color_set.connect (() => {
-			on_menu_bordercol_color_set ();
 			on_state_change ();
 		});
 		menu_shadow_switch.notify["active"].connect (() => {
@@ -956,19 +932,15 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_state_change ();
 		});
 		dialog_bg_color.color_set.connect (() => {
-			on_dialog_bg_color_set ();
 			on_state_change ();
 		});
 		dialog_fg_color.color_set.connect (() => {
-			on_dialog_fg_color_set ();
 			on_state_change ();
 		});
 		dialog_heading_color.color_set.connect (() => {
-			on_dialog_heading_color_set ();
 			on_state_change ();
 		});
 		dialog_bordercol_color.color_set.connect (() => {
-			on_dialog_bordercol_color_set ();
 			on_state_change ();
 		});
 		dialog_shadow_switch.notify["active"].connect (() => {
@@ -990,6 +962,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		revert_button.clicked.connect (() => {
 			combobox.set_active (0);
 			set_config ();
+			set_states ();
 			on_state_set ();
 		});
 		close_button.clicked.connect (() => {
@@ -1022,68 +995,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		set_states ();
 	}
 
-	void on_selected_color_set () {
-		selcolor =  color_button.get_rgba ();
-		color_value = "%s".printf (selcolor.to_string());
-	}
-
-	void on_panel_bg_color_set () {
-		pbcolor =  panel_bg_color.get_rgba ();
-		panel_bg_value = "%s".printf (pbcolor.to_string());
-	}
-
-	void on_panel_fg_color_set () {
-		pfcolor =  panel_fg_color.get_rgba ();
-		panel_fg_value = "%s".printf (pfcolor.to_string());
-	}
-
-	void on_panel_bordercol_color_set () {
-		bocolor =  panel_bordercol_color.get_rgba ();
-		panel_bordercol_value = "%s".printf (bocolor.to_string());
-	}
-
-	void on_menu_bg_color_set () {
-		mbcolor =  menu_bg_color.get_rgba ();
-		menu_bg_value = "%s".printf (mbcolor.to_string());
-	}
-
-	void on_menu_fg_color_set () {
-		mfcolor =  menu_fg_color.get_rgba ();
-		menu_fg_value = "%s".printf (mfcolor.to_string());
-	}
-
-	void on_menu_bordercol_color_set () {
-		mocolor =  menu_bordercol_color.get_rgba ();
-		menu_bordercol_value = "%s".printf (mocolor.to_string());
-	}
-
-	void on_dialog_bg_color_set () {
-		dbcolor =  dialog_bg_color.get_rgba ();
-		dialog_bg_value = "%s".printf (dbcolor.to_string());
-	}
-
-	void on_dialog_fg_color_set () {
-		dfcolor =  dialog_fg_color.get_rgba ();
-		dialog_fg_value = "%s".printf (dfcolor.to_string());
-	}
-
-	void on_dialog_heading_color_set () {
-		dfcolor =  dialog_heading_color.get_rgba ();
-		dialog_heading_value = "%s".printf (dfcolor.to_string());
-	}
-
-	void on_dialog_bordercol_color_set () {
-		docolor =  dialog_bordercol_color.get_rgba ();
-		dialog_bordercol_value = "%s".printf (docolor.to_string());
-	}
-
 	void write_config () {
 		if (match_wallpaper.get_active()) {
 			key_file.set_string ("Settings", "mode", "wallpaper");
 		} else if (match_theme.get_active()) {
 			key_file.set_string ("Settings", "mode", "gtk");
 		} else if (custom_color.get_active()) {
-			key_file.set_string ("Settings", "mode", color_value);
+			key_file.set_string ("Settings", "mode", color_button.get_rgba ().to_string());
 		}
 
 		key_file.set_boolean ("Settings", "monitor", monitor_switch.get_active());
@@ -1097,9 +1015,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);
 		key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
 
-		key_file.set_string ("Panel", "panel_bg", panel_bg_value);
-		key_file.set_string ("Panel", "panel_fg", panel_fg_value);
-		key_file.set_string ("Panel", "panel_bordercol", panel_bordercol_value);
+		key_file.set_string ("Panel", "panel_bg", panel_bg_color.get_rgba ().to_string());
+		key_file.set_string ("Panel", "panel_fg", panel_fg_color.get_rgba ().to_string());
+		key_file.set_string ("Panel", "panel_bordercol", panel_bordercol_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Panel", "panel_shadow", panel_shadow_switch.get_active());
 		key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
@@ -1109,9 +1027,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_double ("Panel", "panel_borderop", panel_borderop_value.adjustment.value);
 		key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
 
-		key_file.set_string ("Menu", "menu_bg", menu_bg_value);
-		key_file.set_string ("Menu", "menu_fg", menu_fg_value);
-		key_file.set_string ("Menu", "menu_bordercol", menu_bordercol_value);
+		key_file.set_string ("Menu", "menu_bg", menu_bg_color.get_rgba ().to_string());
+		key_file.set_string ("Menu", "menu_fg", menu_fg_color.get_rgba ().to_string());
+		key_file.set_string ("Menu", "menu_bordercol", menu_bordercol_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Menu", "menu_shadow", menu_shadow_switch.get_active());
 		key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active());
@@ -1120,10 +1038,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_double ("Menu", "menu_opacity", menu_opacity_value.adjustment.value);
 		key_file.set_double ("Menu", "menu_borderop", menu_borderop_value.adjustment.value);
 
-		key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_value);
-		key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_value);
-		key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_value);
-		key_file.set_string ("Dialogs", "dialog_bordercol", dialog_bordercol_value);
+		key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_color.get_rgba ().to_string());
+		key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.get_rgba ().to_string());
+		key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.get_rgba ().to_string());
+		key_file.set_string ("Dialogs", "dialog_bordercol", dialog_bordercol_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Dialogs", "dialog_shadow", dialog_shadow_switch.get_active());
 
