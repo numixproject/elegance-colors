@@ -38,6 +38,10 @@ echo -e "\033[0;33m[WARN $(date +"%H:%M:%S")]\033[0m $@"
 
 show_err() {
 echo -e "\033[0;31m[ERR  $(date +"%H:%M:%S")]\033[0m $@" 1>&2
+}
+
+notify_err() {
+echo -e "\033[0;31m[ERR  $(date +"%H:%M:%S")]\033[0m $@" 1>&2
 notify-send -h int:transient:1 -i dialog-error "Elegance Colors" "$@"
 }
 
@@ -51,7 +55,7 @@ if [[ $(whoami) = "root" ]]; then
 		exit 1
 	fi
 else
-	show_err "Root access is needed to fix schema for user-themes!"
+	notify_err "Root access is needed to fix schema for user-themes!"
 	exit 1
 fi
 }
@@ -78,11 +82,11 @@ if [[ -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
 		show_info "Theme exported to '$themepath/$themefile'"
 		exit
 	else
-		show_err "Failed to export theme!"
+		notify_err "Failed to export theme!"
 		exit 1
 	fi
 else
-	show_err "Theme files not found!"
+	notify_err "Theme files not found!"
 	exit 1
 fi
 }
@@ -508,7 +512,7 @@ while true; do
 	fi
 	# Verify if schema file exists
 	if [[ ! -f "$schemadir/$schemafile" ]]; then
-		show_err "Schema for user-themes could not be found, Run 'elegance-colors fix' as root to fix the problem"
+		notify_err "Schema for user-themes could not be found, Run 'elegance-colors fix' as root to fix the problem"
 		exit 1
 	fi
 	initialize
