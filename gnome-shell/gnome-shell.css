@@ -272,20 +272,24 @@ arrow-off*/
 
 /* Switches */
 .toggle-switch {
-    width: 64px;
-    height: 22px;
+    width: 54px;
+    height: 18px;
 }
 
 .toggle-switch-us,
 .toggle-switch-intl {
     background-image: url("toggle-off.png");
     background-size: contain;
+    background-color: #999;
+    border: 1px solid rgba(0,0,0,0.4);
+    border-radius: @border-radius;
 }
 
 .toggle-switch-us:checked,
 .toggle-switch-intl:checked {
     background-image: url("toggle-on.png");
     background-size: contain;
+    background-color: @custom-color1;
 }
 
 .nm-menu-item-icons {
