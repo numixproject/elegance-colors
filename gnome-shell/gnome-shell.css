@@ -280,7 +280,6 @@ arrow-off*/
 .toggle-switch-intl {
     background-image: url("toggle-off.png");
     background-size: contain;
-    background-color: #999;
     border: 1px solid rgba(0,0,0,0.4);
     border-radius: @border-radius;
 }
@@ -289,7 +288,7 @@ arrow-off*/
 .toggle-switch-intl:checked {
     background-image: url("toggle-on.png");
     background-size: contain;
-    background-color: @custom-color1;
+    background-color: @custom-color2;
 }
 
 .nm-menu-item-icons {
@@ -1116,7 +1115,7 @@ appicon-visible*/
 
 .calendar-month-label {
     color: @menu-color;
-    font-size: 9.5pt;
+    font-size: @font-size;
     font-weight: bold;
     padding-bottom: 8px;
     padding-top: 8px;
@@ -1605,15 +1604,14 @@ arrow-off*/
 }
 
 .summary-source-counter {
-    color: white;
-    background-image: url("summary-counter.svg");
-    background-size: 2.5em;
-    font-size: 10pt;
+    color: @text-color;
+    background-color: @custom-color2;
+    border: 2px solid @text-color;
+    border-radius: 2.1em;
+    font-size: @font-size;
     font-weight: bold;
-    height: 2.5em;
-    width: 2.5em;
-    -shell-counter-overlap-x: 4px;
-    -shell-counter-overlap-y: 4px;
+    height: 2.1em;
+    width: 2.1em;
 }
 
 /* App Switcher */
@@ -1866,7 +1864,7 @@ arrow-off*/
 }
 
 .end-session-dialog-app-list {
-    font-size: 10pt;
+    font-size: @font-size;
     max-height: 200px;
     padding-top: 42px;
     padding-left: 49px;
@@ -1903,7 +1901,7 @@ arrow-off*/
 }
 
 .end-session-dialog-app-list-item-name {
-    font-size: 10pt;
+    font-size: @font-size;
 }
 
 .end-session-dialog-app-list-item-description {
@@ -1954,7 +1952,7 @@ arrow-off*/
 }
 
 .show-processes-dialog-app-list {
-    font-size: 10pt;
+    font-size: @font-size;
     max-height: 200px;
     padding-top: 24px;
     padding-left: 49px;
@@ -1991,7 +1989,7 @@ arrow-off*/
 }
 
 .show-processes-dialog-app-list-item-name {
-    font-size: 10pt;
+    font-size: @font-size;
 }
 
 /* Password or Authentication Dialog */
@@ -2021,13 +2019,13 @@ arrow-off*/
 }
 
 .prompt-dialog-error-label {
-    font-size: 10pt;
+    font-size: @font-size;
     color: #ff0;
     padding-bottom: 8px;
 }
 
 .prompt-dialog-info-label {
-    font-size: 10pt;
+    font-size: @font-size;
     padding-bottom: 8px;
 }
 
@@ -2036,7 +2034,7 @@ arrow-off*/
 }
 
 .prompt-dialog-null-label {
-    font-size: 10pt;
+    font-size: @font-size;
     padding-bottom: 8px;
 }
 
@@ -2206,7 +2204,7 @@ arrow-off*/
 /* Login Dialog */
 
 .login-dialog-banner {
-    font-size: 10pt;
+    font-size: @font-size;
     font-weight: bold;
     text-align: center;
     color: #666;
