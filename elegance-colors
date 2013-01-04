@@ -21,7 +21,7 @@
 # Set default paths
 configdir="$HOME/.config/elegance-colors"
 configfile="$configdir/elegance-colors.ini"
-tempdir="$HOME/.cache/elegance-colors"
+tempdir="/tmp/elegance-colors"
 installdir="/usr/share/elegance-colors"
 homedir=`awk -F: -v v="$(who | grep $(echo "$DISPLAY" | cut -d '.' -f 1) | cut -d ' ' -f 1 | tail -1)" '{if ($1==v) print $6}' /etc/passwd`
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
@@ -447,8 +447,6 @@ initialize() {
 [[ -f "$configfile" ]] || cp -f "$installdir/presets/default.ini" "$configfile"
 # Create the temporary directory
 [[ -d "$tempdir" ]] || mkdir -p "$tempdir"
-# Delete previous temporary files
-rm -rf "$tempdir/elegance-colors"-*
 # Get the gtk theme name
 themename=$(gsettings get org.gnome.desktop.interface gtk-theme)
 gtktheme=$(echo $themename | sed "s/'//g")
