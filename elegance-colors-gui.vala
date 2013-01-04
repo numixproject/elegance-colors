@@ -88,7 +88,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	ToggleButton menu_tab;
 	ToggleButton dialog_tab;
 
-	File config_dir;
 	File config_file;
 	File presets_dir_sys;
 
@@ -134,14 +133,29 @@ class EleganceColorsWindow : ApplicationWindow {
 		this.add_action (quit_action);
 
 		// Set variables
-		config_dir = File.new_for_path (Environment.get_user_config_dir ());
+		var config_dir = File.new_for_path (Environment.get_user_config_dir ());
 		config_file = config_dir.get_child ("elegance-colors").get_child ("elegance-colors.ini");
 		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
 
 		// Methods
+		init_process ();
 		create_widgets ();
 		connect_signals ();
 	}
+
+	void init_process () {
+
+		var home_dir = File.new_for_path (Environment.get_home_dir ());
+
+		if (!home_dir.get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css").query_exists () || !config_file.query_exists ()) {
+			try {
+				Process.spawn_command_line_async("elegance-colors");
+			} catch (Error e) {
+				stderr.printf ("Failed to run process: %s\n", e.message);
+			}
+		}
+	}
+
 
 	void export_theme () {
 
@@ -806,13 +820,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		monitor_switch.notify["active"].connect (() => {
 			if (monitor_switch.get_active ()) {
 				try {
-					Process.spawn_command_line_sync("elegance-colors");
+					Process.spawn_command_line_async("elegance-colors");
 				} catch (Error e) {
 					stderr.printf ("Failed to start background process: %s\n", e.message);
 				}
 			} else {
 				try {
-					Process.spawn_command_line_sync("elegance-colors stop");
+					Process.spawn_command_line_async("elegance-colors stop");
 				} catch (Error e) {
 					stderr.printf ("Failed to stop background process: %s\n", e.message);
 				}
