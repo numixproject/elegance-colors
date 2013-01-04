@@ -9,7 +9,7 @@ Elegance Colors is a chameleon theme for Gnome Shell. It can change colors accor
 .SH CUSTOMIZATION
 After installation, run
 .B elegance-colors
-from the terminal to start the process in background. The background process detects changes and reloads the theme accordingly. It will also make a theme basing upon the template and default configuration.
+to start the process in background. The background process detects changes and reloads the theme accordingly. It will also make a theme basing upon the template and default configuration.
 
 To set the theme, run the following commands,
 
@@ -17,14 +17,27 @@ To set the theme, run the following commands,
 
 You can launch the GUI from the menu which lets you customise various aspects of the the theme. You can also export your customized theme, import/export settings from the GMenu. Click on the title in the Gnome Shell top bar to get the GMenu.
 
+.SH FILES
+
+The configuration file is located under
+.B ~/.config/elegance-colors/elegance-colors.ini
+
+Temporary files are created under
+.B /tmp/elegance-colors
+
 .SH TROUBLESHOOTING
 If you have installed the user-theme extension from the extensions.gnome.org website, you might need to run the following command before elegance-colors can work,
 
 .B elegance-colors fix
 
+It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can kill running processes of elegance-colors with the command,
+
+.B killall elegance-colors
+
 To view any error messages produced, stop the background process first and then run the process in Terminal,
 
 .B elegance-colors stop
+
 .B elegance-colors start
 
 To manually apply changes, run,
@@ -36,7 +49,7 @@ To export the theme, run,
 .B elegance-colors export /path/to/themefile.zip
 
 .SH NOTES
-The configuration file is automatically created and replaced every time you change the configuration. It should not be edited by hand.
+The configuration file should not be edited by hand to avoid potential errors.
 
 .SH CAVEATS
 When applying the new configuration, the theme is reloaded, and Gnome Shell may freeze if you do things really fast when reloading the theme.

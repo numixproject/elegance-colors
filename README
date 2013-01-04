@@ -26,7 +26,7 @@ To derive color from wallpaper, you need to install ImageMagick
 
 Also install the User Theme Extension for Gnome Shell https://extensions.gnome.org/extension/19/user-themes/
 
-After installation, run "elegance-colors" from the terminal to start the process in background. The background process detects changes and reloads the theme accordingly. It will also make a theme basing upon the template and default configuration.
+After installation, run "elegance-colors" to start the process in background. The background process detects changes and reloads the theme accordingly. It will also make a theme basing upon the template and default configuration.
 
 To set the theme, run the following commands,
 
@@ -41,6 +41,10 @@ Troubleshooting:
 If you have installed the user-theme extension from the extensions.gnome.org website, you might need to run the following command before elegance-colors can work,
 
 elegance-colors fix
+
+It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can kill running processes of elegance-colors with the command,
+
+killall elegance-colors
 
 To view any error messages produced, stop the background process first and then run the process in Terminal,
 
@@ -57,9 +61,7 @@ elegance-colors export /path/to/themefile.zip
 
 ---
 
-Code:
-
-https://github.com/satya164/elegance-colors
+Code: https://github.com/satya164/elegance-colors
 
 ---
 
