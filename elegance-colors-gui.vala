@@ -220,6 +220,13 @@ class EleganceColorsWindow : ApplicationWindow {
 			try {
 				var exportpath = File.new_for_path (exportsettings.get_file ().get_path ());
 
+				if (exportpath.query_exists ()) {
+					try {
+						exportpath.delete ();
+					} catch (Error e) {
+						stderr.printf ("Failed to replace previous exported file: %s\n", e.message);
+					}
+				}
 				config_file.copy (exportpath, FileCopyFlags.NONE);
 				
 			} catch (Error e) {
