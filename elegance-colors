@@ -19,6 +19,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Set default paths
+selfdir=`cd $(dirname "${BASH_SOURCE[0]}") && pwd`
+selffile="$selfdir/elegance-colors"
 configdir="$HOME/.config/elegance-colors"
 configfile="$configdir/elegance-colors.ini"
 tempdir="/tmp/elegance-colors"
@@ -258,8 +260,8 @@ md5c=`md5sum "$configfile"`
 if [[ -f "$md5conf" ]]; then
 	oldmd5c=`cat "$md5conf"`
 	if [[ ! "$oldmd5c" = "$md5c" ]]; then
-	show_info "Configuration change detected"
-	set_theme
+		show_info "Configuration change detected"
+		set_theme
 	fi
 fi
 echo "$md5c" > "$md5conf"
@@ -493,6 +495,9 @@ fi
 
 run_process() {
 show_info "Starting process"
+# Delete old md5
+md5self="$tempdir/self-md5"
+rm -f "$md5self"
 # Stop any previous instances first
 [[ -f "$tempdir/elegance-colors.pid" ]] && stop_process
 # Write the pid to a file
@@ -503,6 +508,17 @@ while true; do
 		show_err "Cannot run process as root"
 		exit 1
 	fi
+	# Check if the script has been changed
+	md5s=`md5sum "$selffile"`
+	if [[ -f "$md5self" ]]; then
+		oldmd5s=`cat "$md5self"`
+		if [[ ! "$oldmd5s" = "$md5s" ]]; then
+			show_info "Script has been changed, restarting..."
+			$0 "$@" &
+			exit 0
+		fi
+	fi
+	md5sum "$selffile" > "$md5self"
 	# No need to run in background if Gnome Shell is not running
 	if ( [ ! "$(pidof gnome-shell)" ] ); then
 		show_err "Gnome Shell not running"
