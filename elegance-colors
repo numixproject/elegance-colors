@@ -126,24 +126,24 @@ fi
 }
 
 make_gradient() {
-color="$1"
+incolor="$1"
 opacity="$2"
 gradient="$3"
-if [[ "$color" =~ ^# && ${#color} -eq 4 ]]; then
-	red2=$((`echo "$color" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$color" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$color" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-elif [[ "$color" =~ ^# && ${#color} -eq 7 ]]; then
-	red2=$((`echo "$color" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$color" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$color" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
-elif [[ "$color" =~ ^rgb ]]; then
-	red2=$(echo "$color" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$color" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$color" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity2=$(echo "$color" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
+if [[ "$incolor" =~ ^# && ${#incolor} -eq 4 ]]; then
+	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+elif [[ "$incolor" =~ ^# && ${#incolor} -eq 7 ]]; then
+	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+elif [[ "$incolor" =~ ^rgb ]]; then
+	red2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+	opacity2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
 else
-	show_err "Invalid color '$color'"
+	show_err "Invalid color '$incolor'"
 fi
 [[ "$opacity2" = "" ]] || opacity="$opacity2"
 red1=$(( red2 + gradient ))
@@ -165,15 +165,144 @@ else
 fi
 }
 
+make_chameleon() {
+color1="$1"
+color2="$2"
+amount="$3"
+opacity="$4"
+if [[ "$color1" =~ ^# && ${#color1} -eq 4 ]]; then
+	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
+	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
+	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+elif [[ "$color1" =~ ^# && ${#color1} -eq 7 ]]; then
+	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
+	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
+	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+elif [[ "$color1" =~ ^rgb ]]; then
+	red1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+else
+	show_err "Invalid color '$color1'"
+fi
+if [[ "$color2" =~ ^# && ${#color2} -eq 4 ]]; then
+	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+elif [[ "$color2" =~ ^# && ${#color2} -eq 7 ]]; then
+	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+elif [[ "$color2" =~ ^rgb ]]; then
+	red2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+else
+	show_err "Invalid color '$color2'"
+fi
+red=$(( ( ( red1 * amount ) + ( red2 * 30 ) ) / ( amount + 30 ) ))
+green=$(( ( ( green1 * amount ) + ( green2 * 30 ) ) / ( amount + 30 ) ))
+blue=$(( ( ( blue1 * amount ) + ( blue2 * 30 ) ) / ( amount + 30 ) ))
+chameleon="rgba($red,$green,$blue,$opacity)"
+}
+
 make_theme() {
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)"
 # Get color values
 get_color
-# Generate gradient
+# Set font properties
+fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
+fontsize=$(echo "$fontname" | sed 's/.* //')
+# Calculate dash itemsize
+dash_itemsize=$(( dash_iconsize + dash_iconspacing - 2 ))
+# Add units
+fontsize="${fontsize}pt"
+roundness="${roundness}px"
+panel_corner="${panel_corner}px"
+dash_itemsize="${dash_itemsize}px"
+dash_iconsize="${dash_iconsize}px"
+dash_iconspacing="${dash_iconspacing}px"
+# Set shadows
+if [[ "$panel_shadow" = "true" ]]; then
+	panelshadow="0 0 5px 1px rgba(0,0,0,0.5)"
+else
+	panelshadow="none"
+fi
+if [[ "$dash_shadow" = "true" ]]; then
+	dashshadow="0 0 5px 1px rgba(0,0,0,0.5)"
+else
+	dashshadow="none"
+fi
+if [[ "$menu_shadow" = "true" ]]; then
+	menushadow="0 0 5px 1px rgba(0,0,0,0.5)"
+else
+	menushadow="none"
+fi
+if [[ "$dialog_shadow" = "true" ]]; then
+	dialogshadow="0 0 5px 1px rgba(0,0,0,0.5)"
+else
+	dialogshadow="none"
+fi
+# Set arrow styles
+if [[ "$menu_arrow" = "true" ]]; then
+	arrowbase="21px"
+	arrowrise="9px"
+else
+	arrowbase="0"
+	arrowrise="3px"
+fi
+# Set colors
 make_gradient "$color" "1" "$selgradient"
 custom_color1="$color1"
 custom_color2="$color2"
+make_gradient "$panel_bg" "$panel_opacity" "$panel_gradient"
+panelbg1="$color1"
+panelbg2="$color2"
+make_gradient "$panel_bordercol" "$panel_borderop" "0"
+panelborder="$color1"
+make_gradient "$panel_bg" "$panel_opacity" "$dash_gradient"
+dashbg1="$color1"
+dashbg2="$color2"
+make_gradient "$panel_bordercol" "$panel_borderop" "0"
+dashborder="$color1"
+make_gradient "$menu_bg" "$menu_opacity" "$menu_gradient"
+menubg1="$color1"
+menubg2="$color2"
+make_gradient "$menu_bordercol" "$menu_borderop" "0"
+menuborder="$color1"
+make_gradient "$dialog_bg" "$dialog_opacity" "$dialog_gradient"
+dialogbg1="$color1"
+dialogbg2="$color2"
+make_gradient "$dialog_bordercol" "$dialog_borderop" "0"
+dialogborder="$color1"
+# Generate message tray background
+if [[ "$panel_opacity" = "0" ]]; then
+	messagebg="transparent"
+	messageborder="transparent"
+else
+	make_chameleon "$color" "$panel_bg" "$panel_chameleon" "0.1"
+	messagebg="$chameleon"
+	make_chameleon "$color" "$panelborder" "$panel_chameleon" "0.1"
+	messageborder="$chameleon"
+fi
+# Generate background colors
+make_chameleon "$color" "$dashbg1" "$dash_chameleon" "$dash_opacity"
+dashbg1="$chameleon"
+make_chameleon "$color" "$dashbg2" "$dash_chameleon" "$dash_opacity"
+dashbg2="$chameleon"
+make_chameleon "$color" "$panelbg1" "$panel_chameleon" "$panel_opacity"
+panelbg1="$chameleon"
+make_chameleon "$color" "$panelbg2" "$panel_chameleon" "$panel_opacity"
+panelbg2="$chameleon"
+make_chameleon "$color" "$menubg1" "$menu_chameleon" "$menu_opacity"
+menubg1="$chameleon"
+make_chameleon "$color" "$menubg2" "$menu_chameleon" "$menu_opacity"
+menubg2="$chameleon"
+make_chameleon "$color" "$dialogbg1" "$dialog_chameleon" "$dialog_opacity"
+dialogbg1="$chameleon"
+make_chameleon "$color" "$dialogbg2" "$dialog_chameleon" "$dialog_opacity"
+dialogbg2="$chameleon"
 # Copy Elegance Colors to create a new theme
 if [[ -d "$installdir/gnome-shell" ]]; then
 	mkdir -p "$makedir"
@@ -212,8 +341,8 @@ else
 	sed -i "s/entry-off\*\///g" "$makedir/gnome-shell/gnome-shell.css"
 fi
 # Arrange variables and values in an array
-vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-family" "@font-size" "@overview-bg1" "@overview-bg2" "@overview-border" "@border-radius" "@transition-duration" "@panel-bg1" "@panel-bg2" "@panel-color" "@panel-border" "@panel-shadow" "@corner-radius" "@menu-bg1" "@menu-bg2" "@menu-color" "@menu-border" "@menu-shadow" "@arrow-base" "@arrow-rise" "@dialog-bg1" "@dialog-bg2" "@dialog-color" "@dialog-heading" "@dialog-border" "@dialog-shadow" "@message-bg" "@message-border" )
-values=( "$custom_color1" "$custom_color2" "$text" "$fontfamily" "$fontsize" "$overviewbg1" "$overviewbg2" "$overviewborder" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
+vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-family" "@font-size" "@border-radius" "@transition-duration" "@panel-bg1" "@panel-bg2" "@panel-color" "@panel-border" "@panel-shadow" "@corner-radius" "@dash-color" "@dash-bg1" "@dash-bg2" "@dash-border" "@dash-shadow" "@dash-iconsize" "@dash-itemsize" "@dash-iconspacing" "@menu-bg1" "@menu-bg2" "@menu-color" "@menu-border" "@menu-shadow" "@arrow-base" "@arrow-rise" "@dialog-bg1" "@dialog-bg2" "@dialog-color" "@dialog-heading" "@dialog-border" "@dialog-shadow" "@message-bg" "@message-border" )
+values=( "$custom_color1" "$custom_color2" "$text" "$fontfamily" "$fontsize" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$dash_fg" "$dashbg1" "$dashbg2" "$dashborder" "$dashshadow" "$dash_iconsize" "$dash_itemsize" "$dash_iconspacing" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
 	[[ "${values[i]}" = "" ]] && (( i++ ))
@@ -301,7 +430,6 @@ if [[ -f "$configfile" ]]; then
 	entry=$(grep entry $configfile | cut -d '=' -f 2)
 	fontname=$(grep fontname $configfile | cut -d '=' -f 2)
 	selgradient=$(grep selgradient $configfile | cut -d '=' -f 2)
-	dashgradient=$(grep dashgradient $configfile | cut -d '=' -f 2)
 	roundness=$(grep roundness $configfile | cut -d '=' -f 2)
 	transition=$(grep transition $configfile | cut -d '=' -f 2)
 	panel_bg=$(grep panel_bg $configfile | cut -d '=' -f 2)
@@ -309,15 +437,27 @@ if [[ -f "$configfile" ]]; then
 	panel_bordercol=$(grep panel_bordercol $configfile | cut -d '=' -f 2)
 	panel_shadow=$(grep panel_shadow $configfile | cut -d '=' -f 2)
 	panel_icon=$(grep panel_icon $configfile | cut -d '=' -f 2)
+	panel_chameleon=$(grep panel_chameleon $configfile | cut -d '=' -f 2)
 	panel_gradient=$(grep panel_gradient $configfile | cut -d '=' -f 2)
 	panel_opacity=$(grep panel_opacity $configfile | cut -d '=' -f 2)
 	panel_borderop=$(grep panel_borderop $configfile | cut -d '=' -f 2)
 	panel_corner=$(grep panel_corner $configfile | cut -d '=' -f 2)
+	dash_bg=$(grep dash_bg $configfile | cut -d '=' -f 2)
+	dash_fg=$(grep dash_fg $configfile | cut -d '=' -f 2)
+	dash_bordercol=$(grep dash_bordercol $configfile | cut -d '=' -f 2)
+	dash_shadow=$(grep dash_shadow $configfile | cut -d '=' -f 2)
+	dash_chameleon=$(grep dash_chameleon $configfile | cut -d '=' -f 2)
+	dash_gradient=$(grep dash_gradient $configfile | cut -d '=' -f 2)
+	dash_opacity=$(grep dash_opacity $configfile | cut -d '=' -f 2)
+	dash_borderop=$(grep dash_borderop $configfile | cut -d '=' -f 2)
+	dash_iconsize=$(grep dash_iconsize $configfile | cut -d '=' -f 2)
+	dash_iconspacing=$(grep dash_iconspacing $configfile | cut -d '=' -f 2)
 	menu_bg=$(grep menu_bg $configfile | cut -d '=' -f 2)
 	menu_fg=$(grep menu_fg $configfile | cut -d '=' -f 2)
 	menu_bordercol=$(grep menu_bordercol $configfile | cut -d '=' -f 2)
 	menu_shadow=$(grep menu_shadow $configfile | cut -d '=' -f 2)
 	menu_arrow=$(grep menu_arrow $configfile | cut -d '=' -f 2)
+	menu_chameleon=$(grep menu_chameleon $configfile | cut -d '=' -f 2)
 	menu_gradient=$(grep menu_gradient $configfile | cut -d '=' -f 2)
 	menu_opacity=$(grep menu_opacity $configfile | cut -d '=' -f 2)
 	menu_borderop=$(grep menu_borderop $configfile | cut -d '=' -f 2)
@@ -326,6 +466,7 @@ if [[ -f "$configfile" ]]; then
 	dialog_heading=$(grep dialog_heading $configfile | cut -d '=' -f 2)
 	dialog_bordercol=$(grep dialog_bordercol $configfile | cut -d '=' -f 2)
 	dialog_shadow=$(grep dialog_shadow $configfile | cut -d '=' -f 2)
+	dialog_chameleon=$(grep dialog_chameleon $configfile | cut -d '=' -f 2)
 	dialog_gradient=$(grep dialog_gradient $configfile | cut -d '=' -f 2)
 	dialog_opacity=$(grep dialog_opacity $configfile | cut -d '=' -f 2)
 	dialog_borderop=$(grep dialog_borderop $configfile | cut -d '=' -f 2)
@@ -337,7 +478,6 @@ fi
 [[ -z "$entry" ]] && entry="false"
 [[ -z "$fontname" ]] && fontname="10"
 [[ -z "$selgradient" ]] && selgradient="0"
-[[ -z "$dashgradient" ]] && dashgradient="0"
 [[ -z "$roundness" ]] && roundness="3"
 [[ -z "$transition" ]] && transition="150"
 [[ -z "$panel_bg" ]] && panel_bg="rgb(0,0,0)"
@@ -345,15 +485,27 @@ fi
 [[ -z "$panel_bordercol" ]] && panel_bordercol="rgb(0,0,0)"
 [[ -z "$panel_shadow" ]] && panel_shadow="false"
 [[ -z "$panel_icon" ]] && panel_icon="false"
+[[ -z "$panel_chameleon" ]] && panel_chameleon="0"
 [[ -z "$panel_gradient" ]] && panel_gradient="0"
 [[ -z "$panel_opacity" ]] && panel_opacity="0.8"
 [[ -z "$panel_borderop" ]] && panel_borderop="0.8"
 [[ -z "$panel_corner" ]] && panel_corner="0"
+[[ -z "$dash_bg" ]] && dash_bg="rgb(0,0,0)"
+[[ -z "$dash_fg" ]] && dash_fg="rgb(255,255,255)"
+[[ -z "$dash_bordercol" ]] && dash_bordercol="rgb(0,0,0)"
+[[ -z "$dash_shadow" ]] && dash_shadow="false"
+[[ -z "$dash_chameleon" ]] && dash_chameleon="0"
+[[ -z "$dash_gradient" ]] && dash_gradient="0"
+[[ -z "$dash_opacity" ]] && dash_opacity="0.8"
+[[ -z "$dash_borderop" ]] && dash_borderop="0.2"
+[[ -z "$dash_iconsize" ]] && dash_iconsize="84"
+[[ -z "$dash_iconspacing" ]] && dash_iconspacing="36"
 [[ -z "$menu_bg" ]] && menu_bg="rgb(0,0,0)"
 [[ -z "$menu_fg" ]] && menu_fg="rgb(255,255,255)"
 [[ -z "$menu_bordercol" ]] && menu_bordercol="rgb(0,0,0)"
 [[ -z "$menu_shadow" ]] && menu_shadow="false"
 [[ -z "$menu_arrow" ]] && menu_arrow="true"
+[[ -z "$menu_chameleon" ]] && menu_chameleon="0"
 [[ -z "$menu_gradient" ]] && menu_gradient="0"
 [[ -z "$menu_opacity" ]] && menu_opacity="0.8"
 [[ -z "$menu_borderop" ]] && menu_borderop="0.8"
@@ -362,84 +514,20 @@ fi
 [[ -z "$dialog_heading" ]] && dialog_heading="rgb(255,255,255)"
 [[ -z "$dialog_bordercol" ]] && dialog_bordercol="rgb(0,0,0)"
 [[ -z "$dialog_shadow" ]] && dialog_shadow="false"
+[[ -z "$dialog_chameleon" ]] && dialog_chameleon="0"
 [[ -z "$dialog_gradient" ]] && dialog_gradient="0"
 [[ -z "$dialog_opacity" ]] && dialog_opacity="0.8"
 [[ -z "$dialog_borderop" ]] && dialog_borderop="0.2"
 # Workaround for locales which use comma instead of dot
 selgradient=$(echo "$selgradient" | sed -e 's/,/./g')
-dashgradient=$(echo "$dashgradient" | sed -e 's/,/./g')
-panel_gradient=$(echo "$panel_gradient" | sed -e 's/,/./g')
 panel_opacity=$(echo "$panel_opacity" | sed -e 's/,/./g')
 panel_borderop=$(echo "$panel_borderop" | sed -e 's/,/./g')
-menu_gradient=$(echo "$menu_gradient" | sed -e 's/,/./g')
+dash_opacity=$(echo "$dash_opacity" | sed -e 's/,/./g')
+dash_borderop=$(echo "$dash_borderop" | sed -e 's/,/./g')
 menu_opacity=$(echo "$menu_opacity" | sed -e 's/,/./g')
 menu_borderop=$(echo "$menu_borderop" | sed -e 's/,/./g')
-dialog_gradient=$(echo "$dialog_gradient" | sed -e 's/,/./g')
 dialog_opacity=$(echo "$dialog_opacity" | sed -e 's/,/./g')
 dialog_borderop=$(echo "$dialog_borderop" | sed -e 's/,/./g')
-# Set font properties
-fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
-fontsize=$(echo "$fontname" | sed 's/.* //')
-# Add units
-fontsize="${fontsize}pt"
-roundness="${roundness}px"
-panel_corner="${panel_corner}px"
-# Set shadows
-if [[ "$panel_shadow" = "true" ]]; then
-	panelshadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	panelshadow="none"
-fi
-if [[ "$menu_shadow" = "true" ]]; then
-	menushadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	menushadow="none"
-fi
-if [[ "$dialog_shadow" = "true" ]]; then
-	dialogshadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	dialogshadow="none"
-fi
-# Set arrow styles
-if [[ "$menu_arrow" = "true" ]]; then
-	arrowbase="21px"
-	arrowrise="9px"
-else
-	arrowbase="0"
-	arrowrise="3px"
-fi
-# Set colors
-make_gradient "$panel_bg" "$panel_opacity" "$panel_gradient"
-panelbg1="$color1"
-panelbg2="$color2"
-make_gradient "$panel_bordercol" "$panel_borderop" "0"
-panelborder="$color1"
-make_gradient "$menu_bg" "$menu_opacity" "$menu_gradient"
-menubg1="$color1"
-menubg2="$color2"
-make_gradient "$menu_bordercol" "$menu_borderop" "0"
-menuborder="$color1"
-make_gradient "$dialog_bg" "$dialog_opacity" "$dialog_gradient"
-dialogbg1="$color1"
-dialogbg2="$color2"
-make_gradient "$dialog_bordercol" "$dialog_borderop" "0"
-dialogborder="$color1"
-# Set overview style
-make_gradient "$panel_bg" "$panel_opacity" "$dashgradient"
-overviewbg1="$color1"
-overviewbg2="$color2"
-make_gradient "$panel_bordercol" "$panel_borderop" "0"
-overviewborder="$color1"
-# Set message tray style
-if [[ "$panel_opacity" = "0" ]]; then
-	messagebg="transparent"
-	messageborder="transparent"
-else
-	make_gradient "$panel_bg" "0.1" "0"
-	messagebg="$color1"
-	make_gradient "$panel_bordercol" "0.1" "0"
-	messageborder="$color1"
-fi
 }
 
 initialize() {

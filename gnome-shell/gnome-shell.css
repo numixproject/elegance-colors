@@ -28,12 +28,12 @@ stage {
 
 /* links */
 .shell-link {
-    color: #06f;
+    color: #0000ff;
     text-decoration: underline;
 }
 
 .shell-link:hover {
-    color: #0af;
+    color: #0000e0;
 }
 
 /* small */
@@ -159,7 +159,9 @@ arrow-off*/
 }
 
 .popup-sub-menu {
-    background-color: @menu-bg1;
+    background-gradient-direction: vertical;
+    background-gradient-start: @menu-bg1;
+    background-gradient-end: @menu-bg2;
     border: 1px solid @menu-border;
 }
 
@@ -690,13 +692,14 @@ appicon-visible*/
 }
 
 .workspace-thumbnails-background {
-    border: 1px solid @overview-border;
+    border: 1px solid @dash-border;
     border-right: 0;
     border-radius: @border-radius 0 0 @border-radius;
     background-gradient-direction: vertical;
-    background-gradient-start: @overview-bg1;
-    background-gradient-end: @overview-bg2;
+    background-gradient-start: @dash-bg1;
+    background-gradient-end: @dash-bg2;
     padding: 9px 7px 9px 9px;
+    box-shadow: @dash-shadow;
 }
 
 .workspace-thumbnails-background:rtl {
@@ -717,11 +720,11 @@ appicon-visible*/
 }
 
 .window-caption {
-    color: @panel-color;
+    color: @dash-color;
     background-gradient-direction: vertical;
-    background-gradient-start: @panel-bg1;
-    background-gradient-end: @panel-bg2;
-    border: 1px solid @panel-border;
+    background-gradient-start: @dash-bg1;
+    background-gradient-end: @dash-bg2;
+    border: 1px solid @dash-border;
     border-radius: @border-radius;
     padding: 2px 12px;
     -shell-caption-spacing: 6px;
@@ -762,11 +765,12 @@ appicon-visible*/
     font-size: @font-size;
     padding: 4px 0;
     background-gradient-direction: vertical;
-    background-gradient-start: @overview-bg1;
-    background-gradient-end: @overview-bg2;
-    border: 1px solid @overview-border;
+    background-gradient-start: @dash-bg1;
+    background-gradient-end: @dash-bg2;
+    border: 1px solid @dash-border;
     border-left: 0;
     border-radius: 0 @border-radius @border-radius 0;
+    box-shadow: @dash-shadow;
 }
 
 #dash:rtl {
@@ -855,13 +859,13 @@ appicon-visible*/
 }
 
 .dash-label {
-    color: @panel-color;
+    color: @dash-color;
     border-radius: @border-radius;
     padding: 2px 12px;
     background-gradient-direction: vertical;
-    background-gradient-start: @panel-bg1;
-    background-gradient-end: @panel-bg2;
-    border: 1px solid @panel-border;
+    background-gradient-start: @dash-bg1;
+    background-gradient-end: @dash-bg2;
+    border: 1px solid @dash-border;
     text-align: center;
     -x-offset: 6px;
 }
@@ -869,13 +873,13 @@ appicon-visible*/
 /* Application Launchers and Grid */
 
 .icon-grid {
-    spacing: 36px;
-    -shell-grid-horizontal-item-size: 118px;
-    -shell-grid-vertical-item-size: 118px;
+    spacing: @dash-iconspacing;
+    -shell-grid-horizontal-item-size: @dash-itemsize;
+    -shell-grid-vertical-item-size: @dash-itemsize;
 }
 
 .icon-grid .overview-icon {
-    icon-size: 84px;
+    icon-size: @dash-iconsize;
 }
 
 .all-app {
