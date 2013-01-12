@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Elegance Colors Process
-Icon=preferences-desktop-theme
+Icon=elegance-colors
 Comment=Background process for Elegance Colors Gnome Shell theme
 Exec=elegance-colors
 Terminal=false

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Elegance Colors Preferences
-Icon=preferences-desktop-theme
+Icon=elegance-colors
 Comment=A chameleon theme for Gnome Shell
 Exec=elegance-colors-gui
 Terminal=false

@@ -124,7 +124,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Set window icon
 		try {
-			this.icon = IconTheme.get_default ().load_icon ("preferences-desktop-theme", 48, 0);
+			this.icon = IconTheme.get_default ().load_icon ("elegance-colors", 48, 0);
 		} catch (Error e) {
 			stderr.printf ("Failed to load application icon: %s\n", e.message);
 		}
@@ -318,13 +318,14 @@ class EleganceColorsWindow : ApplicationWindow {
 		string license = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with This program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA";
 
 		show_about_dialog (this,
-			"program-name", ("Elegance Colors"),
-			"copyright", ("Copyright \xc2\xa9 2012 Satyajit Sahoo"),
-			"comments", ("A chameleon theme for Gnome Shell"),
+			"program-name", "Elegance Colors",
+			"logo_icon_name", "elegance-colors",
+			"copyright", "Copyright \xc2\xa9 2012 Satyajit Sahoo",
+			"comments", "A chameleon theme for Gnome Shell",
 			"license", license,
 			"wrap-license", true,
 			"website", "https://github.com/satya164/elegance-colors",
-			"website-label", ("Elegance Colors on GitHub"),
+			"website-label", "Elegance Colors on GitHub",
 			null);
 	}
 
