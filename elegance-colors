@@ -352,6 +352,7 @@ done
 # Copy the newly created theme
 if [[ ! -d "$makedir/gnome-shell" || `grep "@" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
 	show_err "Failed to make the theme"
+	grep "@" "$makedir/gnome-shell/gnome-shell.css"
 else
 	rm -rf "$HOME/.themes/elegance-colors"
 	mkdir -p "$HOME/.themes/elegance-colors"
