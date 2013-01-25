@@ -43,7 +43,7 @@ echo -e "\033[0;31m[ERR  $(date +"%H:%M:%S")]\033[0m $@" 1>&2
 }
 
 notify_err() {
-echo -e "\033[0;31m[ERR  $(date +"%H:%M:%S")]\033[0m $@" 1>&2
+show_err "$@"
 notify-send -h int:transient:1 -i dialog-error "Elegance Colors" "$@"
 }
 
@@ -206,7 +206,7 @@ blue=$(( ( ( blue1 * amount ) + ( blue2 * 30 ) ) / ( amount + 30 ) ))
 chameleon="rgba($red,$green,$blue,$opacity)"
 }
 
-make_theme() {
+set_theme() {
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)"
 # Get color values
@@ -345,42 +345,36 @@ vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-family" "@font-siz
 values=( "$custom_color1" "$custom_color2" "$text" "$fontfamily" "$fontsize" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$dash_fg" "$dashbg1" "$dashbg2" "$dashborder" "$dashshadow" "$dash_iconsize" "$dash_itemsize" "$dash_iconspacing" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
-	[[ "${values[i]}" = "" ]] && (( i++ ))
-	show_info "Replacing ${vars[i]} with ${values[i]}"
-	sed -i "s/${vars[i]}/${values[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
+	if [[ ! `grep ${vars[i]} "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+		show_warn "Template does not have any ${vars[i]} variable"
+	elif [[ "${values[i]}" = "" ]]; then
+		show_warn "The value of ${vars[i]} variable is not set"
+	else
+		show_info "Replacing ${vars[i]} with ${values[i]}"
+		sed -i "s/${vars[i]}/${values[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
+	fi
 done
 # Copy the newly created theme
-if [[ ! -d "$makedir/gnome-shell" || `grep "@" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
-	show_err "Failed to make the theme"
-	grep "@" "$makedir/gnome-shell/gnome-shell.css"
+if [[ ! -d "$makedir/gnome-shell" ]]; then
+	show_err "Failed to make the theme, files were lost"
+elif [[ `grep "@" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+	show_err "Failed to make the theme, could not replace variables"
+	grep "@" "$makedir/gnome-shell/gnome-shell.css" | sort -u
+elif [[ `grep ",," "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+	show_err "Failed to make the theme, invalid color expression"
+	grep ",," "$makedir/gnome-shell/gnome-shell.css" | sort -u
 else
 	rm -rf "$HOME/.themes/elegance-colors"
 	mkdir -p "$HOME/.themes/elegance-colors"
 	mv "$makedir/gnome-shell" "$HOME/.themes/elegance-colors/"
+	# Set the theme
+	if [[ `gsettings get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
+		show_info "Reloading the theme"
+		gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'
+	fi
 fi
 # Remove the temporary directory
 rm -rf "$makedir"
-}
-
-set_theme() {
-# Make the theme
-make_theme
-# Set the theme
-if [[ -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
-	show_info "Reloading the theme"
-	gsettings set org.gnome.shell.extensions.user-theme name "elegance-colors"
-else
-	show_err "Failed to reload the theme"
-fi
-# Enable or disable autostart
-if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Disabling autostart"
-	cp -f "/etc/xdg/autostart/elegance-colors-process.desktop" "$HOME/.config/autostart/elegance-colors-process.desktop"
-	echo "X-GNOME-Autostart-enabled=false" >> "$HOME/.config/autostart/elegance-colors-process.desktop"
-elif [[ "$monitor" = "true" && -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Enabling autostart"
-	rm -f "$HOME/.config/autostart/elegance-colors-process.desktop"
-fi
 }
 
 monitor_changes() {
@@ -563,7 +557,16 @@ fi
 # If elegance-colors doesn't exist in ~./themes, create it
 if [[ ! -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
 	set_config
-	make_theme
+	set_theme
+fi
+# Enable or disable autostart
+if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
+	show_info "Disabling autostart"
+	cp -f "/etc/xdg/autostart/elegance-colors-process.desktop" "$HOME/.config/autostart/elegance-colors-process.desktop"
+	echo "X-GNOME-Autostart-enabled=false" >> "$HOME/.config/autostart/elegance-colors-process.desktop"
+elif [[ "$monitor" = "true" && -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
+	show_info "Enabling autostart"
+	rm -f "$HOME/.config/autostart/elegance-colors-process.desktop"
 fi
 }
 
@@ -631,11 +634,7 @@ done
 apply_changes() {
 initialize
 set_config
-if [[ `gsettings get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
-	set_theme
-else
-	make_theme
-fi
+set_theme
 }
 
 case "$1" in
