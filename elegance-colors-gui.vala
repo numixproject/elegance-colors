@@ -103,11 +103,11 @@ class EleganceColorsWindow : ApplicationWindow {
 	Button apply_button;
 	Button close_button;
 
-	ToggleButton general_tab;
-	ToggleButton panel_tab;
-	ToggleButton overview_tab;
-	ToggleButton menu_tab;
-	ToggleButton dialog_tab;
+	RadioButton general_tab;
+	RadioButton panel_tab;
+	RadioButton overview_tab;
+	RadioButton menu_tab;
+	RadioButton dialog_tab;
 
 	File config_file;
 	File presets_dir_sys;
@@ -120,7 +120,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Set window properties
 		this.window_position = WindowPosition.CENTER;
 		this.resizable = false;
-		this.border_width = 10;
+		this.border_width = 12;
 
 		// Set window icon
 		try {
@@ -188,16 +188,18 @@ class EleganceColorsWindow : ApplicationWindow {
 	void export_theme () {
 
 		if (apply_button.get_sensitive ()) {
-			var dialog = new Dialog.with_buttons ("Apply changes?", this,
+			var dialog = new Dialog.with_buttons ("", this,
 									DialogFlags.MODAL,
 									Stock.APPLY, ResponseType.APPLY,
 									Stock.CANCEL, ResponseType.CANCEL, null);
 
 			var content_area = dialog.get_content_area ();
-			var label = new Label ("You need to apply the changes first to export the theme!");
+			var label = new Label ("<span weight='bold' size='larger'>Apply changes before exporting the theme?</span>\n\nYou need to apply the changes first to export the theme.");
+			label.set_use_markup (true);
+			label.set_line_wrap (true);
 
-			content_area.border_width = 5;
-			content_area.spacing = 10;
+			content_area.border_width = 6;
+			content_area.spacing = 12;
 			content_area.add (label);
 
 			dialog.response.connect (on_response);
@@ -735,11 +737,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		apply_button = new Button.from_stock (Stock.APPLY);
 		close_button = new Button.from_stock(Stock.CLOSE);
 
-		general_tab = new ToggleButton.with_label ("General");
-		panel_tab = new ToggleButton.with_label ("Panel");
-		overview_tab = new ToggleButton.with_label ("Overview");
-		menu_tab = new ToggleButton.with_label ("Menu");
-		dialog_tab = new ToggleButton.with_label ("Dialogs");
+		general_tab = new RadioButton (null);
+		general_tab.set_label ("General");
+		general_tab.set_mode (false);
+		panel_tab = new RadioButton.with_label (general_tab.get_group(),"Panel");
+		panel_tab.set_mode (false);
+		overview_tab = new RadioButton.with_label (general_tab.get_group(),"Overview");
+		overview_tab.set_mode (false);
+		menu_tab = new RadioButton.with_label (general_tab.get_group(),"Menu");
+		menu_tab.set_mode (false);
+		dialog_tab = new RadioButton.with_label (general_tab.get_group(),"Dialogs");
+		dialog_tab.set_mode (false);
 
 		// Read presets
 		try {
@@ -798,8 +806,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		// General
 		var grid0 = new Grid ();
 		grid0.set_column_homogeneous (true);
-		grid0.set_column_spacing (10);
-		grid0.set_row_spacing (10);
+		grid0.set_column_spacing (12);
+		grid0.set_row_spacing (12);
 		grid0.attach (presets_label, 0, 0, 1, 1);
 		grid0.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
 		grid0.attach (mode_label, 0, 1, 1, 1);
@@ -825,8 +833,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Panel
 		var grid1 = new Grid ();
 		grid1.set_column_homogeneous (true);
-		grid1.set_column_spacing (10);
-		grid1.set_row_spacing (10);
+		grid1.set_column_spacing (12);
+		grid1.set_row_spacing (12);
 		grid1.attach (panel_bg_label, 0, 0, 2, 1);
 		grid1.attach_next_to (panel_bg_color, panel_bg_label, PositionType.RIGHT, 1, 1);
 		grid1.attach (panel_fg_label, 0, 1, 2, 1);
@@ -851,8 +859,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Overview
 		var grid2 = new Grid ();
 		grid2.set_column_homogeneous (true);
-		grid2.set_column_spacing (10);
-		grid2.set_row_spacing (10);
+		grid2.set_column_spacing (12);
+		grid2.set_row_spacing (12);
 		grid2.attach (dash_bg_label, 0, 0, 2, 1);
 		grid2.attach_next_to (dash_bg_color, dash_bg_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_fg_label, 0, 1, 2, 1);
@@ -877,8 +885,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Menu
 		var grid3 = new Grid ();
 		grid3.set_column_homogeneous (true);
-		grid3.set_column_spacing (10);
-		grid3.set_row_spacing (10);
+		grid3.set_column_spacing (12);
+		grid3.set_row_spacing (12);
 		grid3.attach (menu_bg_label, 0, 0, 2, 1);
 		grid3.attach_next_to (menu_bg_color, menu_bg_label, PositionType.RIGHT, 1, 1);
 		grid3.attach (menu_fg_label, 0, 1, 2, 1);
@@ -901,8 +909,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Dialogs
 		var grid4 = new Grid ();
 		grid4.set_column_homogeneous (true);
-		grid4.set_column_spacing (10);
-		grid4.set_row_spacing (10);
+		grid4.set_column_spacing (12);
+		grid4.set_row_spacing (12);
 		grid4.attach (dialog_bg_label, 0, 0, 2, 1);
 		grid4.attach_next_to (dialog_bg_color, dialog_bg_label, PositionType.RIGHT, 1, 1);
 		grid4.attach (dialog_fg_label, 0, 1, 2, 1);
@@ -964,49 +972,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void connect_signals () {
 		general_tab.toggled.connect (() => {
-			if (general_tab.get_active ()) {
-				notebook.set_current_page (0);
-				panel_tab.set_active (false);
-				overview_tab.set_active (false);
-				menu_tab.set_active (false);
-				dialog_tab.set_active (false);
-			}
+			notebook.set_current_page (0);
 		});
 		panel_tab.toggled.connect (() => {
-			if (panel_tab.get_active ()) {
-				notebook.set_current_page (1);
-				general_tab.set_active (false);
-				overview_tab.set_active (false);
-				menu_tab.set_active (false);
-				dialog_tab.set_active (false);
-			}
+			notebook.set_current_page (1);
 		});
 		overview_tab.toggled.connect (() => {
-			if (overview_tab.get_active ()) {
-				notebook.set_current_page (2);
-				general_tab.set_active (false);
-				panel_tab.set_active (false);
-				menu_tab.set_active (false);
-				dialog_tab.set_active (false);
-			}
+			notebook.set_current_page (2);
 		});
 		menu_tab.toggled.connect (() => {
-			if (menu_tab.get_active ()) {
-				notebook.set_current_page (3);
-				general_tab.set_active (false);
-				panel_tab.set_active (false);
-				overview_tab.set_active (false);
-				dialog_tab.set_active (false);
-			}
+			notebook.set_current_page (3);
 		});
 		dialog_tab.toggled.connect (() => {
-			if (dialog_tab.get_active ()) {
-				notebook.set_current_page (4);
-				general_tab.set_active (false);
-				panel_tab.set_active (false);
-				overview_tab.set_active (false);
-				menu_tab.set_active (false);
-			}
+			notebook.set_current_page (4);
 		});
 		combobox.changed.connect (() => {
 			on_preset_selected ();
