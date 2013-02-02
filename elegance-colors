@@ -261,10 +261,10 @@ panelbg1="$color1"
 panelbg2="$color2"
 make_gradient "$panel_bordercol" "$panel_borderop" "0"
 panelborder="$color1"
-make_gradient "$panel_bg" "$panel_opacity" "$dash_gradient"
+make_gradient "$dash_bg" "$dash_opacity" "$dash_gradient"
 dashbg1="$color1"
 dashbg2="$color2"
-make_gradient "$panel_bordercol" "$panel_borderop" "0"
+make_gradient "$dash_bordercol" "$dash_borderop" "0"
 dashborder="$color1"
 make_gradient "$menu_bg" "$menu_opacity" "$menu_gradient"
 menubg1="$color1"
@@ -277,13 +277,13 @@ dialogbg2="$color2"
 make_gradient "$dialog_bordercol" "$dialog_borderop" "0"
 dialogborder="$color1"
 # Generate message tray background
-if [[ "$panel_opacity" = "0" ]]; then
+if [[ "$dash_opacity" = "0" ]]; then
 	messagebg="transparent"
 	messageborder="transparent"
 else
-	make_chameleon "$color" "$panel_bg" "$panel_chameleon" "0.1"
+	make_chameleon "$color" "$dash_bg" "$dash_chameleon" "0.1"
 	messagebg="$chameleon"
-	make_chameleon "$color" "$panelborder" "$panel_chameleon" "0.1"
+	make_chameleon "$color" "$dashborder" "$dash_chameleon" "0.1"
 	messageborder="$chameleon"
 fi
 # Generate background colors
