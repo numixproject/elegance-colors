@@ -512,6 +512,13 @@ entry-off*/
     transition-duration: @transition-duration;
 }
 
+#panel.in-overview {
+    background-gradient-start: @dash-bg1;
+    background-gradient-end: @dash-bg2;
+    border-color: @dash-border;
+    box-shadow: @dash-shadow;
+}
+
 #panelLeft, #panelCenter {
     spacing: 4px;
 }
@@ -761,7 +768,7 @@ appicon-visible*/
 /* Dash */
 
 #dash {
-    color: #ccc;
+    color: @dash-color;
     font-size: @font-size;
     padding: 4px 0;
     background-gradient-direction: vertical;
@@ -798,7 +805,12 @@ appicon-visible*/
 
 .search-entry-icon {
     icon-size: 1em;
+/*entry-on
+    color: black;
+entry-on*/
+/*entry-off
     color: #ccc;
+entry-off*/
 }
 
 /* Search Results */
@@ -826,7 +838,6 @@ appicon-visible*/
 }
 
 .search-statustext {
-    color: #eee;
     font-size: 2em;
     font-weight: bold;
 }
@@ -943,11 +954,11 @@ appicon-visible*/
 }
 
 .show-apps-icon {
-    color: #ccc;
+    color: @dash-color;
 }
 
 .show-apps:hover .show-apps-icon {
-    color: white;
+    color: @text-color;
 }
 
 .show-apps:checked > .overview-icon {
@@ -960,7 +971,7 @@ appicon-visible*/
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
-    color: white;
+    color: @text-color;
     transition-duration: @transition-duration;
 }
 
@@ -1521,7 +1532,7 @@ arrow-off*/
 .hotplug-resident-eject-button {
     padding: 7px;
     border-radius: @border-radius;
-    color: #ccc;
+    color: @menu-color;;
 }
 
 .chat-log-message {
@@ -1555,7 +1566,7 @@ arrow-off*/
 .chat-meta-message {
     padding-left: 4px;
     font-size: 9pt;
-    color: #ccc;
+    color: #aaa;
 }
 
 .chat-meta-message:rtl {
@@ -1862,7 +1873,7 @@ arrow-off*/
 }
 
 .end-session-dialog-shutdown-icon {
-    color: #ccc;
+    color: #aaa;
     width: 32px;
     height: 32px;
 }
@@ -1881,7 +1892,7 @@ arrow-off*/
 }
 
 .end-session-dialog-app-list-item {
-    color: #ccc;
+    color: #aaa;
 }
 
 .end-session-dialog-app-list-item:hover {
@@ -1969,7 +1980,7 @@ arrow-off*/
 }
 
 .show-processes-dialog-app-list-item {
-    color: #ccc;
+    color: #aaa;
 }
 
 .show-processes-dialog-app-list-item:hover {
