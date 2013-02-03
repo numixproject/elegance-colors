@@ -1,5 +1,7 @@
 Elegance Colors is a chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or a user defined color. Also various other aspects of the theme are customizable.
 
+Currently Elegance Colors supports only Gnome Shell 3.6.
+
 ---
 
 Installation Instructions:
@@ -9,7 +11,11 @@ Ubuntu users can install Elegance Colors from our themes PPA using the following
 sudo add-apt-repository ppa:satyajit-happy/themes
 sudo apt-get update && sudo apt-get install gnome-shell-theme-elegance-colors
 
-If you don't use Ubuntu, you need to compile from source. This is needed for the GUI.
+Fedora users can add the repo http://download.opensuse.org/repositories/home:/satya164:/elegance-colors/Fedora_18/home:satya164:elegance-colors.repo and then install Elegance Colors using the following commands,
+
+sudo yum install gnome-shell-theme-elegance-colors
+
+If you use another distro, you need to compile from source. This is needed for the GUI.
 
 Don't worry, it is easy and straight forward.
 
