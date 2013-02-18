@@ -906,13 +906,18 @@ entry-off*/
 .app-filter {
     color: rgba(255,255,255,0.6);
     background-color: transparent;
+    border: 1px transparent;
     width: 150px;
     padding: 7px auto 7px 15px;
+    border-radius: @border-radius;
     transition-duration: @transition-duration;
 }
 
 .app-filter:hover {
-    color: @custom-color1;
+    color: @text-color;
+    background-gradient-direction: vertical;
+    background-gradient-start: @custom-color1;
+    background-gradient-end: @custom-color2;
 }
 
 .app-filter:selected {
@@ -1532,7 +1537,7 @@ arrow-off*/
 .hotplug-resident-eject-button {
     padding: 7px;
     border-radius: @border-radius;
-    color: @menu-color;;
+    color: @menu-color;
 }
 
 .chat-log-message {
