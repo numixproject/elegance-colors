@@ -417,112 +417,19 @@ fi
 }
 
 set_config() {
-# Load the config file if exists
-if [[ -f "$configfile" ]]; then
-	mode=$(grep mode $configfile | cut -d '=' -f 2)
-	monitor=$(grep monitor $configfile | cut -d '=' -f 2)
-	newbutton=$(grep newbutton $configfile | cut -d '=' -f 2)
-	entry=$(grep entry $configfile | cut -d '=' -f 2)
-	fontname=$(grep fontname $configfile | cut -d '=' -f 2)
-	selgradient=$(grep selgradient $configfile | cut -d '=' -f 2)
-	roundness=$(grep roundness $configfile | cut -d '=' -f 2)
-	transition=$(grep transition $configfile | cut -d '=' -f 2)
-	panel_bg=$(grep panel_bg $configfile | cut -d '=' -f 2)
-	panel_fg=$(grep panel_fg $configfile | cut -d '=' -f 2)
-	panel_bordercol=$(grep panel_bordercol $configfile | cut -d '=' -f 2)
-	panel_shadow=$(grep panel_shadow $configfile | cut -d '=' -f 2)
-	panel_icon=$(grep panel_icon $configfile | cut -d '=' -f 2)
-	panel_chameleon=$(grep panel_chameleon $configfile | cut -d '=' -f 2)
-	panel_gradient=$(grep panel_gradient $configfile | cut -d '=' -f 2)
-	panel_opacity=$(grep panel_opacity $configfile | cut -d '=' -f 2)
-	panel_borderop=$(grep panel_borderop $configfile | cut -d '=' -f 2)
-	panel_corner=$(grep panel_corner $configfile | cut -d '=' -f 2)
-	dash_bg=$(grep dash_bg $configfile | cut -d '=' -f 2)
-	dash_fg=$(grep dash_fg $configfile | cut -d '=' -f 2)
-	dash_bordercol=$(grep dash_bordercol $configfile | cut -d '=' -f 2)
-	dash_shadow=$(grep dash_shadow $configfile | cut -d '=' -f 2)
-	dash_chameleon=$(grep dash_chameleon $configfile | cut -d '=' -f 2)
-	dash_gradient=$(grep dash_gradient $configfile | cut -d '=' -f 2)
-	dash_opacity=$(grep dash_opacity $configfile | cut -d '=' -f 2)
-	dash_borderop=$(grep dash_borderop $configfile | cut -d '=' -f 2)
-	dash_iconsize=$(grep dash_iconsize $configfile | cut -d '=' -f 2)
-	dash_iconspacing=$(grep dash_iconspacing $configfile | cut -d '=' -f 2)
-	menu_bg=$(grep menu_bg $configfile | cut -d '=' -f 2)
-	menu_fg=$(grep menu_fg $configfile | cut -d '=' -f 2)
-	menu_bordercol=$(grep menu_bordercol $configfile | cut -d '=' -f 2)
-	menu_shadow=$(grep menu_shadow $configfile | cut -d '=' -f 2)
-	menu_arrow=$(grep menu_arrow $configfile | cut -d '=' -f 2)
-	menu_chameleon=$(grep menu_chameleon $configfile | cut -d '=' -f 2)
-	menu_gradient=$(grep menu_gradient $configfile | cut -d '=' -f 2)
-	menu_opacity=$(grep menu_opacity $configfile | cut -d '=' -f 2)
-	menu_borderop=$(grep menu_borderop $configfile | cut -d '=' -f 2)
-	dialog_bg=$(grep dialog_bg $configfile | cut -d '=' -f 2)
-	dialog_fg=$(grep dialog_fg $configfile | cut -d '=' -f 2)
-	dialog_heading=$(grep dialog_heading $configfile | cut -d '=' -f 2)
-	dialog_bordercol=$(grep dialog_bordercol $configfile | cut -d '=' -f 2)
-	dialog_shadow=$(grep dialog_shadow $configfile | cut -d '=' -f 2)
-	dialog_chameleon=$(grep dialog_chameleon $configfile | cut -d '=' -f 2)
-	dialog_gradient=$(grep dialog_gradient $configfile | cut -d '=' -f 2)
-	dialog_opacity=$(grep dialog_opacity $configfile | cut -d '=' -f 2)
-	dialog_borderop=$(grep dialog_borderop $configfile | cut -d '=' -f 2)
-fi
-# Set default config for unset variables
-[[ -z "$mode" ]] && mode="wallpaper"
-[[ -z "$monitor" ]] && monitor="true"
-[[ -z "$newbutton" ]] && newbutton="false"
-[[ -z "$entry" ]] && entry="false"
-[[ -z "$fontname" ]] && fontname="10"
-[[ -z "$selgradient" ]] && selgradient="0"
-[[ -z "$roundness" ]] && roundness="3"
-[[ -z "$transition" ]] && transition="150"
-[[ -z "$panel_bg" ]] && panel_bg="rgb(0,0,0)"
-[[ -z "$panel_fg" ]] && panel_fg="rgb(255,255,255)"
-[[ -z "$panel_bordercol" ]] && panel_bordercol="rgb(0,0,0)"
-[[ -z "$panel_shadow" ]] && panel_shadow="false"
-[[ -z "$panel_icon" ]] && panel_icon="false"
-[[ -z "$panel_chameleon" ]] && panel_chameleon="0"
-[[ -z "$panel_gradient" ]] && panel_gradient="0"
-[[ -z "$panel_opacity" ]] && panel_opacity="0.8"
-[[ -z "$panel_borderop" ]] && panel_borderop="0.8"
-[[ -z "$panel_corner" ]] && panel_corner="0"
-[[ -z "$dash_bg" ]] && dash_bg="rgb(0,0,0)"
-[[ -z "$dash_fg" ]] && dash_fg="rgb(255,255,255)"
-[[ -z "$dash_bordercol" ]] && dash_bordercol="rgb(0,0,0)"
-[[ -z "$dash_shadow" ]] && dash_shadow="false"
-[[ -z "$dash_chameleon" ]] && dash_chameleon="0"
-[[ -z "$dash_gradient" ]] && dash_gradient="0"
-[[ -z "$dash_opacity" ]] && dash_opacity="0.8"
-[[ -z "$dash_borderop" ]] && dash_borderop="0.2"
-[[ -z "$dash_iconsize" ]] && dash_iconsize="84"
-[[ -z "$dash_iconspacing" ]] && dash_iconspacing="36"
-[[ -z "$menu_bg" ]] && menu_bg="rgb(0,0,0)"
-[[ -z "$menu_fg" ]] && menu_fg="rgb(255,255,255)"
-[[ -z "$menu_bordercol" ]] && menu_bordercol="rgb(0,0,0)"
-[[ -z "$menu_shadow" ]] && menu_shadow="false"
-[[ -z "$menu_arrow" ]] && menu_arrow="true"
-[[ -z "$menu_chameleon" ]] && menu_chameleon="0"
-[[ -z "$menu_gradient" ]] && menu_gradient="0"
-[[ -z "$menu_opacity" ]] && menu_opacity="0.8"
-[[ -z "$menu_borderop" ]] && menu_borderop="0.8"
-[[ -z "$dialog_bg" ]] && dialog_bg="rgb(0,0,0)"
-[[ -z "$dialog_fg" ]] && dialog_fg="rgb(255,255,255)"
-[[ -z "$dialog_heading" ]] && dialog_heading="rgb(255,255,255)"
-[[ -z "$dialog_bordercol" ]] && dialog_bordercol="rgb(0,0,0)"
-[[ -z "$dialog_shadow" ]] && dialog_shadow="false"
-[[ -z "$dialog_chameleon" ]] && dialog_chameleon="0"
-[[ -z "$dialog_gradient" ]] && dialog_gradient="0"
-[[ -z "$dialog_opacity" ]] && dialog_opacity="0.8"
-[[ -z "$dialog_borderop" ]] && dialog_borderop="0.2"
-# Workaround for locales which use comma instead of dot
-selgradient=$(echo "$selgradient" | sed -e 's/,/./g')
-panel_opacity=$(echo "$panel_opacity" | sed -e 's/,/./g')
-panel_borderop=$(echo "$panel_borderop" | sed -e 's/,/./g')
-dash_opacity=$(echo "$dash_opacity" | sed -e 's/,/./g')
-dash_borderop=$(echo "$dash_borderop" | sed -e 's/,/./g')
-menu_opacity=$(echo "$menu_opacity" | sed -e 's/,/./g')
-menu_borderop=$(echo "$menu_borderop" | sed -e 's/,/./g')
-dialog_opacity=$(echo "$dialog_opacity" | sed -e 's/,/./g')
-dialog_borderop=$(echo "$dialog_borderop" | sed -e 's/,/./g')
+# Load the config file
+while IFS='= ' read var val; do
+	# Escape comments, section headers and empty values
+	[[ $var =~ ^# || $var =~ ^\[ || ! $val ]] && continue
+	# Workaround for locales which use "," instead of "."
+	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val=${val//,/.}
+	# Escape "(", ")" and " " for safe use in eval
+	[[ "$val" =~ \( ]] && val=${val//\(/\\(}
+	[[ "$val" =~ \) ]] && val=${val//\)/\\)}
+	[[ "$val" =~ \  ]] && val=${val//\ /\\ }
+	# Define variables
+	eval "$var"="$val"
+done < "$configfile"
 }
 
 initialize() {

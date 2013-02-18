@@ -19,7 +19,8 @@ install: elegance-colors-gui
 	$(INSTALL_PROGRAM) elegance-colors-gui $(DESTDIR)/usr/bin/elegance-colors-gui
 	$(INSTALL_DATA) elegance-colors.svg $(DESTDIR)/usr/share/icons/hicolor/scalable/apps/elegance-colors.svg
 	$(INSTALL_DATA) elegance-colors.desktop $(DESTDIR)/usr/share/applications/elegance-colors.desktop
-	$(INSTALL_DATA) README $(DESTDIR)/usr/share/elegance-colors/README
+	$(INSTALL_DATA) README.md $(DESTDIR)/usr/share/elegance-colors/README.md
+	$(INSTALL_DATA) CREDITS $(DESTDIR)/usr/share/elegance-colors/CREDITS
 	$(INSTALL_DATA) elegance-colors-process.desktop $(DESTDIR)/etc/xdg/autostart/elegance-colors-process.desktop
 	$(INSTALL) -dm755 $(DESTDIR)/usr/share/elegance-colors/gnome-shell
 	$(INSTALL_DATA) gnome-shell/* $(DESTDIR)/usr/share/elegance-colors/gnome-shell
