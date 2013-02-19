@@ -18,13 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Set default paths
+# Set paths and variables
 selfdir=`cd $(dirname "${BASH_SOURCE[0]}") && pwd`
 selffile="$selfdir/elegance-colors"
 configdir="$HOME/.config/elegance-colors"
 configfile="$configdir/elegance-colors.ini"
 tempdir="/tmp/elegance-colors"
-installdir="/usr/share/elegance-colors"
+installdir=`if [[ -d "gnome-shell" && -d "presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
+defaultconfig="$installdir/presets/default.ini"
+template="$installdir/gnome-shell"
 homedir=`awk -F: -v v="$(who | grep $(echo "$DISPLAY" | cut -d '.' -f 1) | cut -d ' ' -f 1 | tail -1)" '{if ($1==v) print $6}' /etc/passwd`
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
 schemadir="/usr/share/glib-2.0/schemas"
@@ -53,11 +55,11 @@ if [[ $(whoami) = "root" ]]; then
 		cp "$extensiondir/$schemafile" "$schemadir/$schemafile"
 		glib-compile-schemas "$schemadir"
 	else
-		show_err "Schema file could not be found. Is user-themes extension installed under '$homedir/.local/share/gnome-shell/extensions/'?"
+		show_err "Schema file could not be found. Is 'User themes' extension installed under '$homedir/.local/share/gnome-shell/extensions/'?"
 		exit 1
 	fi
 else
-	notify_err "Root access is needed to fix schema for user-themes!"
+	notify_err "Root access is needed to fix schema for 'User themes'!"
 	exit 1
 fi
 }
@@ -69,9 +71,9 @@ if [[ -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
 		themefile="$themename.zip"
 		themepath="$HOME"
 	else
-		themefile=${1##*/}
-		themename=${themefile%*.zip}
-		themepath=${1%/*}
+		themefile="${1##*/}"
+		themename="${themefile%*.zip}"
+		themepath="${1%/*}"
 	fi
 	rm -rf "$tempdir/elegance-colors.tmp"
 	mkdir -p "$tempdir/elegance-colors.tmp"
@@ -109,11 +111,12 @@ if [[ "$mode" = "gtk" ]]; then
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Wallpaper found at '$img'"
-	# Scale background image to 2x2 and take the color from top-left
-	color=`convert "$img" -brightness-contrast 15% -fuzz 15% -alpha off -filter cubic -resize 2x2 -transparent black -colorspace RGB -format '%[pixel:s]' info:-`
+	# Scale background image to 3x3 and take the color from top-left
+	color=`convert "$img" -brightness-contrast 15% -fuzz 15% -alpha off -filter cubic -resize 3x3 -transparent black -colorspace RGB -format '%[pixel:s]' info:-`
 	bf=`convert "$img" -colorspace gray -format "%[fx:100*mean]" info:`
-	bi=$(printf "${bf/.*}")
-	if [[ "$bi" -ge "70" ]]; then
+	bi="${bf/.*}"
+	# Adjust text color according to the color brightness
+	if [[ "$bi" -ge "60" ]]; then
 		text="#000"
 	else
 		text="#fff"
@@ -129,11 +132,11 @@ make_gradient() {
 incolor="$1"
 opacity="$2"
 gradient="$3"
-if [[ "$incolor" =~ ^# && ${#incolor} -eq 4 ]]; then
+if [[ "$incolor" =~ ^# && "${#incolor}" -eq 4 ]]; then
 	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
 	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
 	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-elif [[ "$incolor" =~ ^# && ${#incolor} -eq 7 ]]; then
+elif [[ "$incolor" =~ ^# && "${#incolor}" -eq 7 ]]; then
 	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
 	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
 	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
@@ -170,11 +173,11 @@ color1="$1"
 color2="$2"
 amount="$3"
 opacity="$4"
-if [[ "$color1" =~ ^# && ${#color1} -eq 4 ]]; then
+if [[ "$color1" =~ ^# && "${#color1}" -eq 4 ]]; then
 	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
 	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
 	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-elif [[ "$color1" =~ ^# && ${#color1} -eq 7 ]]; then
+elif [[ "$color1" =~ ^# && "${#color1}" -eq 7 ]]; then
 	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
 	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
 	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
@@ -185,11 +188,11 @@ elif [[ "$color1" =~ ^rgb ]]; then
 else
 	show_err "Invalid color '$color1'"
 fi
-if [[ "$color2" =~ ^# && ${#color2} -eq 4 ]]; then
+if [[ "$color2" =~ ^# && "${#color2}" -eq 4 ]]; then
 	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
 	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
 	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-elif [[ "$color2" =~ ^# && ${#color2} -eq 7 ]]; then
+elif [[ "$color2" =~ ^# && "${#color2}" -eq 7 ]]; then
 	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
 	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
 	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
@@ -207,75 +210,89 @@ chameleon="rgba($red,$green,$blue,$opacity)"
 }
 
 set_theme() {
-# Set a temporary directory
-makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)"
-# Get color values
+# Initialize variables
+SAVEIFS="$IFS"
+IFS=''
+unset vars vals
+# General settings
 get_color
-# Set font properties
-fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
-fontsize=$(echo "$fontname" | sed 's/.* //')
-# Calculate dash itemsize
-dash_itemsize=$(( dash_iconsize + dash_iconspacing - 2 ))
-# Add units
-fontsize="${fontsize}pt"
-roundness="${roundness}px"
-panel_corner="${panel_corner}px"
-dash_itemsize="${dash_itemsize}px"
-dash_iconsize="${dash_iconsize}px"
-dash_iconspacing="${dash_iconspacing}px"
-# Set shadows
-if [[ "$panel_shadow" = "true" ]]; then
-	panelshadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	panelshadow="none"
-fi
-if [[ "$dash_shadow" = "true" ]]; then
-	dashshadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	dashshadow="none"
-fi
-if [[ "$menu_shadow" = "true" ]]; then
-	menushadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	menushadow="none"
-fi
-if [[ "$dialog_shadow" = "true" ]]; then
-	dialogshadow="0 0 5px 1px rgba(0,0,0,0.5)"
-else
-	dialogshadow="none"
-fi
-# Set arrow styles
-if [[ "$menu_arrow" = "true" ]]; then
-	arrowbase="21px"
-	arrowrise="9px"
-else
-	arrowbase="0"
-	arrowrise="3px"
-fi
-# Set colors
 make_gradient "$color" "1" "$selgradient"
 custom_color1="$color1"
 custom_color2="$color2"
+fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
+fontsize=$(echo "$fontname" | sed 's/.* //')
+vars=(
+	"${vars[@]}"
+	"@custom_color1"
+	"@custom_color2"
+	"@text"
+	"@fontfamily"
+	"@fontsize"
+	"@roundness"
+	"@transition"
+	"\/\*newbutton_$newbutton"
+	"newbutton_$newbutton\*\/"
+	"\/\*entry_$entry"
+	"entry_$entry\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$custom_color1"
+	"$custom_color2"
+	"$text"
+	"$fontfamily"
+	"${fontsize}pt"
+	"${roundness}px"
+	"$transition"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Panel
 make_gradient "$panel_bg" "$panel_opacity" "$panel_gradient"
 panelbg1="$color1"
 panelbg2="$color2"
 make_gradient "$panel_bordercol" "$panel_borderop" "0"
 panelborder="$color1"
+make_chameleon "$color" "$panelbg1" "$panel_chameleon" "$panel_opacity"
+panelbg1="$chameleon"
+make_chameleon "$color" "$panelbg2" "$panel_chameleon" "$panel_opacity"
+panelbg2="$chameleon"
+vars=(
+	"${vars[@]}"
+	"@panelbg1"
+	"@panelbg2"
+	"@panel_fg"
+	"@panelborder"
+	"@panel_corner"
+	"\/\*panelicon_$panel_icon"
+	"panelicon_$panel_icon\*\/"
+	"\/\*panelshadow_$panel_shadow"
+	"panelshadow_$panel_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$panelbg1"
+	"$panelbg2"
+	"$panel_fg"
+	"$panelborder"
+	"${panel_corner}px"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Dash
 make_gradient "$dash_bg" "$dash_opacity" "$dash_gradient"
 dashbg1="$color1"
 dashbg2="$color2"
 make_gradient "$dash_bordercol" "$dash_borderop" "0"
 dashborder="$color1"
-make_gradient "$menu_bg" "$menu_opacity" "$menu_gradient"
-menubg1="$color1"
-menubg2="$color2"
-make_gradient "$menu_bordercol" "$menu_borderop" "0"
-menuborder="$color1"
-make_gradient "$dialog_bg" "$dialog_opacity" "$dialog_gradient"
-dialogbg1="$color1"
-dialogbg2="$color2"
-make_gradient "$dialog_bordercol" "$dialog_borderop" "0"
-dialogborder="$color1"
+make_chameleon "$color" "$dashbg1" "$dash_chameleon" "$dash_opacity"
+dashbg1="$chameleon"
+make_chameleon "$color" "$dashbg2" "$dash_chameleon" "$dash_opacity"
+dashbg2="$chameleon"
 # Generate message tray background
 if [[ "$dash_opacity" = "0" ]]; then
 	messagebg="transparent"
@@ -286,72 +303,117 @@ else
 	make_chameleon "$color" "$dashborder" "$dash_chameleon" "0.1"
 	messageborder="$chameleon"
 fi
-# Generate background colors
-make_chameleon "$color" "$dashbg1" "$dash_chameleon" "$dash_opacity"
-dashbg1="$chameleon"
-make_chameleon "$color" "$dashbg2" "$dash_chameleon" "$dash_opacity"
-dashbg2="$chameleon"
-make_chameleon "$color" "$panelbg1" "$panel_chameleon" "$panel_opacity"
-panelbg1="$chameleon"
-make_chameleon "$color" "$panelbg2" "$panel_chameleon" "$panel_opacity"
-panelbg2="$chameleon"
+dash_itemsize=$(( dash_iconsize + dash_iconspacing - 2 ))
+vars=(
+	"${vars[@]}"
+	"@dash_fg"
+	"@dashbg1"
+	"@dashbg2"
+	"@dashborder"
+	"@dash_iconsize"
+	"@dash_itemsize"
+	"@dash_iconspacing"
+	"@message-bg"
+	"@message-border"
+	"\/\*dashshadow_$dash_shadow"
+	"dashshadow_$dash_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$dash_fg"
+	"$dashbg1"
+	"$dashbg2"
+	"$dashborder"
+	"${dash_iconsize}px"
+	"${dash_itemsize}px"
+	"${dash_iconspacing}px"
+	"$messagebg"
+	"$messageborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Menu
+make_gradient "$menu_bg" "$menu_opacity" "$menu_gradient"
+menubg1="$color1"
+menubg2="$color2"
+make_gradient "$menu_bordercol" "$menu_borderop" "0"
+menuborder="$color1"
 make_chameleon "$color" "$menubg1" "$menu_chameleon" "$menu_opacity"
 menubg1="$chameleon"
 make_chameleon "$color" "$menubg2" "$menu_chameleon" "$menu_opacity"
 menubg2="$chameleon"
+vars=(
+	"${vars[@]}"
+	"@menubg1"
+	"@menubg2"
+	"@menu_fg"
+	"@menuborder"
+	"\/\*arrow_$menu_arrow"
+	"arrow_$menu_arrow\*\/"
+	"\/\*menushadow_$menu_shadow"
+	"menushadow_$menu_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$menubg1"
+	"$menubg2"
+	"$menu_fg"
+	"$menuborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Dialogs
+make_gradient "$dialog_bg" "$dialog_opacity" "$dialog_gradient"
+dialogbg1="$color1"
+dialogbg2="$color2"
+make_gradient "$dialog_bordercol" "$dialog_borderop" "0"
+dialogborder="$color1"
 make_chameleon "$color" "$dialogbg1" "$dialog_chameleon" "$dialog_opacity"
 dialogbg1="$chameleon"
 make_chameleon "$color" "$dialogbg2" "$dialog_chameleon" "$dialog_opacity"
 dialogbg2="$chameleon"
+vars=(
+	"${vars[@]}"
+	"@dialogbg1"
+	"@dialogbg2"
+	"@dialog_fg"
+	"@dialog_heading"
+	"@dialogborder"
+	"\/\*dialogshadow_$dialog_shadow"
+	"dialogshadow_$dialog_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$dialogbg1"
+	"$dialogbg2"
+	"$dialog_fg"
+	"$dialog_heading"
+	"$dialogborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Set a temporary directory
+makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)"
 # Copy Elegance Colors to create a new theme
-if [[ -d "$installdir/gnome-shell" ]]; then
+if [[ -d "$template" ]]; then
 	mkdir -p "$makedir"
-	cp -rf "$installdir/gnome-shell" "$makedir"
+	cp -rf "$template" "$makedir"
 else
 	show_err "Failed to copy files"
 fi
+# Replace variables in the template
 show_info "Making the theme"
-# Set app icon style
-if [[ "$panel_icon" = "false" ]]; then
-	sed -i "s/\/\*appicon-visible//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/appicon-visible\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-fi
-# Set arrow style
-if [[ "$menu_arrow" = "true" ]]; then
-	sed -i "s/\/\*arrow-on//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/arrow-on\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-else
-	sed -i "s/\/\*arrow-off//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/arrow-off\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-fi
-# Set buton style
-if [[ "$newbutton" = "true" ]]; then
-	sed -i "s/\/\*newbutton-on//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/newbutton-on\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-else
-	sed -i "s/\/\*newbutton-off//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/newbutton-off\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-fi
-# Set entry style
-if [[ "$entry" = "true" ]]; then
-	sed -i "s/\/\*entry-on//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/entry-on\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-else
-	sed -i "s/\/\*entry-off//g" "$makedir/gnome-shell/gnome-shell.css"
-	sed -i "s/entry-off\*\///g" "$makedir/gnome-shell/gnome-shell.css"
-fi
-# Arrange variables and values in an array
-vars=( "@custom-color1" "@custom-color2" "@text-color" "@font-family" "@font-size" "@border-radius" "@transition-duration" "@panel-bg1" "@panel-bg2" "@panel-color" "@panel-border" "@panel-shadow" "@corner-radius" "@dash-color" "@dash-bg1" "@dash-bg2" "@dash-border" "@dash-shadow" "@dash-iconsize" "@dash-itemsize" "@dash-iconspacing" "@menu-bg1" "@menu-bg2" "@menu-color" "@menu-border" "@menu-shadow" "@arrow-base" "@arrow-rise" "@dialog-bg1" "@dialog-bg2" "@dialog-color" "@dialog-heading" "@dialog-border" "@dialog-shadow" "@message-bg" "@message-border" )
-values=( "$custom_color1" "$custom_color2" "$text" "$fontfamily" "$fontsize" "$roundness" "$transition" "$panelbg1" "$panelbg2" "$panel_fg" "$panelborder" "$panelshadow" "$panel_corner" "$dash_fg" "$dashbg1" "$dashbg2" "$dashborder" "$dashshadow" "$dash_iconsize" "$dash_itemsize" "$dash_iconspacing" "$menubg1" "$menubg2" "$menu_fg" "$menuborder" "$menushadow" "$arrowbase" "$arrowrise" "$dialogbg1" "$dialogbg2" "$dialog_fg" "$dialog_heading" "$dialogborder" "$dialogshadow" "$messagebg" "$messageborder" )
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
-	if [[ ! `grep ${vars[i]} "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+	if [[ ! `grep "${vars[i]}" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
 		show_warn "Template does not have any ${vars[i]} variable"
-	elif [[ "${values[i]}" = "" ]]; then
+	elif [[ "${vals[i]}" = "" ]]; then
 		show_warn "The value of ${vars[i]} variable is not set"
 	else
-		show_info "Replacing ${vars[i]} with ${values[i]}"
-		sed -i "s/${vars[i]}/${values[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
+		show_info "Replacing ${vars[i]} with ${vals[i]}"
+		sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
 	fi
 done
 # Copy the newly created theme
@@ -375,6 +437,8 @@ else
 fi
 # Remove the temporary directory
 rm -rf "$makedir"
+# Restore previous IFS
+IFS="$SAVEIFS"
 }
 
 monitor_changes() {
@@ -417,16 +481,25 @@ fi
 }
 
 set_config() {
+# Update the old config file to support new options
+while IFS='= ' read var val; do
+	# Escape comments
+	[[ $var =~ ^# ]] && continue
+	# Read the section header
+	[[ $var =~ ^\[ ]] && section="$var"
+	# Write the non-existent value into the config file
+	[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
+done < "$defaultconfig"
 # Load the config file
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
 	[[ $var =~ ^# || $var =~ ^\[ || ! $val ]] && continue
 	# Workaround for locales which use "," instead of "."
-	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val=${val//,/.}
+	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val="${val//,/.}"
 	# Escape "(", ")" and " " for safe use in eval
-	[[ "$val" =~ \( ]] && val=${val//\(/\\(}
-	[[ "$val" =~ \) ]] && val=${val//\)/\\)}
-	[[ "$val" =~ \  ]] && val=${val//\ /\\ }
+	[[ "$val" =~ \( ]] && val="${val//\(/\\(}"
+	[[ "$val" =~ \) ]] && val="${val//\)/\\)}"
+	[[ "$val" =~ \  ]] && val="${val//\ /\\ }"
 	# Define variables
 	eval "$var"="$val"
 done < "$configfile"
@@ -436,13 +509,13 @@ initialize() {
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default one
-[[ -f "$configfile" ]] || cp -f "$installdir/presets/default.ini" "$configfile"
+[[ -f "$configfile" ]] || cp -f "$defaultconfig" "$configfile"
 # Create the temporary directory
 [[ -d "$tempdir" ]] || mkdir -p "$tempdir"
 # Get the gtk theme name
 themename=$(gsettings get org.gnome.desktop.interface gtk-theme)
-gtktheme=$(echo $themename | sed "s/'//g")
-theme=$(printf "${gtktheme//%/\\x}")
+gtktheme="${themename//\'/}"
+theme="${gtktheme//%/\\x}"
 # Get the gtk theme path
 if [[ -f "$HOME/.themes/$theme/gtk-3.0/gtk-main.css" ]]; then
 	gtkpath="$HOME/.themes/$theme/gtk-3.0/gtk-main.css"
@@ -456,7 +529,7 @@ fi
 # Get the background image path
 path=$(gsettings get org.gnome.desktop.background picture-uri)
 bg=$(echo "$path" | sed -e "s/'//g" -e "s/file:\/\///g")
-img=$(printf "${bg//%/\\x}")
+img="${bg//%/\\x}"
 # See if the returned image is a xml file
 if [[ "$img" =~ .xml$ ]]; then
 	img=$(grep "<file>" "$img" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
@@ -525,8 +598,10 @@ while true; do
 	fi
 	# Verify if schema file exists
 	if [[ ! -f "$schemadir/$schemafile" ]]; then
-		notify_err "Schema for user-themes could not be found, Run 'elegance-colors fix' as root to fix the problem"
-		exit 1
+		notify_err "Schema for 'User themes' could not be found, Run 'elegance-colors fix' as root to fix the problem"
+		while [[ ! -f "$schemadir/$schemafile" ]]; do
+			sleep 5
+		done
 	fi
 	initialize
 	set_config
@@ -552,7 +627,7 @@ case "$1" in
 	"apply")
 		apply_changes;;
 	"gui")
-		elegance-colors-gui;;
+		$selfdir/elegance-colors-gui;;
 	"export")
 		export_theme "$2";;
 	"fix")

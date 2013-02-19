@@ -21,8 +21,8 @@
 
 /* default text style */
 stage {
-    font-family: @font-family;
-    font-size: @font-size;
+    font-family: @fontfamily;
+    font-size: @fontsize;
     color: white;
 }
 
@@ -76,27 +76,27 @@ StScrollView StScrollBar {
 
 StScrollBar StBin#trough {
     background-color: transparent;
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 StScrollBar StButton#vhandle,
 StScrollBar StButton#hhandle {
-    background-color: @panel-bg1;
-    border: 1px solid @panel-border;
-    border-radius: @border-radius;
-    transition-duration: @transition-duration;
+    background-color: @panelbg1;
+    border: 1px solid @panelborder;
+    border-radius: @roundness;
+    transition-duration: @transition;
 }
 
 StScrollBar StButton#hhandle:hover,
 StScrollBar StButton#vhandle:hover {
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
 }
 
 StScrollBar StButton#hhandle:active,
 StScrollBar StButton#vhandle:active {
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
 }
 
 /* Check Boxes */
@@ -126,28 +126,35 @@ StScrollBar StButton#vhandle:active {
 /* PopupMenu */
 
 .popup-menu-boxpointer {
-    color: @menu-color;
-    border-radius: @border-radius;
+    color: @menu_fg;
+    border-radius: @roundness;
     border-width: 1px;
-    box-shadow: @menu-shadow;
-    -arrow-border-radius: @border-radius;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
+    -arrow-border-radius: @roundness;
     -arrow-border-width: 1px;
-    -arrow-base: @arrow-base;
-    -arrow-rise: @arrow-rise;
-/*arrow-on
+    /*arrow_true
     background-color: transparent;
     border-color: transparent;
-    -arrow-background-color: @menu-bg1;
-    -arrow-border-color: @menu-border;
-arrow-on*/
-/*arrow-off
+    -arrow-background-color: @menubg1;
+    -arrow-border-color: @menuborder;
+    -arrow-base: 21px;
+    -arrow-rise: 9px;
+    arrow_true*/
+    /*arrow_false
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
-    border-color: @menu-border;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
+    border-color: @menuborder;
     -arrow-background-color: transparent;
     -arrow-border-color: transparent;
-arrow-off*/
+    -arrow-base: 0;
+    -arrow-rise: 3px;
+    arrow_false*/
 }
 
 .popup-menu {
@@ -155,14 +162,14 @@ arrow-off*/
 }
 
 .popup-submenu-menu-item:open {
-    background-color: @menu-bg1;
+    background-color: @menubg1;
 }
 
 .popup-sub-menu {
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
-    border: 1px solid @menu-border;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
+    border: 1px solid @menuborder;
 }
 
 .popup-sub-menu:scrolled .popup-menu-item:ltr {
@@ -187,12 +194,17 @@ arrow-off*/
 }
 
 .popup-combo-menu {
-    color: @menu-color;
-    background-color: @menu-bg1;
+    color: @menu_fg;
+    background-color: @menubg1;
     padding: 1em 0em;
-    border: 1px solid @menu-border;
-    border-radius: @border-radius;
-    box-shadow: @menu-shadow;
+    border: 1px solid @menuborder;
+    border-radius: @roundness;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
 }
 
 /* The remaining popup-menu sizing is all done in ems, so that if you
@@ -205,14 +217,14 @@ arrow-off*/
 .popup-menu-item {
     padding: .4em 1.75em;
     spacing: 1em;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .popup-menu-item:active {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .popup-menu-item:insensitive {
@@ -260,12 +272,12 @@ arrow-off*/
 }
 
 .popup-inactive-menu-item, .popup-inactive-menu-item:insensitive {
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .popup-subtitle-menu-item, .popup-subtitle-menu-item:insensitive {
     font-weight: bold;
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .popup-menu-icon {
@@ -283,14 +295,14 @@ arrow-off*/
     background-image: url("toggle-off.png");
     background-size: contain;
     border: 1px solid rgba(0,0,0,0.4);
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 .toggle-switch-us:checked,
 .toggle-switch-intl:checked {
     background-image: url("toggle-on.png");
     background-size: contain;
-    background-color: @custom-color2;
+    background-color: @custom_color2;
 }
 
 .nm-menu-item-icons {
@@ -304,21 +316,21 @@ arrow-off*/
 .notification-icon-button,
 .hotplug-notification-item,
 .modal-dialog-button {
-/*newbutton-on
+    /*newbutton_true
     color: #333;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,1.0);
     background-gradient-end: rgba(233,233,233,1.0);
     border: 1px solid rgba(0,0,0,0.2);
     box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
-newbutton-on*/
-/*newbutton-off
+    newbutton_true*/
+    /*newbutton_false
     color: white;
     font-weight: bold;
     background-color: rgba(0,0,0,0.8);
     border: 1px solid rgba(0,0,0,0.2);
-newbutton-off*/
-    transition-duration: @transition-duration;
+    newbutton_false*/
+    transition-duration: @transition;
 }
 
 .dash-search-button:hover,
@@ -326,17 +338,17 @@ newbutton-off*/
 .notification-icon-button:hover,
 .hotplug-notification-item:hover,
 .modal-dialog-button:hover {
-/*newbutton-on
+    /*newbutton_true
     background-gradient-start: rgba(255,255,255,1.0);
     background-gradient-end: rgba(233,233,233,1.0);
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);
-newbutton-on*/
-/*newbutton-off
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
-newbutton-off*/
+    newbutton_true*/
+    /*newbutton_false
+    color: @text;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
+    newbutton_false*/
 }
 
 .dash-search-button:selected,
@@ -345,14 +357,14 @@ newbutton-off*/
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus {
-/*newbutton-on
+    /*newbutton_true
     border: 1px solid rgba(150,150,150,1.0);
-newbutton-on*/
-/*newbutton-off
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
-newbutton-off*/
+    newbutton_true*/
+    /*newbutton_false
+    color: @text;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
+    newbutton_false*/
 }
 
 .dash-search-button:active,
@@ -362,26 +374,26 @@ newbutton-off*/
 .hotplug-notification-item:active,
 .modal-dialog-button:active,
 .modal-dialog-button:pressed {
-/*newbutton-on
+    /*newbutton_true
     background-gradient-start: rgba(233,233,233,0.9);
     background-gradient-end: rgba(255,255,255,0.9);
-newbutton-on*/
-/*newbutton-off
+    newbutton_true*/
+    /*newbutton_false
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.2);
-newbutton-off*/
+    newbutton_false*/
 }
 
 .hotplug-resident-eject-button {
     background-color: transparent;
     border: 0;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .hotplug-resident-eject-button:hover,
 .hotplug-resident-eject-button:active {
-    color: @text-color;
-    background-color: @custom-color2;
+    color: @text;
+    background-color: @custom_color2;
 }
 
 .notification-icon-button:insensitive,
@@ -391,11 +403,11 @@ newbutton-off*/
 
 /* fix for media player extension buttons */
 .hotplug-resident-eject-button > .button-icon {
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .hotplug-resident-eject-button:hover > .button-icon {
-    color: @text-color;
+    color: @text;
 }
 
 /* Entries */
@@ -404,84 +416,84 @@ newbutton-off*/
 .notification StEntry,
 .login-dialog-prompt-entry,
 .prompt-dialog-password-entry {
-    font-size: @font-size;
+    font-size: @fontsize;
     caret-color: #333;
     caret-size: 1px;
-    selection-background-color: @custom-color2;
-    selected-color: @text-color;
+    selection-background-color: @custom_color2;
+    selected-color: @text;
     padding: 4px 12px;
 }
 
 .notification StEntry,
 .login-dialog-prompt-entry,
 .prompt-dialog-password-entry {
-/*entry-on
+    /*entry_true
     color: #333;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,0.85);
     background-gradient-end: rgba(255,255,255,0.72);
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
-entry-on*/
-/*entry-off
+    entry_true*/
+    /*entry_false
     color: white;
     background-color: rgba(0,0,0,0.8);
     border: 1px solid rgba(0,0,0,0.2);
-entry-off*/
-    transition-duration: @transition-duration;
+    entry_false*/
+    transition-duration: @transition;
 }
 
 .notification StEntry:focus,
 .notification StEntry:focus,
 .prompt-dialog-password-entry:focus,
 .login-dialog-prompt-entry:focus {
-/*entry-on
+    /*entry_true
     border: 1px solid rgba(0,0,0,0.5);
-entry-on*/
-/*entry-off
-    border: 1px solid @custom-color2;
-entry-off*/
+    entry_true*/
+    /*entry_false
+    border: 1px solid @custom_color2;
+    entry_false*/
 }
 
 #searchEntry {
-/*entry-on
+    /*entry_true
     color: black;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,0.21);
     background-gradient-end: rgba(255,255,255,0.15);
     border: 1px solid rgba(0,0,0,0.2);
     box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.1);
-entry-on*/
-/*entry-off
+    entry_true*/
+    /*entry_false
     color: #ccc;
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.2);
-entry-off*/
+    entry_false*/
 }
 
 #searchEntry:focus,
 #searchEntry:hover {
-/*entry-on
+    /*entry_true
     color: #333;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,0.85);
     background-gradient-end: rgba(255,255,255,0.72);
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
-entry-on*/
-/*entry-off
+    entry_true*/
+    /*entry_false
     color: white;
     background-color: rgba(0,0,0,0.8);
-    border: 1px solid @custom-color2;
-entry-off*/
+    border: 1px solid @custom_color2;
+    entry_false*/
     caret-color: #666;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .notification StEntry,
 .prompt-dialog-password-entry,
 .login-dialog-prompt-entry {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 4px 4px;
 }
 
@@ -500,23 +512,33 @@ entry-off*/
 /* Panel */
 
 #panel {
-    color: @panel-color;
+    color: @panel_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @panel-bg1;
-    background-gradient-end: @panel-bg2;
-    border-color: @panel-border;
+    background-gradient-start: @panelbg1;
+    background-gradient-end: @panelbg2;
+    border-color: @panelborder;
     border-bottom-width: 1px;
-    box-shadow: @panel-shadow;
+    /*panelshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    panelshadow_true*/
+    /*panelshadow_false
+    box-shadow: none;
+    panelshadow_false*/
     font-weight: bold;
     height: 2.1em;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 #panel.in-overview {
-    background-gradient-start: @dash-bg1;
-    background-gradient-end: @dash-bg2;
-    border-color: @dash-border;
-    box-shadow: @dash-shadow;
+    background-gradient-start: @dashbg1;
+    background-gradient-end: @dashbg2;
+    border-color: @dashborder;
+    /*dashshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    dashshadow_true*/
+    /*dashshadow_false
+    box-shadow: none;
+    dashshadow_false*/
 }
 
 #panelLeft, #panelCenter {
@@ -540,8 +562,8 @@ entry-off*/
 }
 
 .panel-corner {
-    -panel-corner-radius: @corner-radius;
-    -panel-corner-background-color: @panel-bg2;
+    -panel-corner-radius: @panel_corner;
+    -panel-corner-background-color: @panelbg2;
     -panel-corner-border-width: 0;
     -panel-corner-border-color: transparent;
 }
@@ -550,7 +572,7 @@ entry-off*/
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-background-color: @custom-color2;
+    -panel-corner-background-color: @custom_color2;
 }
 
 #appMenu {
@@ -563,9 +585,11 @@ entry-off*/
 }
 
 .panel-button #appMenuIcon {
-/*appicon-visible
+    /*panelicon_true
     width: 0;
-appicon-visible*/
+    panelicon_true*/
+    /*panelicon_false
+    panelicon_false*/
     app-icon-bottom-clip: 0;
 }
 
@@ -584,32 +608,32 @@ appicon-visible*/
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
     font-weight: bold;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .panel-button:hover {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .panel-button:active,
 .panel-button:overview,
 .panel-button:focus {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .panel-status-button:active,
 .panel-status-button:checked,
 .panel-status-button:focus {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .panel-button:active > .system-status-icon,
@@ -642,15 +666,15 @@ appicon-visible*/
 
 .status-chooser-user-icon {
     border: 1px solid #666;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     width: 36pt;
     height: 36pt;
     background-size: contain;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .status-chooser-user-icon:hover {
-    border: 1px solid @custom-color2;
+    border: 1px solid @custom_color2;
 }
 
 .status-chooser-user-name {
@@ -664,14 +688,19 @@ appicon-visible*/
 }
 
 .status-chooser-combo.popup-combo-menu {
-    color: @menu-color;
+    color: @menu_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
     padding: .4em 0em;
-    border-radius: @border-radius;
-    border: 1px solid @menu-border;
-    box-shadow: @menu-shadow;
+    border-radius: @roundness;
+    border: 1px solid @menuborder;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
 }
 
 .status-chooser-status-item,
@@ -681,7 +710,7 @@ appicon-visible*/
 
 .system-status-icon {
     icon-size: 1.14em;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 /* Overview */
@@ -699,20 +728,25 @@ appicon-visible*/
 }
 
 .workspace-thumbnails-background {
-    border: 1px solid @dash-border;
+    border: 1px solid @dashborder;
     border-right: 0;
-    border-radius: @border-radius 0 0 @border-radius;
+    border-radius: @roundness 0 0 @roundness;
     background-gradient-direction: vertical;
-    background-gradient-start: @dash-bg1;
-    background-gradient-end: @dash-bg2;
+    background-gradient-start: @dashbg1;
+    background-gradient-end: @dashbg2;
     padding: 9px 7px 9px 9px;
-    box-shadow: @dash-shadow;
+    /*dashshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    dashshadow_true*/
+    /*dashshadow_false
+    box-shadow: none;
+    dashshadow_false*/
 }
 
 .workspace-thumbnails-background:rtl {
     border-right: 1px;
     border-left: 0;
-    border-radius: 0 @border-radius @border-radius 0;
+    border-radius: 0 @roundness @roundness 0;
     padding: 9px 9px 9px 7px;
 }
 
@@ -721,18 +755,18 @@ appicon-visible*/
 }
 
 .workspace-thumbnail-indicator {
-    border: 2px solid @custom-color2;
-    border-radius: @border-radius;
+    border: 2px solid @custom_color2;
+    border-radius: @roundness;
     padding: 1px;
 }
 
 .window-caption {
-    color: @dash-color;
+    color: @dash_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @dash-bg1;
-    background-gradient-end: @dash-bg2;
-    border: 1px solid @dash-border;
-    border-radius: @border-radius;
+    background-gradient-start: @dashbg1;
+    background-gradient-end: @dashbg2;
+    border: 1px solid @dashborder;
+    border-radius: @roundness;
     padding: 2px 12px;
     -shell-caption-spacing: 6px;
 }
@@ -768,22 +802,27 @@ appicon-visible*/
 /* Dash */
 
 #dash {
-    color: @dash-color;
-    font-size: @font-size;
+    color: @dash_fg;
+    font-size: @fontsize;
     padding: 4px 0;
     background-gradient-direction: vertical;
-    background-gradient-start: @dash-bg1;
-    background-gradient-end: @dash-bg2;
-    border: 1px solid @dash-border;
+    background-gradient-start: @dashbg1;
+    background-gradient-end: @dashbg2;
+    border: 1px solid @dashborder;
     border-left: 0;
-    border-radius: 0 @border-radius @border-radius 0;
-    box-shadow: @dash-shadow;
+    border-radius: 0 @roundness @roundness 0;
+    /*dashshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    dashshadow_true*/
+    /*dashshadow_false
+    box-shadow: none;
+    dashshadow_false*/
 }
 
 #dash:rtl {
     border-left: 1px;
     border-right: 0;
-    border-radius: @border-radius 0 0 @border-radius;
+    border-radius: @roundness 0 0 @roundness;
 }
 
 .placeholder {
@@ -799,18 +838,18 @@ appicon-visible*/
 /* Search Box */
 
 #searchEntry {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     width: 300px;
 }
 
 .search-entry-icon {
     icon-size: 1em;
-/*entry-on
+    /*entry_true
     color: black;
-entry-on*/
-/*entry-off
+    entry_true*/
+    /*entry_false
     color: #ccc;
-entry-off*/
+    entry_false*/
 }
 
 /* Search Results */
@@ -858,7 +897,7 @@ entry-off*/
  * padding compensates for this and ensures that the label is vertically
  * centered */
 .dash-search-button {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding-top: 4px;
     padding-bottom: 5px;
     width: 200px;
@@ -870,13 +909,13 @@ entry-off*/
 }
 
 .dash-label {
-    color: @dash-color;
-    border-radius: @border-radius;
+    color: @dash_fg;
+    border-radius: @roundness;
     padding: 2px 12px;
     background-gradient-direction: vertical;
-    background-gradient-start: @dash-bg1;
-    background-gradient-end: @dash-bg2;
-    border: 1px solid @dash-border;
+    background-gradient-start: @dashbg1;
+    background-gradient-end: @dashbg2;
+    border: 1px solid @dashborder;
     text-align: center;
     -x-offset: 6px;
 }
@@ -884,13 +923,13 @@ entry-off*/
 /* Application Launchers and Grid */
 
 .icon-grid {
-    spacing: @dash-iconspacing;
-    -shell-grid-horizontal-item-size: @dash-itemsize;
-    -shell-grid-vertical-item-size: @dash-itemsize;
+    spacing: @dash_iconspacing;
+    -shell-grid-horizontal-item-size: @dash_itemsize;
+    -shell-grid-vertical-item-size: @dash_itemsize;
 }
 
 .icon-grid .overview-icon {
-    icon-size: @dash-iconsize;
+    icon-size: @dash_iconsize;
 }
 
 .all-app {
@@ -909,15 +948,15 @@ entry-off*/
     border: 1px transparent;
     width: 150px;
     padding: 7px auto 7px 15px;
-    border-radius: @border-radius;
-    transition-duration: @transition-duration;
+    border-radius: @roundness;
+    transition-duration: @transition;
 }
 
 .app-filter:hover {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .app-filter:selected {
@@ -932,11 +971,11 @@ entry-off*/
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
 .search-result-content > .overview-icon {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 3px;
     border: 1px transparent;
     text-align: center;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .app-well-app.running > .overview-icon {
@@ -948,10 +987,10 @@ entry-off*/
 .app-well-app:hover > .overview-icon,
 .show-apps:hover > .overview-icon,
 .search-result-content:hover > .overview-icon {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .show-apps {
@@ -959,11 +998,11 @@ entry-off*/
 }
 
 .show-apps-icon {
-    color: @dash-color;
+    color: @dash_fg;
 }
 
 .show-apps:hover .show-apps-icon {
-    color: @text-color;
+    color: @text;
 }
 
 .show-apps:checked > .overview-icon {
@@ -971,13 +1010,13 @@ entry-off*/
     background-gradient-start: rgba(255,255,255,0.3);
     background-gradient-end: rgba(255,255,255,0.3);
     border-radius: 4px;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
-    color: @text-color;
-    transition-duration: @transition-duration;
+    color: @text;
+    transition-duration: @transition;
 }
 
 .app-well-app:focus > .overview-icon,
@@ -985,10 +1024,10 @@ entry-off*/
 .show-apps:focus > .overview-icon,
 .app-well-app:selected > .overview-icon,
 .search-result-content:selected > .overview-icon {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .app-well-menu {
@@ -1002,12 +1041,12 @@ entry-off*/
     spacing: 4px;
     padding: 4px;
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 #LookingGlassDialog > #Toolbar {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 #LookingGlassDialog .labels {
@@ -1019,7 +1058,7 @@ entry-off*/
     -minimum-hpadding: 6px;
     color: #ccc;
     padding: 2px;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 #LookingGlassDialog .notebook-tab:hover {
@@ -1037,8 +1076,8 @@ entry-off*/
 }
 
 .lg-dialog StEntry {
-    selection-background-color: @custom-color2;
-    selected-color: @text-color;
+    selection-background-color: @custom_color2;
+    selected-color: @text;
 }
 
 .lg-completions-text {
@@ -1055,8 +1094,8 @@ entry-off*/
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.2);
     padding: 4px;
-    border-radius: @border-radius;
-    transition-duration: @transition-duration;
+    border-radius: @roundness;
+    transition-duration: @transition;
 }
 
 .lg-obj-inspector-button:hover {
@@ -1091,7 +1130,7 @@ entry-off*/
 
 .lg-extension {
     border: 1px solid #666;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 4px;
 }
 
@@ -1106,7 +1145,7 @@ entry-off*/
 #LookingGlassPropertyInspector {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 6px;
 }
 
@@ -1134,8 +1173,8 @@ entry-off*/
 }
 
 .calendar-month-label {
-    color: @menu-color;
-    font-size: @font-size;
+    color: @menu_fg;
+    font-size: @fontsize;
     font-weight: bold;
     padding-bottom: 8px;
     padding-top: 8px;
@@ -1181,7 +1220,7 @@ entry-off*/
     padding: .4em 1.7em;
     font-weight: bold;
     text-align: center;
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .calendar-day-base {
@@ -1192,10 +1231,10 @@ entry-off*/
 }
 
 .calendar-day-base:hover {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .calendar-day-base:active {
@@ -1206,20 +1245,20 @@ entry-off*/
 }
 
 .calendar-day-heading {
-    color: @menu-color;
+    color: @menu_fg;
     padding-top: .2em;
     height: 1.7em;
 }
 
 .calendar-week-number {
-    color: @menu-color;
+    color: @menu_fg;
     font-weight: bold;
 }
 
 /* Hack used in lieu of border-collapse - see calendar.js */
 .calendar-day {
     border: 1px solid #333;
-    color: @menu-color;
+    color: @menu_fg;
     border-top-width: 0;
     border-left-width: 0;
 }
@@ -1247,10 +1286,10 @@ entry-off*/
 }
 
 .calendar-today:hover {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .calendar-other-month-day {
@@ -1259,7 +1298,7 @@ entry-off*/
 
 .calendar-day-with-events {
     font-weight: bold;
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .events-header-vbox {
@@ -1277,7 +1316,7 @@ entry-off*/
 
 .events-day-header {
     font-weight: bold;
-    color: @menu-color;
+    color: @menu_fg;
     padding: 0.4em 1.4em 0em 1.4em;
 }
 
@@ -1286,7 +1325,7 @@ entry-off*/
 }
 
 .events-day-dayname {
-    color: @menu-color;
+    color: @menu_fg;
     text-align: left;
 }
 
@@ -1295,7 +1334,7 @@ entry-off*/
 }
 
 .events-day-time {
-    color: @menu-color;
+    color: @menu_fg;
     text-align: right;
 }
 
@@ -1304,7 +1343,7 @@ entry-off*/
 }
 
 .events-day-task {
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .events-day-name-box {
@@ -1333,14 +1372,14 @@ entry-off*/
 #message-tray {
     background: #333 url(noise-texture.png);
     background-repeat: repeat;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 #message-tray:keyboard {
     /* Same as the OSK */
     background-gradient-direction: vertical;
-    background-gradient-start: @panel-bg1;
-    background-gradient-end: @panel-bg2;
+    background-gradient-start: @panelbg1;
+    background-gradient-end: @panelbg2;
 }
 
 #message-tray:overview {
@@ -1349,17 +1388,22 @@ entry-off*/
 }
 
 .notification {
-    color: @menu-color;
-    border-radius: @border-radius @border-radius 0 0;
+    color: @menu_fg;
+    border-radius: @roundness @roundness 0 0;
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
-    border: 1px solid @menu-border;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
+    border: 1px solid @menuborder;
     border-bottom: 0;
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
     spacing-columns: 10px;
-    box-shadow: @menu-shadow;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
 }
 
 .notification, #notification-container {
@@ -1386,33 +1430,40 @@ entry-off*/
 }
 
 .summary-boxpointer {
-    color: @menu-color;
-    border-radius: @border-radius;
+    color: @menu_fg;
+    border-radius: @roundness;
     border-width: 1px;
-    box-shadow: @menu-shadow;
-    -arrow-border-radius: @border-radius;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
+    -arrow-border-radius: @roundness;
     -arrow-border-width: 1px;
-    -arrow-base: @arrow-base;
-    -arrow-rise: @arrow-rise;
     -boxpointer-gap: 6px;
-/*arrow-on
+    /*arrow_true
     background-color: transparent;
     border-color: transparent;
-    -arrow-background-color: @menu-bg1;
-    -arrow-border-color: @menu-border;
-arrow-on*/
-/*arrow-off
+    -arrow-background-color: @menubg1;
+    -arrow-border-color: @menuborder;
+    -arrow-base: 21px;
+    -arrow-rise: 9px;
+    arrow_true*/
+    /*arrow_false
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
-    border-color: @menu-border;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
+    border-color: @menuborder;
     -arrow-background-color: transparent;
     -arrow-border-color: transparent;
-arrow-off*/
+    -arrow-base: 0;
+    -arrow-rise: 3px;
+    arrow_false*/
 }
 
 .summary-boxpointer .notification {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     background-gradient-start: transparent !important;
     background-gradient-end: transparent !important;
     padding-bottom: 12px;
@@ -1460,7 +1511,7 @@ arrow-off*/
 }
 
 .notification-button {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 4px 42px 5px;
 }
 
@@ -1468,7 +1519,7 @@ arrow-off*/
 }
 
 .notification-icon-button {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 5px;
 }
 
@@ -1491,7 +1542,7 @@ arrow-off*/
 
 .hotplug-notification-item {
     padding: 2px 10px;
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 .hotplug-notification-item:focus {
@@ -1509,15 +1560,15 @@ arrow-off*/
 
 .hotplug-resident-mount {
     spacing: 8px;
-    border-radius: @border-radius;
-    transition-duration: @transition-duration;
+    border-radius: @roundness;
+    transition-duration: @transition;
 }
 
 .hotplug-resident-mount:hover {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .hotplug-resident-mount-label {
@@ -1536,8 +1587,8 @@ arrow-off*/
 
 .hotplug-resident-eject-button {
     padding: 7px;
-    border-radius: @border-radius;
-    color: @menu-color;
+    border-radius: @roundness;
+    color: @menu_fg;
 }
 
 .chat-log-message {
@@ -1560,7 +1611,7 @@ arrow-off*/
 
 .chat-sent {
     padding-left: 18pt;
-    color: @menu-color;
+    color: @menu_fg;
 }
 
 .chat-sent:rtl {
@@ -1584,7 +1635,7 @@ arrow-off*/
 }
 
 .notification StEntry {
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 #summary-mode {
@@ -1604,10 +1655,10 @@ arrow-off*/
 }
 
 .summary-source-button:hover .summary-source {
-    color: @text-color;
+    color: @text;
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .summary-source-button:focus .summary-source,
@@ -1618,17 +1669,17 @@ arrow-off*/
 }
 
 .summary-source {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 0 6px 0 6px;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .summary-source-counter {
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 2px solid @text-color;
+    color: @text;
+    background-color: @custom_color2;
+    border: 2px solid @text;
     border-radius: 2.1em;
-    font-size: @font-size;
+    font-size: @fontsize;
     font-weight: bold;
     height: 2.1em;
     width: 2.1em;
@@ -1641,12 +1692,12 @@ arrow-off*/
 }
 
 .switcher-list {
-    color: @dialog-color;
+    color: @dialog_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @dialog-bg1;
-    background-gradient-end: @dialog-bg2;
-    border: 1px solid @dialog-border;
-    border-radius: @border-radius;
+    background-gradient-start: @dialogbg1;
+    background-gradient-end: @dialogbg2;
+    border: 1px solid @dialogborder;
+    border-radius: @roundness;
     padding: 20px;
 }
 
@@ -1676,7 +1727,7 @@ arrow-off*/
 
 .switcher-list .item-box {
     padding: 8px;
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 .switcher-list .item-box:outlined {
@@ -1686,8 +1737,8 @@ arrow-off*/
 
 .switcher-list .item-box:selected {
     background-gradient-direction: vertical;
-    background-gradient-start: @custom-color1;
-    background-gradient-end: @custom-color2;
+    background-gradient-start: @custom_color1;
+    background-gradient-end: @custom_color2;
 }
 
 .switcher-list .thumbnail-box {
@@ -1731,12 +1782,12 @@ arrow-off*/
 }
 
 .workspace-switcher-container {
-    color: @dialog-color;
+    color: @dialog_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @dialog-bg1;
-    background-gradient-end: @dialog-bg2;
-    border: 1px solid @dialog-border;
-    border-radius: @border-radius;
+    background-gradient-start: @dialogbg1;
+    background-gradient-end: @dialogbg2;
+    border: 1px solid @dialogborder;
+    border-radius: @roundness;
     padding: 20px;
 }
 
@@ -1751,24 +1802,24 @@ arrow-off*/
 .ws-switcher-active-up {
     height: 100px;
     border: 0;
-    background-color: @custom-color2;
+    background-color: @custom_color2;
     background-image: url("ws-switch-arrow-up.png");
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 .ws-switcher-active-down {
     height: 100px;
     border: 0;
-    background-color: @custom-color2;
+    background-color: @custom_color2;
     background-image: url("ws-switch-arrow-down.png");
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 .ws-switcher-box {
     height: 96px;
     border: 1px solid rgba(0,0,0,0.2);
     background: transparent;
-    border-radius: @border-radius;
+    border-radius: @roundness;
 }
 
 /* Modal Dialogs */
@@ -1779,21 +1830,26 @@ arrow-off*/
 .end-session-dialog-subject {
     font-size: 12pt;
     font-weight: bold;
-    color: @dialog-heading;
+    color: @dialog_heading;
 }
 
 .modal-dialog {
-    border-radius: @border-radius;
-    color: @dialog-color;
+    border-radius: @roundness;
+    color: @dialog_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @dialog-bg1;
-    background-gradient-end: @dialog-bg2;
-    border: 1px solid @dialog-border;
+    background-gradient-start: @dialogbg1;
+    background-gradient-end: @dialogbg2;
+    border: 1px solid @dialogborder;
     padding-right: 20px;
     padding-left: 20px;
     padding-bottom: 15px;
     padding-top: 20px;
-    box-shadow: @dialog-shadow;
+    /*dialogshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    dialogshadow_true*/
+    /*dialogshadow_false
+    box-shadow: none;
+    dialogshadow_false*/
 }
 
 .modal-dialog-button-box {
@@ -1802,7 +1858,7 @@ arrow-off*/
 }
 
 .modal-dialog-button {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     margin-left: 7px;
     margin-right: 7px;
     padding: 3px 20px 4px;
@@ -1825,12 +1881,12 @@ arrow-off*/
 .run-dialog-entry {
     font-weight: bold;
     width: 23em;
-    selection-background-color: @custom-color2;
-    selected-color: @text-color;
+    selection-background-color: @custom_color2;
+    selected-color: @text;
 }
 
 .run-dialog {
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding-right: 21px;
     padding-left: 21px;
     padding-bottom: 15px;
@@ -1871,7 +1927,7 @@ arrow-off*/
 
 .end-session-dialog-logout-icon {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
     width: 32px;
     height: 32px;
     background-size: contain;
@@ -1884,7 +1940,7 @@ arrow-off*/
 }
 
 .end-session-dialog-app-list {
-    font-size: @font-size;
+    font-size: @fontsize;
     max-height: 200px;
     padding-top: 42px;
     padding-left: 49px;
@@ -1921,7 +1977,7 @@ arrow-off*/
 }
 
 .end-session-dialog-app-list-item-name {
-    font-size: @font-size;
+    font-size: @fontsize;
 }
 
 .end-session-dialog-app-list-item-description {
@@ -1972,7 +2028,7 @@ arrow-off*/
 }
 
 .show-processes-dialog-app-list {
-    font-size: @font-size;
+    font-size: @fontsize;
     max-height: 200px;
     padding-top: 24px;
     padding-left: 49px;
@@ -2009,7 +2065,7 @@ arrow-off*/
 }
 
 .show-processes-dialog-app-list-item-name {
-    font-size: @font-size;
+    font-size: @fontsize;
 }
 
 /* Password or Authentication Dialog */
@@ -2030,7 +2086,7 @@ arrow-off*/
 .prompt-dialog-headline {
     font-size: 12pt;
     font-weight: bold;
-    color: @dialog-heading;
+    color: @dialog_heading;
 }
 
 .prompt-dialog-password-box {
@@ -2039,13 +2095,13 @@ arrow-off*/
 }
 
 .prompt-dialog-error-label {
-    font-size: @font-size;
+    font-size: @fontsize;
     color: #ff0;
     padding-bottom: 8px;
 }
 
 .prompt-dialog-info-label {
-    font-size: @font-size;
+    font-size: @fontsize;
     padding-bottom: 8px;
 }
 
@@ -2054,7 +2110,7 @@ arrow-off*/
 }
 
 .prompt-dialog-null-label {
-    font-size: @font-size;
+    font-size: @fontsize;
     padding-bottom: 8px;
 }
 
@@ -2076,7 +2132,7 @@ arrow-off*/
 
 .polkit-dialog-user-icon {
     border: 1px solid #666;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     width: 36pt;
     height: 36pt;
     background-size: contain;
@@ -2108,11 +2164,16 @@ arrow-off*/
 
 #keyboard {
     background-gradient-direction: vertical;
-    background-gradient-start: @panel-bg1;
-    background-gradient-end: @panel-bg2;
-    border-color: @panel-border;
+    background-gradient-start: @panelbg1;
+    background-gradient-end: @panelbg2;
+    border-color: @panelborder;
     border-top-width: 1px;
-    box-shadow: @panel-shadow;
+    /*panelshadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    panelshadow_true*/
+    /*panelshadow_false
+    box-shadow: none;
+    panelshadow_false*/
 }
 
 .keyboard-layout {
@@ -2127,7 +2188,7 @@ arrow-off*/
 .keyboard-key {
     min-height: 30px;
     min-width: 30px;
-/*newbutton-on
+    /*newbutton_true
     color: #333;
     font-weight: bold;
     background-gradient-direction: vertical;
@@ -2135,18 +2196,18 @@ arrow-off*/
     background-gradient-end: rgba(233,233,233,1.0);
     border: 1px solid rgba(0,0,0,0.2);
     box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
-newbutton-on*/
-/*newbutton-off
+    newbutton_true*/
+    /*newbutton_false
     color: white;
     font-weight: bold;
     background-color: rgba(0,0,0,0.8);
     border: 1px solid rgba(0,0,0,0.2);
-newbutton-off*/
-    transition-duration: @transition-duration;
-    border-radius: @border-radius;
+    newbutton_false*/
+    transition-duration: @transition;
+    border-radius: @roundness;
     font-size: 14pt;
     font-weight: bold;
-    transition-duration: @transition-duration;
+    transition-duration: @transition;
 }
 
 .keyboard-key:grayed {
@@ -2155,55 +2216,62 @@ newbutton-off*/
 
 .keyboard-key:checked,
 .keyboard-key:hover {
-/*newbutton-on
+    /*newbutton_true
     background-gradient-start: rgba(255,255,255,1.0);
     background-gradient-end: rgba(233,233,233,1.0);
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);
-newbutton-on*/
-/*newbutton-off
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
-newbutton-off*/
+    newbutton_true*/
+    /*newbutton_false
+    color: @text;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
+    newbutton_false*/
 }
 
 .keyboard-key:active {
-/*newbutton-on
+    /*newbutton_true
     background-gradient-start: rgba(233,233,233,0.9);
     background-gradient-end: rgba(255,255,255,0.9);
-newbutton-on*/
-/*newbutton-off
+    newbutton_true*/
+    /*newbutton_false
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.2);
-newbutton-off*/
+    newbutton_false*/
 }
 
 .keyboard-subkeys {
-    color: @menu-color;
+    color: @menu_fg;
     padding: 4px;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     border-width: 1px;
-    box-shadow: @menu-shadow;
-    -arrow-border-radius: @border-radius;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
+    -arrow-border-radius: @roundness;
     -arrow-border-width: 1px;
-    -arrow-base: @arrow-base;
-    -arrow-rise: @arrow-rise;
     -boxpointer-gap: 6px;
-/*arrow-on
+    /*arrow_true
     background-color: transparent;
     border-color: transparent;
-    -arrow-background-color: @menu-bg1;
-    -arrow-border-color: @menu-border;
-arrow-on*/
-/*arrow-off
+    -arrow-background-color: @menubg1;
+    -arrow-border-color: @menuborder;
+    -arrow-base: 21px;
+    -arrow-rise: 9px;
+    arrow_true*/
+    /*arrow_false
     background-gradient-direction: vertical;
-    background-gradient-start: @menu-bg1;
-    background-gradient-end: @menu-bg2;
-    border-color: @menu-border;
+    background-gradient-start: @menubg1;
+    background-gradient-end: @menubg2;
+    border-color: @menuborder;
     -arrow-background-color: transparent;
     -arrow-border-color: transparent;
-arrow-off*/
+    -arrow-base: 0;
+    -arrow-rise: 3px;
+    arrow_false*/
 }
 
 /* IBus Candidate Popup */
@@ -2216,15 +2284,15 @@ arrow-off*/
 }
 
 .candidate-label:selected {
-    border-radius: @border-radius;
-    color: @text-color;
-    background-color: @custom-color2;
+    border-radius: @roundness;
+    color: @text;
+    background-color: @custom_color2;
 }
 
 /* Login Dialog */
 
 .login-dialog-banner {
-    font-size: @font-size;
+    font-size: @fontsize;
     font-weight: bold;
     text-align: center;
     color: #666;
@@ -2242,7 +2310,7 @@ arrow-off*/
     /* Reset border and background */
     border: none;
     background-color: transparent;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     min-height: 150px;
     max-height: 700px;
     min-width: 350px;
@@ -2263,7 +2331,7 @@ arrow-off*/
 
 .login-dialog-user-list-item {
     color: #666;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: .2em;
 }
 
@@ -2297,8 +2365,8 @@ arrow-off*/
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item:focus {
-    color: @text-color;
-    background-color: @custom-color2;
+    color: @text;
+    background-color: @custom_color2;
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
@@ -2321,7 +2389,7 @@ arrow-off*/
 
 .login-dialog-user-list-item-icon {
     border: 1px solid #666;
-    border-radius: @border-radius;
+    border-radius: @roundness;
     width: 64px;
     height: 64px;
 }
@@ -2385,7 +2453,7 @@ arrow-off*/
 .login-dialog-session-list-scroll-view {
     background-color: rgba(255,255,255,0.3);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: .5em;
 }
 
@@ -2408,7 +2476,7 @@ arrow-off*/
 
 .login-dialog .modal-dialog-button {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @border-radius;
+    border-radius: @roundness;
     padding: 3px 18px;
 }
 
@@ -2418,15 +2486,15 @@ arrow-off*/
 }
 
 .login-dialog .modal-dialog-button:default {
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
+    color: @text;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
 }
 
 .login-dialog .modal-dialog-button:default:hover {
-    color: @text-color;
-    background-color: @custom-color2;
-    border: 1px solid @custom-color2;
+    color: @text;
+    background-color: @custom_color2;
+    border: 1px solid @custom_color2;
 }
 
 .login-dialog .modal-dialog-button:default:active,
@@ -2489,12 +2557,17 @@ arrow-off*/
 }
 
 #screenShieldNotifications {
-    border-radius: @border-radius;
-    background-color: @menu-bg1;
-    border: 1px solid @menu-border;
+    border-radius: @roundness;
+    background-color: @menubg1;
+    border: 1px solid @menuborder;
     max-height: 500px;
     padding: 12px 0;
-    box-shadow: @menu-shadow;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
 }
 
 .screen-shield-notifications-box {
