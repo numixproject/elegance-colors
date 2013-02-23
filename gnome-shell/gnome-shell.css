@@ -586,9 +586,9 @@ StScrollBar StButton#vhandle:active {
 
 .panel-button #appMenuIcon {
     /*panelicon_true
-    width: 0;
     panelicon_true*/
     /*panelicon_false
+    width: 0;
     panelicon_false*/
     app-icon-bottom-clip: 0;
 }
