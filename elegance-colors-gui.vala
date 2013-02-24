@@ -179,49 +179,29 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void export_theme () {
 
-		if (apply_button.get_sensitive ()) {
-			var dialog = new Dialog.with_buttons ("", this,
-									DialogFlags.MODAL,
-									Stock.APPLY, ResponseType.APPLY,
-									Stock.CANCEL, ResponseType.CANCEL, null);
+		var exportdialog = new FileChooserDialog ("Export theme", this,
+								FileChooserAction.SAVE,
+								Stock.CANCEL, ResponseType.CANCEL,
+								Stock.SAVE, ResponseType.ACCEPT, null);
 
-			var content_area = dialog.get_content_area ();
-			var label = new Label ("<span weight='bold' size='larger'>Apply changes before exporting the theme?</span>\n\nYou need to apply the changes first to export the theme.");
-			label.set_use_markup (true);
-			label.set_line_wrap (true);
+		var filter = new FileFilter ();
+		filter.add_pattern ("*.zip");
 
-			content_area.border_width = 6;
-			content_area.spacing = 12;
-			content_area.add (label);
+		exportdialog.set_filter (filter);
+		exportdialog.set_current_name ("Elegance Colors Custom.zip");
+		exportdialog.set_do_overwrite_confirmation(true);
 
-			dialog.response.connect (on_response);
+		if (exportdialog.run () == ResponseType.ACCEPT) {
+			string theme_path = exportdialog.get_file ().get_path ();
 
-			dialog.show_all ();
-		} else {
-			var exportdialog = new FileChooserDialog ("Export theme", this,
-									FileChooserAction.SAVE,
-									Stock.CANCEL, ResponseType.CANCEL,
-									Stock.SAVE, ResponseType.ACCEPT, null);
-
-			var filter = new FileFilter ();
-			filter.add_pattern ("*.zip");
-
-			exportdialog.set_filter (filter);
-			exportdialog.set_current_name ("Elegance Colors Custom.zip");
-			exportdialog.set_do_overwrite_confirmation(true);
-
-			if (exportdialog.run () == ResponseType.ACCEPT) {
-				string theme_path = exportdialog.get_file ().get_path ();
-
-				try {
-					Process.spawn_command_line_sync("elegance-colors export \"%s\"".printf (theme_path));
-				} catch (Error e) {
-					stderr.printf ("Failed to export theme: %s\n", e.message);
-				}
+			try {
+				Process.spawn_command_line_sync("elegance-colors export \"%s\"".printf (theme_path));
+			} catch (Error e) {
+				stderr.printf ("Failed to export theme: %s\n", e.message);
 			}
-
-			exportdialog.close ();
 		}
+
+		exportdialog.close ();
 	}
 
 	void export_settings () {
@@ -242,14 +222,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			try {
 				var exportpath = File.new_for_path (exportsettings.get_file ().get_path ());
 
-				if (exportpath.query_exists ()) {
-					try {
-						exportpath.delete ();
-					} catch (Error e) {
-						stderr.printf ("Failed to replace previous exported file: %s\n", e.message);
-					}
-				}
-				config_file.copy (exportpath, FileCopyFlags.NONE);
+				config_file.copy (exportpath, FileCopyFlags.OVERWRITE);
 				
 			} catch (Error e) {
 				stderr.printf ("Failed to export settings: %s\n", e.message);
@@ -290,31 +263,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		apply_button.set_sensitive (true);
 	}
 
-	void on_response (Dialog dialog, int response_id) {
-
-		switch (response_id) {
-		case ResponseType.OK:
-			dialog.destroy ();
-			break;
-		case ResponseType.APPLY:
-			write_config ();
-			apply_button.set_sensitive (false);
-			dialog.destroy ();
-			export_theme ();
-			break;
-		case ResponseType.CANCEL:
-			dialog.destroy ();
-			break;
-		}
-	}
-
 	void show_about (SimpleAction simple, Variant? parameter) {
 		string license = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with This program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA";
 
 		show_about_dialog (this,
 			"program-name", "Elegance Colors",
 			"logo_icon_name", "elegance-colors",
-			"copyright", "Copyright \xc2\xa9 2012 Satyajit Sahoo",
+			"copyright", "Copyright \xc2\xa9 Satyajit Sahoo",
 			"comments", "A chameleon theme for Gnome Shell",
 			"license", license,
 			"wrap-license", true,
