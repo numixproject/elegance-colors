@@ -29,7 +29,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	// Panel
 	ColorButton panel_bg_color;
 	ColorButton panel_fg_color;
-	ColorButton panel_bordercol_color;
+	ColorButton panel_border_color;
 
 	Switch panel_shadow_switch;
 	Switch panel_icon_switch;
@@ -40,12 +40,12 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	string panel_bg_value;
 	string panel_fg_value;
-	string panel_bordercol_value;
+	string panel_border_value;
 
 	// Dash
 	ColorButton dash_bg_color;
 	ColorButton dash_fg_color;
-	ColorButton dash_bordercol_color;
+	ColorButton dash_border_color;
 
 	Switch dash_shadow_switch;
 
@@ -56,12 +56,12 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	string dash_bg_value;
 	string dash_fg_value;
-	string dash_bordercol_value;
+	string dash_border_value;
 
 	// Menu
 	ColorButton menu_bg_color;
 	ColorButton menu_fg_color;
-	ColorButton menu_bordercol_color;
+	ColorButton menu_border_color;
 
 	Switch menu_shadow_switch;
 	Switch menu_arrow_switch;
@@ -71,13 +71,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	string menu_bg_value;
 	string menu_fg_value;
-	string menu_bordercol_value;
+	string menu_border_value;
 
 	// Dialogs
 	ColorButton dialog_bg_color;
 	ColorButton dialog_fg_color;
 	ColorButton dialog_heading_color;
-	ColorButton dialog_bordercol_color;
+	ColorButton dialog_border_color;
 
 	Switch dialog_shadow_switch;
 
@@ -87,7 +87,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	string dialog_bg_value;
 	string dialog_fg_value;
 	string dialog_heading_value;
-	string dialog_bordercol_value;
+	string dialog_border_value;
 
 	// Others
 	Notebook notebook;
@@ -330,7 +330,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			panel_bg_value = key_file.get_string ("Panel", "panel_bg");
 			panel_fg_value = key_file.get_string ("Panel", "panel_fg");
-			panel_bordercol_value = key_file.get_string ("Panel", "panel_bordercol");
+			panel_border_value = key_file.get_string ("Panel", "panel_border");
 
 			panel_shadow_switch.set_active (key_file.get_boolean ("Panel", "panel_shadow"));
 			panel_icon_switch.set_active (key_file.get_boolean ("Panel", "panel_icon"));
@@ -341,7 +341,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			dash_bg_value = key_file.get_string ("Overview", "dash_bg");
 			dash_fg_value = key_file.get_string ("Overview", "dash_fg");
-			dash_bordercol_value = key_file.get_string ("Overview", "dash_bordercol");
+			dash_border_value = key_file.get_string ("Overview", "dash_border");
 
 			dash_shadow_switch.set_active (key_file.get_boolean ("Overview", "dash_shadow"));
 
@@ -352,7 +352,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			menu_bg_value = key_file.get_string ("Menu", "menu_bg");
 			menu_fg_value = key_file.get_string ("Menu", "menu_fg");
-			menu_bordercol_value = key_file.get_string ("Menu", "menu_bordercol");
+			menu_border_value = key_file.get_string ("Menu", "menu_border");
 
 			menu_shadow_switch.set_active (key_file.get_boolean ("Menu", "menu_shadow"));
 			menu_arrow_switch.set_active (key_file.get_boolean ("Menu", "menu_arrow"));
@@ -362,7 +362,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			dialog_bg_value = key_file.get_string ("Dialogs", "dialog_bg");
 			dialog_fg_value = key_file.get_string ("Dialogs", "dialog_fg");
-			dialog_bordercol_value = key_file.get_string ("Dialogs", "dialog_bordercol");
+			dialog_border_value = key_file.get_string ("Dialogs", "dialog_border");
 			dialog_heading_value = key_file.get_string ("Dialogs", "dialog_heading");
 
 			dialog_shadow_switch.set_active (key_file.get_boolean ("Dialogs", "dialog_shadow"));
@@ -387,8 +387,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_fg_color.set_rgba (pfcolor);
 
 		var bocolor = Gdk.RGBA ();
-		bocolor.parse ("%s".printf (panel_bordercol_value));
-		panel_bordercol_color.set_rgba (bocolor);
+		bocolor.parse ("%s".printf (panel_border_value));
+		panel_border_color.set_rgba (bocolor);
 
 		var obcolor = Gdk.RGBA ();
 		obcolor.parse ("%s".printf (dash_bg_value));
@@ -399,8 +399,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_fg_color.set_rgba (ofcolor);
 
 		var oocolor = Gdk.RGBA ();
-		oocolor.parse ("%s".printf (dash_bordercol_value));
-		dash_bordercol_color.set_rgba (oocolor);
+		oocolor.parse ("%s".printf (dash_border_value));
+		dash_border_color.set_rgba (oocolor);
 
 		var mbcolor = Gdk.RGBA ();
 		mbcolor.parse ("%s".printf (menu_bg_value));
@@ -411,8 +411,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_fg_color.set_rgba (mfcolor);
 
 		var mocolor = Gdk.RGBA ();
-		mocolor.parse ("%s".printf (menu_bordercol_value));
-		menu_bordercol_color.set_rgba (mocolor);
+		mocolor.parse ("%s".printf (menu_border_value));
+		menu_border_color.set_rgba (mocolor);
 
 		var dbcolor = Gdk.RGBA ();
 		dbcolor.parse ("%s".printf (dialog_bg_value));
@@ -427,8 +427,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_heading_color.set_rgba (dhcolor);
 
 		var docolor = Gdk.RGBA ();
-		docolor.parse ("%s".printf (dialog_bordercol_value));
-		dialog_bordercol_color.set_rgba (docolor);
+		docolor.parse ("%s".printf (dialog_border_value));
+		dialog_border_color.set_rgba (docolor);
 	}
 
 	void create_widgets () {
@@ -500,11 +500,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_fg_color = new ColorButton ();
 		panel_fg_color.set_use_alpha (true);
 		panel_fg_color.set_tooltip_text ("Set the text color of the top panel");
-		var panel_bordercol_label = new Label.with_mnemonic ("Border color");
-		panel_bordercol_label.set_halign (Align.START);
-		panel_bordercol_color = new ColorButton ();
-		panel_bordercol_color.set_use_alpha (true);
-		panel_bordercol_color.set_tooltip_text ("Set the border color of the top panel");
+		var panel_border_label = new Label.with_mnemonic ("Border color");
+		panel_border_label.set_halign (Align.START);
+		panel_border_color = new ColorButton ();
+		panel_border_color.set_use_alpha (true);
+		panel_border_color.set_tooltip_text ("Set the border color of the top panel");
 		var panel_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		panel_shadow_label.set_halign (Align.START);
 		panel_shadow_switch = new Switch ();
@@ -542,11 +542,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_fg_color = new ColorButton ();
 		dash_fg_color.set_use_alpha (true);
 		dash_fg_color.set_tooltip_text ("Set the text color of the dash labels and window caption");
-		var dash_bordercol_label = new Label.with_mnemonic ("Border color");
-		dash_bordercol_label.set_halign (Align.START);
-		dash_bordercol_color = new ColorButton ();
-		dash_bordercol_color.set_use_alpha (true);
-		dash_bordercol_color.set_tooltip_text ("Set the border color of the dash and workspace panel");
+		var dash_border_label = new Label.with_mnemonic ("Border color");
+		dash_border_label.set_halign (Align.START);
+		dash_border_color = new ColorButton ();
+		dash_border_color.set_use_alpha (true);
+		dash_border_color.set_tooltip_text ("Set the border color of the dash and workspace panel");
 		var dash_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		dash_shadow_label.set_halign (Align.START);
 		dash_shadow_switch = new Switch ();
@@ -584,11 +584,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_fg_color = new ColorButton ();
 		menu_fg_color.set_use_alpha (true);
 		menu_fg_color.set_tooltip_text ("Set the text color of the popup menu");
-		var menu_bordercol_label = new Label.with_mnemonic ("Border color");
-		menu_bordercol_label.set_halign (Align.START);
-		menu_bordercol_color = new ColorButton ();
-		menu_bordercol_color.set_use_alpha (true);
-		menu_bordercol_color.set_tooltip_text ("Set the border color of the popup menu");
+		var menu_border_label = new Label.with_mnemonic ("Border color");
+		menu_border_label.set_halign (Align.START);
+		menu_border_color = new ColorButton ();
+		menu_border_color.set_use_alpha (true);
+		menu_border_color.set_tooltip_text ("Set the border color of the popup menu");
 		var menu_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		menu_shadow_label.set_halign (Align.START);
 		menu_shadow_switch = new Switch ();
@@ -626,11 +626,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_heading_color = new ColorButton ();
 		dialog_heading_color.set_use_alpha (true);
 		dialog_heading_color.set_tooltip_text ("Set the text color of headings in the modal dialogs");
-		var dialog_bordercol_label = new Label.with_mnemonic ("Border color");
-		dialog_bordercol_label.set_halign (Align.START);
-		dialog_bordercol_color = new ColorButton ();
-		dialog_bordercol_color.set_use_alpha (true);
-		dialog_bordercol_color.set_tooltip_text ("Set the border color of the modal dialogs");
+		var dialog_border_label = new Label.with_mnemonic ("Border color");
+		dialog_border_label.set_halign (Align.START);
+		dialog_border_color = new ColorButton ();
+		dialog_border_color.set_use_alpha (true);
+		dialog_border_color.set_tooltip_text ("Set the border color of the modal dialogs");
 		var dialog_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		dialog_shadow_label.set_halign (Align.START);
 		dialog_shadow_switch = new Switch ();
@@ -752,8 +752,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid1.attach_next_to (panel_bg_color, panel_bg_label, PositionType.RIGHT, 1, 1);
 		grid1.attach (panel_fg_label, 0, 1, 2, 1);
 		grid1.attach_next_to (panel_fg_color, panel_fg_label, PositionType.RIGHT, 1, 1);
-		grid1.attach (panel_bordercol_label, 0, 2, 2, 1);
-		grid1.attach_next_to (panel_bordercol_color, panel_bordercol_label, PositionType.RIGHT, 1, 1);
+		grid1.attach (panel_border_label, 0, 2, 2, 1);
+		grid1.attach_next_to (panel_border_color, panel_border_label, PositionType.RIGHT, 1, 1);
 		grid1.attach (panel_shadow_label, 0, 3, 2, 1);
 		grid1.attach_next_to (panel_shadow_switch, panel_shadow_label, PositionType.RIGHT, 1, 1);
 		grid1.attach (panel_icon_label, 0, 4, 2, 1);
@@ -774,8 +774,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid2.attach_next_to (dash_bg_color, dash_bg_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_fg_label, 0, 1, 2, 1);
 		grid2.attach_next_to (dash_fg_color, dash_fg_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_bordercol_label, 0, 2, 2, 1);
-		grid2.attach_next_to (dash_bordercol_color, dash_bordercol_label, PositionType.RIGHT, 1, 1);
+		grid2.attach (dash_border_label, 0, 2, 2, 1);
+		grid2.attach_next_to (dash_border_color, dash_border_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_shadow_label, 0, 3, 2, 1);
 		grid2.attach_next_to (dash_shadow_switch, dash_shadow_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_chameleon_label, 0, 4, 2, 1);
@@ -796,8 +796,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid3.attach_next_to (menu_bg_color, menu_bg_label, PositionType.RIGHT, 1, 1);
 		grid3.attach (menu_fg_label, 0, 1, 2, 1);
 		grid3.attach_next_to (menu_fg_color, menu_fg_label, PositionType.RIGHT, 1, 1);
-		grid3.attach (menu_bordercol_label, 0, 2, 2, 1);
-		grid3.attach_next_to (menu_bordercol_color, menu_bordercol_label, PositionType.RIGHT, 1, 1);
+		grid3.attach (menu_border_label, 0, 2, 2, 1);
+		grid3.attach_next_to (menu_border_color, menu_border_label, PositionType.RIGHT, 1, 1);
 		grid3.attach (menu_shadow_label, 0, 3, 2, 1);
 		grid3.attach_next_to (menu_shadow_switch, menu_shadow_label, PositionType.RIGHT, 1, 1);
 		grid3.attach (menu_arrow_label, 0, 4, 2, 1);
@@ -818,8 +818,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid4.attach_next_to (dialog_fg_color, dialog_fg_label, PositionType.RIGHT, 1, 1);
 		grid4.attach (dialog_heading_label, 0, 2, 2, 1);
 		grid4.attach_next_to (dialog_heading_color, dialog_heading_label, PositionType.RIGHT, 1, 1);
-		grid4.attach (dialog_bordercol_label, 0, 3, 2, 1);
-		grid4.attach_next_to (dialog_bordercol_color, dialog_bordercol_label, PositionType.RIGHT, 1, 1);
+		grid4.attach (dialog_border_label, 0, 3, 2, 1);
+		grid4.attach_next_to (dialog_border_color, dialog_border_label, PositionType.RIGHT, 1, 1);
 		grid4.attach (dialog_shadow_label, 0, 4, 2, 1);
 		grid4.attach_next_to (dialog_shadow_switch, dialog_shadow_label, PositionType.RIGHT, 1, 1);
 		grid4.attach (dialog_chameleon_label, 0, 5, 2, 1);
@@ -944,7 +944,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_fg_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		panel_bordercol_color.color_set.connect (() => {
+		panel_border_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		panel_shadow_switch.notify["active"].connect (() => {
@@ -968,7 +968,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_fg_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		dash_bordercol_color.color_set.connect (() => {
+		dash_border_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		dash_shadow_switch.notify["active"].connect (() => {
@@ -992,7 +992,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_fg_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		menu_bordercol_color.color_set.connect (() => {
+		menu_border_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		menu_shadow_switch.notify["active"].connect (() => {
@@ -1016,7 +1016,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_heading_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		dialog_bordercol_color.color_set.connect (() => {
+		dialog_border_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		dialog_shadow_switch.notify["active"].connect (() => {
@@ -1073,7 +1073,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_string ("Panel", "panel_bg", panel_bg_color.get_rgba ().to_string());
 		key_file.set_string ("Panel", "panel_fg", panel_fg_color.get_rgba ().to_string());
-		key_file.set_string ("Panel", "panel_bordercol", panel_bordercol_color.get_rgba ().to_string());
+		key_file.set_string ("Panel", "panel_border", panel_border_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Panel", "panel_shadow", panel_shadow_switch.get_active());
 		key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
@@ -1084,7 +1084,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_string ("Overview", "dash_bg", dash_bg_color.get_rgba ().to_string());
 		key_file.set_string ("Overview", "dash_fg", dash_fg_color.get_rgba ().to_string());
-		key_file.set_string ("Overview", "dash_bordercol", dash_bordercol_color.get_rgba ().to_string());
+		key_file.set_string ("Overview", "dash_border", dash_border_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Overview", "dash_shadow", dash_shadow_switch.get_active());
 
@@ -1095,7 +1095,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_string ("Menu", "menu_bg", menu_bg_color.get_rgba ().to_string());
 		key_file.set_string ("Menu", "menu_fg", menu_fg_color.get_rgba ().to_string());
-		key_file.set_string ("Menu", "menu_bordercol", menu_bordercol_color.get_rgba ().to_string());
+		key_file.set_string ("Menu", "menu_border", menu_border_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Menu", "menu_shadow", menu_shadow_switch.get_active());
 		key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active());
@@ -1106,7 +1106,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_color.get_rgba ().to_string());
 		key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.get_rgba ().to_string());
 		key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.get_rgba ().to_string());
-		key_file.set_string ("Dialogs", "dialog_bordercol", dialog_bordercol_color.get_rgba ().to_string());
+		key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Dialogs", "dialog_shadow", dialog_shadow_switch.get_active());
 

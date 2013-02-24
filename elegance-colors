@@ -24,7 +24,7 @@ selffile="$selfdir/elegance-colors"
 configdir="$HOME/.config/elegance-colors"
 configfile="$configdir/elegance-colors.ini"
 tempdir="/tmp/elegance-colors"
-installdir=`if [[ -d "gnome-shell" && -d "presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
+installdir=`if [[ -d "$selfdir/gnome-shell" && -d "$selfdir/presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
 defaultconfig="$installdir/presets/default.ini"
 template="$installdir/gnome-shell"
 homedir=`awk -F: -v v="$(who | grep $(echo "$DISPLAY" | cut -d '.' -f 1) | cut -d ' ' -f 1 | tail -1)" '{if ($1==v) print $6}' /etc/passwd`
@@ -105,9 +105,9 @@ if [[ "$mode" = "gtk" ]]; then
 		color=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
 	fi
 	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
-		text=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
+		selected_fg=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
 	elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
-		text=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
+		selected_fg=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Wallpaper found at '$img'"
@@ -117,13 +117,13 @@ elif [[ "$mode" = "wallpaper" ]]; then
 	bi="${bf/.*}"
 	# Adjust text color according to the color brightness
 	if [[ "$bi" -ge "60" ]]; then
-		text="#000"
+		selected_fg="#000"
 	else
-		text="#fff"
+		selected_fg="#fff"
 	fi
 elif [[ "$mode" =~ ^# || "$mode" =~ ^rgb ]]; then
 	show_info "Using custom color"
-	text="#fff"
+	selected_fg="#fff"
 	color="$mode"
 fi
 }
@@ -229,17 +229,17 @@ unset vars vals
 # General settings
 get_color
 make_gradient "$color" "$selgradient"
-custom_color1="$color1"
-custom_color2="$color2"
-fontfamily=$(echo "$fontname" | sed 's/\ \w*$//')
-fontsize=$(echo "$fontname" | sed 's/.* //')
+selected_bg1="$color1"
+selected_bg2="$color2"
+font_family=$(echo "$fontname" | sed 's/\ \w*$//')
+font_size=$(echo "$fontname" | sed 's/.* //')
 vars=(
 	"${vars[@]}"
-	"@custom_color1"
-	"@custom_color2"
-	"@text"
-	"@fontfamily"
-	"@fontsize"
+	"@selected_bg1"
+	"@selected_bg2"
+	"@selected_fg"
+	"@font_family"
+	"@font_size"
 	"@roundness"
 	"@transition"
 	"\/\*newbutton_$newbutton"
@@ -249,11 +249,11 @@ vars=(
 )
 vals=(
 	"${vals[@]}"
-	"$custom_color1"
-	"$custom_color2"
-	"$text"
-	"$fontfamily"
-	"${fontsize}pt"
+	"$selected_bg1"
+	"$selected_bg2"
+	"$selected_fg"
+	"$font_family"
+	"${font_size}pt"
 	"${roundness}px"
 	"$transition"
 	"\/\*\*\/"
@@ -263,20 +263,18 @@ vals=(
 )
 # Panel
 make_gradient "$panel_bg" "$panel_gradient"
-panelbg1="$color1"
-panelbg2="$color2"
-make_gradient "$panel_bordercol" "0"
-panelborder="$color1"
-make_chameleon "$color" "$panelbg1" "$panel_chameleon"
-panelbg1="$chameleon"
-make_chameleon "$color" "$panelbg2" "$panel_chameleon"
-panelbg2="$chameleon"
+panel_bg1="$color1"
+panel_bg2="$color2"
+make_chameleon "$color" "$panel_bg1" "$panel_chameleon"
+panel_bg1="$chameleon"
+make_chameleon "$color" "$panel_bg2" "$panel_chameleon"
+panel_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
-	"@panelbg1"
-	"@panelbg2"
+	"@panel_bg1"
+	"@panel_bg2"
 	"@panel_fg"
-	"@panelborder"
+	"@panel_border"
 	"@panel_corner"
 	"\/\*panelicon_$panel_icon"
 	"panelicon_$panel_icon\*\/"
@@ -285,10 +283,10 @@ vars=(
 )
 vals=(
 	"${vals[@]}"
-	"$panelbg1"
-	"$panelbg2"
+	"$panel_bg1"
+	"$panel_bg2"
 	"$panel_fg"
-	"$panelborder"
+	"$panel_border"
 	"${panel_corner}px"
 	"\/\*\*\/"
 	"\/\*\*\/"
@@ -297,65 +295,61 @@ vals=(
 )
 # Dash
 make_gradient "$dash_bg" "$dash_gradient"
-dashbg1="$color1"
-dashbg2="$color2"
-make_gradient "$dash_bordercol" "0"
-dashborder="$color1"
-make_chameleon "$color" "$dashbg1" "$dash_chameleon"
-dashbg1="$chameleon"
-make_chameleon "$color" "$dashbg2" "$dash_chameleon"
-dashbg2="$chameleon"
+dash_bg1="$color1"
+dash_bg2="$color2"
+make_chameleon "$color" "$dash_bg1" "$dash_chameleon"
+dash_bg1="$chameleon"
+make_chameleon "$color" "$dash_bg2" "$dash_chameleon"
+dash_bg2="$chameleon"
 # Generate message tray background
 make_chameleon "$color" "$dash_bg" "$dash_chameleon"
-messagebg=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
-make_chameleon "$color" "$dashborder" "$dash_chameleon"
-messageborder=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
+message_bg=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
+make_chameleon "$color" "$dash_border" "$dash_chameleon"
+message_border=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
 # Icon size dash
 dash_itemsize=$(( dash_iconsize + dash_iconspacing - 2 ))
 vars=(
 	"${vars[@]}"
 	"@dash_fg"
-	"@dashbg1"
-	"@dashbg2"
-	"@dashborder"
+	"@dash_bg1"
+	"@dash_bg2"
+	"@dash_border"
 	"@dash_iconsize"
 	"@dash_itemsize"
 	"@dash_iconspacing"
-	"@message-bg"
-	"@message-border"
+	"@message_bg"
+	"@message_border"
 	"\/\*dashshadow_$dash_shadow"
 	"dashshadow_$dash_shadow\*\/"
 )
 vals=(
 	"${vals[@]}"
 	"$dash_fg"
-	"$dashbg1"
-	"$dashbg2"
-	"$dashborder"
+	"$dash_bg1"
+	"$dash_bg2"
+	"$dash_border"
 	"${dash_iconsize}px"
 	"${dash_itemsize}px"
 	"${dash_iconspacing}px"
-	"$messagebg"
-	"$messageborder"
+	"$message_bg"
+	"$message_border"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
 # Menu
 make_gradient "$menu_bg" "$menu_gradient"
-menubg1="$color1"
-menubg2="$color2"
-make_gradient "$menu_bordercol" "0"
-menuborder="$color1"
-make_chameleon "$color" "$menubg1" "$menu_chameleon"
-menubg1="$chameleon"
-make_chameleon "$color" "$menubg2" "$menu_chameleon"
-menubg2="$chameleon"
+menu_bg1="$color1"
+menu_bg2="$color2"
+make_chameleon "$color" "$menu_bg1" "$menu_chameleon"
+menu_bg1="$chameleon"
+make_chameleon "$color" "$menu_bg2" "$menu_chameleon"
+menu_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
-	"@menubg1"
-	"@menubg2"
+	"@menu_bg1"
+	"@menu_bg2"
 	"@menu_fg"
-	"@menuborder"
+	"@menu_border"
 	"\/\*arrow_$menu_arrow"
 	"arrow_$menu_arrow\*\/"
 	"\/\*menushadow_$menu_shadow"
@@ -363,10 +357,10 @@ vars=(
 )
 vals=(
 	"${vals[@]}"
-	"$menubg1"
-	"$menubg2"
+	"$menu_bg1"
+	"$menu_bg2"
 	"$menu_fg"
-	"$menuborder"
+	"$menu_border"
 	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
@@ -374,31 +368,29 @@ vals=(
 )
 # Dialogs
 make_gradient "$dialog_bg" "$dialog_gradient"
-dialogbg1="$color1"
-dialogbg2="$color2"
-make_gradient "$dialog_bordercol" "0"
-dialogborder="$color1"
-make_chameleon "$color" "$dialogbg1" "$dialog_chameleon"
-dialogbg1="$chameleon"
-make_chameleon "$color" "$dialogbg2" "$dialog_chameleon"
-dialogbg2="$chameleon"
+dialog_bg1="$color1"
+dialog_bg2="$color2"
+make_chameleon "$color" "$dialog_bg1" "$dialog_chameleon"
+dialog_bg1="$chameleon"
+make_chameleon "$color" "$dialog_bg2" "$dialog_chameleon"
+dialog_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
-	"@dialogbg1"
-	"@dialogbg2"
+	"@dialog_bg1"
+	"@dialog_bg2"
 	"@dialog_fg"
 	"@dialog_heading"
-	"@dialogborder"
+	"@dialog_border"
 	"\/\*dialogshadow_$dialog_shadow"
 	"dialogshadow_$dialog_shadow\*\/"
 )
 vals=(
 	"${vals[@]}"
-	"$dialogbg1"
-	"$dialogbg2"
+	"$dialog_bg1"
+	"$dialog_bg2"
 	"$dialog_fg"
 	"$dialog_heading"
-	"$dialogborder"
+	"$dialog_border"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
