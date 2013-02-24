@@ -302,19 +302,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			if (mode == "wallpaper") {
 				match_wallpaper.set_active (true);
-				match_theme.set_active (false);
-				custom_color.set_active (false);
 				color_button.set_sensitive (false);
 			} else if (mode == "gtk") {
 				match_theme.set_active (true);
-				match_wallpaper.set_active (false);
-				custom_color.set_active (false);
 				color_button.set_sensitive (false);
 			} else if ("#" in mode || "rgb" in mode) {
 				color_value = mode;
 				custom_color.set_active (true);
-				match_theme.set_active (false);
-				match_wallpaper.set_active (false);
 				color_button.set_sensitive (true);
 			}
 
@@ -374,61 +368,49 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 
 		// Set colors
-		var selcolor = Gdk.RGBA ();
-		selcolor.parse ("%s".printf (color_value));
-		color_button.set_rgba (selcolor);
+		var color = Gdk.RGBA ();
 
-		var pbcolor = Gdk.RGBA ();
-		pbcolor.parse ("%s".printf (panel_bg_value));
-		panel_bg_color.set_rgba (pbcolor);
+		color.parse ("%s".printf (color_value));
+		color_button.set_rgba (color);
 
-		var pfcolor = Gdk.RGBA ();
-		pfcolor.parse ("%s".printf (panel_fg_value));
-		panel_fg_color.set_rgba (pfcolor);
+		color.parse ("%s".printf (panel_bg_value));
+		panel_bg_color.set_rgba (color);
 
-		var bocolor = Gdk.RGBA ();
-		bocolor.parse ("%s".printf (panel_border_value));
-		panel_border_color.set_rgba (bocolor);
+		color.parse ("%s".printf (panel_fg_value));
+		panel_fg_color.set_rgba (color);
 
-		var obcolor = Gdk.RGBA ();
-		obcolor.parse ("%s".printf (dash_bg_value));
-		dash_bg_color.set_rgba (obcolor);
+		color.parse ("%s".printf (panel_border_value));
+		panel_border_color.set_rgba (color);
 
-		var ofcolor = Gdk.RGBA ();
-		ofcolor.parse ("%s".printf (dash_fg_value));
-		dash_fg_color.set_rgba (ofcolor);
+		color.parse ("%s".printf (dash_bg_value));
+		dash_bg_color.set_rgba (color);
 
-		var oocolor = Gdk.RGBA ();
-		oocolor.parse ("%s".printf (dash_border_value));
-		dash_border_color.set_rgba (oocolor);
+		color.parse ("%s".printf (dash_fg_value));
+		dash_fg_color.set_rgba (color);
 
-		var mbcolor = Gdk.RGBA ();
-		mbcolor.parse ("%s".printf (menu_bg_value));
-		menu_bg_color.set_rgba (mbcolor);
+		color.parse ("%s".printf (dash_border_value));
+		dash_border_color.set_rgba (color);
 
-		var mfcolor = Gdk.RGBA ();
-		mfcolor.parse ("%s".printf (menu_fg_value));
-		menu_fg_color.set_rgba (mfcolor);
+		color.parse ("%s".printf (menu_bg_value));
+		menu_bg_color.set_rgba (color);
 
-		var mocolor = Gdk.RGBA ();
-		mocolor.parse ("%s".printf (menu_border_value));
-		menu_border_color.set_rgba (mocolor);
+		color.parse ("%s".printf (menu_fg_value));
+		menu_fg_color.set_rgba (color);
 
-		var dbcolor = Gdk.RGBA ();
-		dbcolor.parse ("%s".printf (dialog_bg_value));
-		dialog_bg_color.set_rgba (dbcolor);
+		color.parse ("%s".printf (menu_border_value));
+		menu_border_color.set_rgba (color);
 
-		var dfcolor = Gdk.RGBA ();
-		dfcolor.parse ("%s".printf (dialog_fg_value));
-		dialog_fg_color.set_rgba (dfcolor);
+		color.parse ("%s".printf (dialog_bg_value));
+		dialog_bg_color.set_rgba (color);
 
-		var dhcolor = Gdk.RGBA ();
-		dhcolor.parse ("%s".printf (dialog_heading_value));
-		dialog_heading_color.set_rgba (dhcolor);
+		color.parse ("%s".printf (dialog_fg_value));
+		dialog_fg_color.set_rgba (color);
 
-		var docolor = Gdk.RGBA ();
-		docolor.parse ("%s".printf (dialog_border_value));
-		dialog_border_color.set_rgba (docolor);
+		color.parse ("%s".printf (dialog_heading_value));
+		dialog_heading_color.set_rgba (color);
+
+		color.parse ("%s".printf (dialog_border_value));
+		dialog_border_color.set_rgba (color);
 	}
 
 	void create_widgets () {
