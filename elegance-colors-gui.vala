@@ -36,8 +36,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	SpinButton panel_chameleon_value;
 	SpinButton panel_gradient_value;
-	SpinButton panel_opacity_value;
-	SpinButton panel_borderop_value;
 	SpinButton panel_corner_value;
 
 	string panel_bg_value;
@@ -53,8 +51,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	SpinButton dash_chameleon_value;
 	SpinButton dash_gradient_value;
-	SpinButton dash_opacity_value;
-	SpinButton dash_borderop_value;
 	SpinButton dash_iconsize_value;
 	SpinButton dash_iconspacing_value;
 
@@ -72,8 +68,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	SpinButton menu_chameleon_value;
 	SpinButton menu_gradient_value;
-	SpinButton menu_opacity_value;
-	SpinButton menu_borderop_value;
 
 	string menu_bg_value;
 	string menu_fg_value;
@@ -89,8 +83,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	SpinButton dialog_chameleon_value;
 	SpinButton dialog_gradient_value;
-	SpinButton dialog_opacity_value;
-	SpinButton dialog_borderop_value;
 
 	string dialog_bg_value;
 	string dialog_fg_value;
@@ -390,8 +382,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			panel_chameleon_value.adjustment.value = key_file.get_double ("Panel", "panel_chameleon");
 			panel_gradient_value.adjustment.value = key_file.get_double ("Panel", "panel_gradient");
-			panel_opacity_value.adjustment.value = key_file.get_double ("Panel", "panel_opacity");
-			panel_borderop_value.adjustment.value = key_file.get_double ("Panel", "panel_borderop");
 			panel_corner_value.adjustment.value = key_file.get_double ("Panel", "panel_corner");
 
 			dash_bg_value = key_file.get_string ("Overview", "dash_bg");
@@ -402,8 +392,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			dash_chameleon_value.adjustment.value = key_file.get_double ("Overview", "dash_chameleon");
 			dash_gradient_value.adjustment.value = key_file.get_double ("Overview", "dash_gradient");
-			dash_opacity_value.adjustment.value = key_file.get_double ("Overview", "dash_opacity");
-			dash_borderop_value.adjustment.value = key_file.get_double ("Overview", "dash_borderop");
 			dash_iconsize_value.adjustment.value = key_file.get_double ("Overview", "dash_iconsize");
 			dash_iconspacing_value.adjustment.value = key_file.get_double ("Overview", "dash_iconspacing");
 
@@ -416,8 +404,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			menu_chameleon_value.adjustment.value = key_file.get_double ("Menu", "menu_chameleon");
 			menu_gradient_value.adjustment.value = key_file.get_double ("Menu", "menu_gradient");
-			menu_opacity_value.adjustment.value = key_file.get_double ("Menu", "menu_opacity");
-			menu_borderop_value.adjustment.value = key_file.get_double ("Menu", "menu_borderop");
 
 			dialog_bg_value = key_file.get_string ("Dialogs", "dialog_bg");
 			dialog_fg_value = key_file.get_string ("Dialogs", "dialog_fg");
@@ -428,8 +414,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			dialog_chameleon_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_chameleon");
 			dialog_gradient_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_gradient");
-			dialog_opacity_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_opacity");
-			dialog_borderop_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_borderop");
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
 		}
@@ -509,6 +493,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		custom_color = new RadioButton.with_label (match_theme.get_group(),"Custom");
 		custom_color.set_tooltip_text ("Manually set a custom highlight color");
 		color_button = new ColorButton ();
+		color_button.set_use_alpha (true);
 		color_button.set_tooltip_text ("Set a custom highlight color");
 		var monitor_label = new Label.with_mnemonic ("Monitor changes");
 		monitor_label.set_halign (Align.START);
@@ -553,14 +538,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		var panel_bg_label = new Label.with_mnemonic ("Background color");
 		panel_bg_label.set_halign (Align.START);
 		panel_bg_color = new ColorButton ();
+		panel_bg_color.set_use_alpha (true);
 		panel_bg_color.set_tooltip_text ("Set the background color of the top panel");
 		var panel_fg_label = new Label.with_mnemonic ("Text color");
 		panel_fg_label.set_halign (Align.START);
 		panel_fg_color = new ColorButton ();
+		panel_fg_color.set_use_alpha (true);
 		panel_fg_color.set_tooltip_text ("Set the text color of the top panel");
 		var panel_bordercol_label = new Label.with_mnemonic ("Border color");
 		panel_bordercol_label.set_halign (Align.START);
 		panel_bordercol_color = new ColorButton ();
+		panel_bordercol_color.set_use_alpha (true);
 		panel_bordercol_color.set_tooltip_text ("Set the border color of the top panel");
 		var panel_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		panel_shadow_label.set_halign (Align.START);
@@ -582,16 +570,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_gradient_value = new SpinButton.with_range (0, 255, 1);
 		panel_gradient_value.set_tooltip_text ("Set the gradient size of the background of the top panel");
 		panel_gradient_value.set_halign (Align.END);
-		var panel_opacity_label = new Label.with_mnemonic ("Background opacity");
-		panel_opacity_label.set_halign (Align.START);
-		panel_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		panel_opacity_value.set_tooltip_text ("Set the opacity of the top panel");
-		panel_opacity_value.set_halign (Align.END);
-		var panel_borderop_label = new Label.with_mnemonic ("Border opacity");
-		panel_borderop_label.set_halign (Align.START);
-		panel_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		panel_borderop_value.set_tooltip_text ("Set the opacity of the top panel border");
-		panel_borderop_value.set_halign (Align.END);
 		var panel_corner_label = new Label.with_mnemonic ("Corner radius");
 		panel_corner_label.set_halign (Align.START);
 		panel_corner_value = new SpinButton.with_range (0, 100, 1);
@@ -602,14 +580,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		var dash_bg_label = new Label.with_mnemonic ("Background color");
 		dash_bg_label.set_halign (Align.START);
 		dash_bg_color = new ColorButton ();
+		dash_bg_color.set_use_alpha (true);
 		dash_bg_color.set_tooltip_text ("Set the background color of the dash and workspace panel");
 		var dash_fg_label = new Label.with_mnemonic ("Text color");
 		dash_fg_label.set_halign (Align.START);
 		dash_fg_color = new ColorButton ();
+		dash_fg_color.set_use_alpha (true);
 		dash_fg_color.set_tooltip_text ("Set the text color of the dash labels and window caption");
 		var dash_bordercol_label = new Label.with_mnemonic ("Border color");
 		dash_bordercol_label.set_halign (Align.START);
 		dash_bordercol_color = new ColorButton ();
+		dash_bordercol_color.set_use_alpha (true);
 		dash_bordercol_color.set_tooltip_text ("Set the border color of the dash and workspace panel");
 		var dash_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		dash_shadow_label.set_halign (Align.START);
@@ -626,16 +607,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_gradient_value = new SpinButton.with_range (0, 255, 1);
 		dash_gradient_value.set_tooltip_text ("Set the gradient size of the backgrounds of the dash and workspace panel");
 		dash_gradient_value.set_halign (Align.END);
-		var dash_opacity_label = new Label.with_mnemonic ("Background opacity");
-		dash_opacity_label.set_halign (Align.START);
-		dash_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		dash_opacity_value.set_tooltip_text ("Set the opacity of the dash and workspace panel");
-		dash_opacity_value.set_halign (Align.END);
-		var dash_borderop_label = new Label.with_mnemonic ("Border opacity");
-		dash_borderop_label.set_halign (Align.START);
-		dash_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		dash_borderop_value.set_tooltip_text ("Set the opacity of the dash and workspace panel border");
-		dash_borderop_value.set_halign (Align.END);
 		var dash_iconsize_label = new Label.with_mnemonic ("App icon size");
 		dash_iconsize_label.set_halign (Align.START);
 		dash_iconsize_value = new SpinButton.with_range (0, 256, 1);
@@ -651,14 +622,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		var menu_bg_label = new Label.with_mnemonic ("Background color");
 		menu_bg_label.set_halign (Align.START);
 		menu_bg_color = new ColorButton ();
+		menu_bg_color.set_use_alpha (true);
 		menu_bg_color.set_tooltip_text ("Set the background color of the popup menu");
 		var menu_fg_label = new Label.with_mnemonic ("Text color");
 		menu_fg_label.set_halign (Align.START);
 		menu_fg_color = new ColorButton ();
+		menu_fg_color.set_use_alpha (true);
 		menu_fg_color.set_tooltip_text ("Set the text color of the popup menu");
 		var menu_bordercol_label = new Label.with_mnemonic ("Border color");
 		menu_bordercol_label.set_halign (Align.START);
 		menu_bordercol_color = new ColorButton ();
+		menu_bordercol_color.set_use_alpha (true);
 		menu_bordercol_color.set_tooltip_text ("Set the border color of the popup menu");
 		var menu_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		menu_shadow_label.set_halign (Align.START);
@@ -680,33 +654,27 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_gradient_value = new SpinButton.with_range (0, 255, 1);
 		menu_gradient_value.set_tooltip_text ("Set the gradient size of the background of the popup menu");
 		menu_gradient_value.set_halign (Align.END);
-		var menu_opacity_label = new Label.with_mnemonic ("Background opacity");
-		menu_opacity_label.set_halign (Align.START);
-		menu_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		menu_opacity_value.set_tooltip_text ("Set the opacity of the popup menu");
-		menu_opacity_value.set_halign (Align.END);
-		var menu_borderop_label = new Label.with_mnemonic ("Border opacity");
-		menu_borderop_label.set_halign (Align.START);
-		menu_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		menu_borderop_value.set_tooltip_text ("Set the opacity of the popup menu border");
-		menu_borderop_value.set_halign (Align.END);
 
 		// Dialogs
 		var dialog_bg_label = new Label.with_mnemonic ("Background color");
 		dialog_bg_label.set_halign (Align.START);
 		dialog_bg_color = new ColorButton ();
+		dialog_bg_color.set_use_alpha (true);
 		dialog_bg_color.set_tooltip_text ("Set the background color of the modal dialogs");
 		var dialog_fg_label = new Label.with_mnemonic ("Text color");
 		dialog_fg_label.set_halign (Align.START);
 		dialog_fg_color = new ColorButton ();
+		dialog_fg_color.set_use_alpha (true);
 		dialog_fg_color.set_tooltip_text ("Set the text color of the modal dialogs");
 		var dialog_heading_label = new Label.with_mnemonic ("Heading color");
 		dialog_heading_label.set_halign (Align.START);
 		dialog_heading_color = new ColorButton ();
+		dialog_heading_color.set_use_alpha (true);
 		dialog_heading_color.set_tooltip_text ("Set the text color of headings in the modal dialogs");
 		var dialog_bordercol_label = new Label.with_mnemonic ("Border color");
 		dialog_bordercol_label.set_halign (Align.START);
 		dialog_bordercol_color = new ColorButton ();
+		dialog_bordercol_color.set_use_alpha (true);
 		dialog_bordercol_color.set_tooltip_text ("Set the border color of the modal dialogs");
 		var dialog_shadow_label = new Label.with_mnemonic ("Drop shadow");
 		dialog_shadow_label.set_halign (Align.START);
@@ -723,16 +691,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_gradient_value = new SpinButton.with_range (0, 255, 1);
 		dialog_gradient_value.set_tooltip_text ("Set the gradient size of the background of the modal dialogs");
 		dialog_gradient_value.set_halign (Align.END);
-		var dialog_opacity_label = new Label.with_mnemonic ("Background opacity");
-		dialog_opacity_label.set_halign (Align.START);
-		dialog_opacity_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		dialog_opacity_value.set_tooltip_text ("Set the opacity of the modal dialogs");
-		dialog_opacity_value.set_halign (Align.END);
-		var dialog_borderop_label = new Label.with_mnemonic ("Border opacity");
-		dialog_borderop_label.set_halign (Align.START);
-		dialog_borderop_value = new SpinButton.with_range (0.0, 1.0, 0.1);
-		dialog_borderop_value.set_tooltip_text ("Set the opacity of the modal dialogs border");
-		dialog_borderop_value.set_halign (Align.END);
 
 		apply_button = new Button.from_stock (Stock.APPLY);
 		close_button = new Button.from_stock(Stock.CLOSE);
@@ -849,11 +807,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid1.attach_next_to (panel_chameleon_value, panel_chameleon_label, PositionType.RIGHT, 1, 1);
 		grid1.attach (panel_gradient_label, 0, 6, 2, 1);
 		grid1.attach_next_to (panel_gradient_value, panel_gradient_label, PositionType.RIGHT, 1, 1);
-		grid1.attach (panel_opacity_label, 0, 7, 2, 1);
-		grid1.attach_next_to (panel_opacity_value, panel_opacity_label, PositionType.RIGHT, 1, 1);
-		grid1.attach (panel_borderop_label, 0, 8, 2, 1);
-		grid1.attach_next_to (panel_borderop_value, panel_borderop_label, PositionType.RIGHT, 1, 1);
-		grid1.attach (panel_corner_label, 0, 9, 2, 1);
+		grid1.attach (panel_corner_label, 0, 7, 2, 1);
 		grid1.attach_next_to (panel_corner_value, panel_corner_label, PositionType.RIGHT, 1, 1);
 
 		// Overview
@@ -873,13 +827,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid2.attach_next_to (dash_chameleon_value, dash_chameleon_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_gradient_label, 0, 5, 2, 1);
 		grid2.attach_next_to (dash_gradient_value, dash_gradient_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_opacity_label, 0, 6, 2, 1);
-		grid2.attach_next_to (dash_opacity_value, dash_opacity_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_borderop_label, 0, 7, 2, 1);
-		grid2.attach_next_to (dash_borderop_value, dash_borderop_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_iconsize_label, 0, 8, 2, 1);
+		grid2.attach (dash_iconsize_label, 0, 6, 2, 1);
 		grid2.attach_next_to (dash_iconsize_value, dash_iconsize_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_iconspacing_label, 0, 9, 2, 1);
+		grid2.attach (dash_iconspacing_label, 0, 7, 2, 1);
 		grid2.attach_next_to (dash_iconspacing_value, dash_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Menu
@@ -901,10 +851,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid3.attach_next_to (menu_chameleon_value, menu_chameleon_label, PositionType.RIGHT, 1, 1);
 		grid3.attach (menu_gradient_label, 0, 6, 2, 1);
 		grid3.attach_next_to (menu_gradient_value, menu_gradient_label, PositionType.RIGHT, 1, 1);
-		grid3.attach (menu_opacity_label, 0, 7, 2, 1);
-		grid3.attach_next_to (menu_opacity_value, menu_opacity_label, PositionType.RIGHT, 1, 1);
-		grid3.attach (menu_borderop_label, 0, 8, 2, 1);
-		grid3.attach_next_to (menu_borderop_value, menu_borderop_label, PositionType.RIGHT, 1, 1);
 
 		// Dialogs
 		var grid4 = new Grid ();
@@ -925,10 +871,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid4.attach_next_to (dialog_chameleon_value, dialog_chameleon_label, PositionType.RIGHT, 1, 1);
 		grid4.attach (dialog_gradient_label, 0, 6, 2, 1);
 		grid4.attach_next_to (dialog_gradient_value, dialog_gradient_label, PositionType.RIGHT, 1, 1);
-		grid4.attach (dialog_opacity_label, 0, 7, 2, 1);
-		grid4.attach_next_to (dialog_opacity_value, dialog_opacity_label, PositionType.RIGHT, 1, 1);
-		grid4.attach (dialog_borderop_label, 0, 8, 2, 1);
-		grid4.attach_next_to (dialog_borderop_value, dialog_borderop_label, PositionType.RIGHT, 1, 1);
 
 		// Buttons
 		var buttons = new ButtonBox (Orientation.HORIZONTAL);
@@ -1062,12 +1004,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_gradient_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		panel_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		panel_borderop_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
 		panel_corner_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
@@ -1087,12 +1023,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			apply_button.set_sensitive (true);
 		});
 		dash_gradient_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		dash_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		dash_borderop_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		dash_iconsize_value.adjustment.value_changed.connect (() => {
@@ -1122,12 +1052,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_gradient_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
-		menu_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		menu_borderop_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
 		dialog_bg_color.color_set.connect (() => {
 			apply_button.set_sensitive (true);
 		});
@@ -1147,12 +1071,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			apply_button.set_sensitive (true);
 		});
 		dialog_gradient_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		dialog_opacity_value.adjustment.value_changed.connect (() => {
-			apply_button.set_sensitive (true);
-		});
-		dialog_borderop_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
 		apply_button.clicked.connect (() => {
@@ -1207,8 +1125,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_double ("Panel", "panel_chameleon", panel_chameleon_value.adjustment.value);
 		key_file.set_double ("Panel", "panel_gradient", panel_gradient_value.adjustment.value);
-		key_file.set_double ("Panel", "panel_opacity", panel_opacity_value.adjustment.value);
-		key_file.set_double ("Panel", "panel_borderop", panel_borderop_value.adjustment.value);
 		key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
 
 		key_file.set_string ("Overview", "dash_bg", dash_bg_color.get_rgba ().to_string());
@@ -1219,8 +1135,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_double ("Overview", "dash_chameleon", dash_chameleon_value.adjustment.value);
 		key_file.set_double ("Overview", "dash_gradient", dash_gradient_value.adjustment.value);
-		key_file.set_double ("Overview", "dash_opacity", dash_opacity_value.adjustment.value);
-		key_file.set_double ("Overview", "dash_borderop", dash_borderop_value.adjustment.value);
 		key_file.set_double ("Overview", "dash_iconsize", dash_iconsize_value.adjustment.value);
 		key_file.set_double ("Overview", "dash_iconspacing", dash_iconspacing_value.adjustment.value);
 
@@ -1233,8 +1147,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_double ("Menu", "menu_chameleon", menu_chameleon_value.adjustment.value);
 		key_file.set_double ("Menu", "menu_gradient", menu_gradient_value.adjustment.value);
-		key_file.set_double ("Menu", "menu_opacity", menu_opacity_value.adjustment.value);
-		key_file.set_double ("Menu", "menu_borderop", menu_borderop_value.adjustment.value);
 
 		key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_color.get_rgba ().to_string());
 		key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.get_rgba ().to_string());
@@ -1245,8 +1157,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		key_file.set_double ("Dialogs", "dialog_chameleon", dialog_chameleon_value.adjustment.value);
 		key_file.set_double ("Dialogs", "dialog_gradient", dialog_gradient_value.adjustment.value);
-		key_file.set_double ("Dialogs", "dialog_opacity", dialog_opacity_value.adjustment.value);
-		key_file.set_double ("Dialogs", "dialog_borderop", dialog_borderop_value.adjustment.value);
 
 		if (config_file.query_exists ()) {
 			try {
