@@ -305,6 +305,8 @@ vars=(
 	"@message_border"
 	"\/\*dashshadow_$dash_shadow"
 	"dashshadow_$dash_shadow\*\/"
+	"\/\*dashpanel_$dash_panel"
+	"dashpanel_$dash_panel\*\/"
 )
 vals=(
 	"${vals[@]}"
@@ -317,6 +319,8 @@ vals=(
 	"${dash_iconspacing}px"
 	"$message_bg"
 	"$message_border"
+	"\/\*\*\/"
+	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )

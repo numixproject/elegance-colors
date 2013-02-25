@@ -48,6 +48,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton dash_border_color;
 
 	Switch dash_shadow_switch;
+	Switch dash_panel_switch;
 
 	SpinButton dash_chameleon_value;
 	SpinButton dash_gradient_value;
@@ -338,6 +339,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			dash_border_value = key_file.get_string ("Overview", "dash_border");
 
 			dash_shadow_switch.set_active (key_file.get_boolean ("Overview", "dash_shadow"));
+			dash_panel_switch.set_active (key_file.get_boolean ("Overview", "dash_panel"));
 
 			dash_chameleon_value.adjustment.value = key_file.get_double ("Overview", "dash_chameleon");
 			dash_gradient_value.adjustment.value = key_file.get_double ("Overview", "dash_gradient");
@@ -534,6 +536,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_shadow_switch = new Switch ();
 		dash_shadow_switch.set_tooltip_text ("Enable/disable shadow under the dash and workspace panel");
 		dash_shadow_switch.set_halign (Align.END);
+		var dash_panel_label = new Label.with_mnemonic ("Restyled panel");
+		dash_panel_label.set_halign (Align.START);
+		dash_panel_switch = new Switch ();
+		dash_panel_switch.set_tooltip_text ("Restyle panel in overview to be same as dash");
+		dash_panel_switch.set_halign (Align.END);
 		var dash_chameleon_label = new Label.with_mnemonic ("Background tint level");
 		dash_chameleon_label.set_halign (Align.START);
 		dash_chameleon_value = new SpinButton.with_range (0, 100, 1);
@@ -760,13 +767,15 @@ class EleganceColorsWindow : ApplicationWindow {
 		grid2.attach_next_to (dash_border_color, dash_border_label, PositionType.RIGHT, 1, 1);
 		grid2.attach (dash_shadow_label, 0, 3, 2, 1);
 		grid2.attach_next_to (dash_shadow_switch, dash_shadow_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_chameleon_label, 0, 4, 2, 1);
+		grid2.attach (dash_panel_label, 0, 4, 2, 1);
+		grid2.attach_next_to (dash_panel_switch, dash_panel_label, PositionType.RIGHT, 1, 1);
+		grid2.attach (dash_chameleon_label, 0, 5, 2, 1);
 		grid2.attach_next_to (dash_chameleon_value, dash_chameleon_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_gradient_label, 0, 5, 2, 1);
+		grid2.attach (dash_gradient_label, 0, 6, 2, 1);
 		grid2.attach_next_to (dash_gradient_value, dash_gradient_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_iconsize_label, 0, 6, 2, 1);
+		grid2.attach (dash_iconsize_label, 0, 7, 2, 1);
 		grid2.attach_next_to (dash_iconsize_value, dash_iconsize_label, PositionType.RIGHT, 1, 1);
-		grid2.attach (dash_iconspacing_label, 0, 7, 2, 1);
+		grid2.attach (dash_iconspacing_label, 0, 8, 2, 1);
 		grid2.attach_next_to (dash_iconspacing_value, dash_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Menu
@@ -956,6 +965,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_shadow_switch.notify["active"].connect (() => {
 			apply_button.set_sensitive (true);
 		});
+		dash_panel_switch.notify["active"].connect (() => {
+			apply_button.set_sensitive (true);
+		});
 		dash_chameleon_value.adjustment.value_changed.connect (() => {
 			apply_button.set_sensitive (true);
 		});
@@ -1069,6 +1081,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		key_file.set_string ("Overview", "dash_border", dash_border_color.get_rgba ().to_string());
 
 		key_file.set_boolean ("Overview", "dash_shadow", dash_shadow_switch.get_active());
+		key_file.set_boolean ("Overview", "dash_panel", dash_panel_switch.get_active());
 
 		key_file.set_double ("Overview", "dash_chameleon", dash_chameleon_value.adjustment.value);
 		key_file.set_double ("Overview", "dash_gradient", dash_gradient_value.adjustment.value);
