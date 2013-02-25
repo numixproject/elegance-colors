@@ -27,10 +27,9 @@ tempdir="/tmp/elegance-colors"
 installdir=`if [[ -d "$selfdir/gnome-shell" && -d "$selfdir/presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
 defaultconfig="$installdir/presets/default.ini"
 template="$installdir/gnome-shell"
-homedir=`awk -F: -v v="$(who | grep $(echo "$DISPLAY" | cut -d '.' -f 1) | cut -d ' ' -f 1 | tail -1)" '{if ($1==v) print $6}' /etc/passwd`
+glibschemas="/usr/share/glib-2.0/schemas"
+extensiondir="$HOME/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas"
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
-schemadir="/usr/share/glib-2.0/schemas"
-extensiondir="$homedir/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas"
 
 show_info() {
 echo -e "\033[0;32m[INFO $(date +"%H:%M:%S")]\033[0m $@"
@@ -47,21 +46,6 @@ echo -e "\033[0;31m[ERR  $(date +"%H:%M:%S")]\033[0m $@" 1>&2
 notify_err() {
 show_err "$@"
 notify-send -h int:transient:1 -i dialog-error "Elegance Colors" "$@"
-}
-
-fix_schema() {
-if [[ $(whoami) = "root" ]]; then
-	if [[ -f "$extensiondir/$schemafile" ]]; then
-		cp "$extensiondir/$schemafile" "$schemadir/$schemafile"
-		glib-compile-schemas "$schemadir"
-	else
-		show_err "Schema file could not be found. Is 'User themes' extension installed under '$homedir/.local/share/gnome-shell/extensions/'?"
-		exit 1
-	fi
-else
-	notify_err "Root access is needed to fix schema for 'User themes'!"
-	exit 1
-fi
 }
 
 export_theme() {
@@ -430,9 +414,9 @@ else
 	mkdir -p "$HOME/.themes/elegance-colors"
 	mv "$makedir/gnome-shell" "$HOME/.themes/elegance-colors/"
 	# Set the theme
-	if [[ `gsettings get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
+	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		show_info "Reloading the theme"
-		gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'
+		gsettings --schemadir "$schemadir" set org.gnome.shell.extensions.user-theme name 'elegance-colors'
 	fi
 fi
 # Remove the temporary directory
@@ -480,7 +464,7 @@ elif [[ "$mode" = "wallpaper" ]]; then
 fi
 }
 
-set_config() {
+read_config() {
 # Update the old config file to support new options
 while IFS='= ' read var val; do
 	# Escape comments
@@ -505,13 +489,35 @@ while IFS='= ' read var val; do
 done < "$configfile"
 }
 
+set_schemadir() {
+# Set the schemadir
+if [[ -f "$extensiondir/$schemafile" && -f "$extensiondir/gschemas.compiled" ]]; then
+	schemadir="$extensiondir"
+elif [[ -f "$glibschemas/$schemafile" && -f "$glibschemas/gschemas.compiled" ]]; then
+	schemadir="$glibschemas"
+else
+	return 1
+fi
+}
+
 initialize() {
+# Verify if User themes extension is installed and set schemadir
+set_schemadir
+if [[ ! $? -eq 0 ]]; then
+	notify_err "User themes extension is not installed, please install from https://extensions.gnome.org/extension/19/user-themes/"
+	# Wait till the User theme extension is installed
+	until set_schemadir; do
+		sleep 5
+	done
+fi
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default one
 [[ -f "$configfile" ]] || cp -f "$defaultconfig" "$configfile"
 # Create the temporary directory
 [[ -d "$tempdir" ]] || mkdir -p "$tempdir"
+# Read the configuration
+read_config
 # Get the gtk theme name
 themename=$(gsettings get org.gnome.desktop.interface gtk-theme)
 gtktheme="${themename//\'/}"
@@ -536,7 +542,6 @@ if [[ "$img" =~ .xml$ ]]; then
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 if [[ ! -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
-	set_config
 	set_theme
 fi
 # Enable or disable autostart
@@ -574,7 +579,8 @@ rm -f "$md5self"
 [[ -f "$tempdir/elegance-colors.pid" ]] && stop_process
 # Write the pid to a file
 echo "$$" > "$tempdir/elegance-colors.pid"
-while true; do
+while :
+do
 	# Don't run as root
 	if [[ $(whoami) = "root" ]]; then
 		show_err "Cannot run process as root"
@@ -596,17 +602,9 @@ while true; do
 		show_err "Gnome Shell not running"
 		exit 1
 	fi
-	# Verify if schema file exists
-	if [[ ! -f "$schemadir/$schemafile" ]]; then
-		notify_err "Schema for 'User themes' could not be found, Run 'elegance-colors fix' as root to fix the problem"
-		while [[ ! -f "$schemadir/$schemafile" ]]; do
-			sleep 5
-		done
-	fi
 	initialize
-	set_config
 	# Check if the current theme name matches elegance-colors
-	if [[ `gsettings get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
+	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		monitor_changes
 	fi
 	sleep 5
@@ -615,7 +613,6 @@ done
 
 apply_changes() {
 initialize
-set_config
 set_theme
 }
 
@@ -626,12 +623,8 @@ case "$1" in
 		stop_process;;
 	"apply")
 		apply_changes;;
-	"gui")
-		$selfdir/elegance-colors-gui;;
 	"export")
 		export_theme "$2";;
-	"fix")
-		fix_schema;;
 	"help")
 		man elegance-colors;;
 	*)

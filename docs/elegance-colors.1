@@ -3,8 +3,29 @@
 .SH NAME
 elegance-colors \- chameleon theme for gnome shell
 
+.SH SYNOPSIS
+.B elegance-colors
+[options...]
+
 .SH DESCRIPTION
 Elegance Colors is a chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or a user defined color. Also various other aspects of the theme are customizable.
+
+.SH OPTIONS
+.TP
+.BR start
+Start the process in foreground
+
+.TP
+.BR stop
+Stop the running process
+
+.TP
+.BR apply
+Apply the configuration
+
+.TP
+.BR export\ /path/to/themefile.zip
+Export the current theme to a zip file
 
 .SH CUSTOMIZATION
 A process runs in background which detects changes, generates the theme and reloads the theme accordingly. After installation, you must run the following command to start the background process,
@@ -24,29 +45,6 @@ The configuration file is located under
 
 Temporary files are created under
 .B /tmp/elegance-colors
-
-.SH TROUBLESHOOTING
-If you have installed the user-theme extension from the extensions.gnome.org website, you might need to run the following command before elegance-colors can work,
-
-.B elegance-colors fix
-
-It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can kill running processes of elegance-colors with the command,
-
-.B killall elegance-colors
-
-To view any error messages produced, stop the background process first and then run the process in Terminal,
-
-.B elegance-colors stop
-
-.B elegance-colors start
-
-To manually apply changes, run,
-
-.B elegance-colors apply
-
-To export the theme, run,
-
-.B elegance-colors export /path/to/themefile.zip
 
 .SH NOTES
 The configuration file should not be edited by hand to avoid potential errors.

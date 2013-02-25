@@ -530,6 +530,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 #panel.in-overview {
+    color: @dash_fg;
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     border-color: @dash_border;

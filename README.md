@@ -54,10 +54,6 @@ You can launch the GUI from the menu which lets you customise various aspects of
 
 ### Troubleshooting
 
-If you have installed the user-theme extension from the [GNOME Shell Extensions](http://extensions.gnome.org) website, you might need to run the following command before elegance-colors can work,
-
-`elegance-colors fix`
-
 It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can kill running processes of elegance-colors with the command,
 
 `killall elegance-colors`
