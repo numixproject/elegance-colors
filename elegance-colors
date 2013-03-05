@@ -523,9 +523,7 @@ fi
 # Read the configuration
 read_config
 # Get the gtk theme name
-themename=$(gsettings get org.gnome.desktop.interface gtk-theme)
-gtktheme="${themename//\'/}"
-theme="${gtktheme//%/\\x}"
+theme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
 # Get the gtk theme path
 if [[ -f "$HOME/.themes/$theme/gtk-3.0/gtk-main.css" ]]; then
 	gtkpath="$HOME/.themes/$theme/gtk-3.0/gtk-main.css"
@@ -537,9 +535,7 @@ elif [[ -f "/usr/share/themes/$theme/gtk-3.0/gtk.css" ]]; then
 	gtkpath="/usr/share/themes/$theme/gtk-3.0/gtk.css"
 fi
 # Get the background image path
-path=$(gsettings get org.gnome.desktop.background picture-uri)
-bg=$(echo "$path" | sed -e "s/'//g" -e "s/file:\/\///g")
-img="${bg//%/\\x}"
+img=$(gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'//g" -e "s/file:\/\///g" -e 's/\%20/\ /g')
 # See if the returned image is a xml file
 if [[ "$img" =~ .xml$ ]]; then
 	img=$(grep "<file>" "$img" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
