@@ -113,30 +113,31 @@ fi
 }
 
 make_gradient() {
-incolor="$1"
+basecolor="$1"
 gradient="$2"
-if [[ "$incolor" =~ ^rgba ]]; then
-	red2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
-elif [[ "$incolor" =~ ^rgb ]]; then
-	red2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$incolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+[[ "$basecolor" = "$mode" ]] && basecolor="$color"
+if [[ "$basecolor" =~ ^rgba ]]; then
+	red2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+	opacity=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
+elif [[ "$basecolor" =~ ^rgb ]]; then
+	red2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
 	opacity="1.0"
-elif [[ "$incolor" =~ ^# && "${#incolor}" -eq 4 ]]; then
-	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 4 ]]; then
+	red2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
 	opacity="1.0"
-elif [[ "$incolor" =~ ^# && "${#incolor}" -eq 7 ]]; then
-	red2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$incolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 7 ]]; then
+	red2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
+	green2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
+	blue2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
 	opacity="1.0"
 else
-	show_err "Invalid color '$incolor'"
+	show_err "Invalid color '$basecolor'"
 fi
 red1=$(( red2 + gradient ))
 green1=$(( green2 + gradient ))
@@ -157,10 +158,12 @@ else
 fi
 }
 
-make_chameleon() {
+make_tint() {
 color1="$1"
 color2="$2"
 amount="$3"
+[[ "$color1" = "$mode" ]] && color1="$color"
+[[ "$color2" = "$mode" ]] && color2="$color"
 if [[ "$color1" =~ ^rgb ]]; then
 	red1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
 	green1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
@@ -226,10 +229,6 @@ vars=(
 	"@font_size"
 	"@roundness"
 	"@transition"
-	"\/\*newbutton_$newbutton"
-	"newbutton_$newbutton\*\/"
-	"\/\*entry_$entry"
-	"entry_$entry\*\/"
 )
 vals=(
 	"${vals[@]}"
@@ -240,18 +239,14 @@ vals=(
 	"${font_size}pt"
 	"${roundness}px"
 	"$transition"
-	"\/\*\*\/"
-	"\/\*\*\/"
-	"\/\*\*\/"
-	"\/\*\*\/"
 )
 # Panel
 make_gradient "$panel_bg" "$panel_gradient"
 panel_bg1="$color1"
 panel_bg2="$color2"
-make_chameleon "$color" "$panel_bg1" "$panel_chameleon"
+make_tint "$color" "$panel_bg1" "$panel_tint"
 panel_bg1="$chameleon"
-make_chameleon "$color" "$panel_bg2" "$panel_chameleon"
+make_tint "$color" "$panel_bg2" "$panel_tint"
 panel_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
@@ -277,36 +272,80 @@ vals=(
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
+# Panel in overview
+make_gradient "$paneloverview_bg" "$paneloverview_gradient"
+paneloverview_bg1="$color1"
+paneloverview_bg2="$color2"
+make_tint "$color" "$paneloverview_bg1" "$paneloverview_tint"
+paneloverview_bg1="$chameleon"
+make_tint "$color" "$paneloverview_bg2" "$paneloverview_tint"
+paneloverview_bg2="$chameleon"
+vars=(
+	"${vars[@]}"
+	"@paneloverview_bg1"
+	"@paneloverview_bg2"
+	"@paneloverview_fg"
+	"@paneloverview_border"
+	"\/\*paneloverviewshadow_$paneloverview_shadow"
+	"paneloverviewshadow_$paneloverview_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$paneloverview_bg1"
+	"$paneloverview_bg2"
+	"$paneloverview_fg"
+	"$paneloverview_border"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Overview
+make_gradient "$overview_bg" "$overview_gradient"
+overview_bg1="$color1"
+overview_bg2="$color2"
+make_tint "$color" "$overview_bg1" "$overview_tint"
+overview_bg1="$chameleon"
+make_tint "$color" "$overview_bg2" "$overview_tint"
+overview_bg2="$chameleon"
+make_tint "$color" "$overview_msgbg" "$overview_tint"
+overview_msgbg="$chameleon"
+# Icon size dash
+overview_itemsize=$(( overview_iconsize + overview_iconspacing - 2 ))
+vars=(
+	"${vars[@]}"
+	"@overview_bg1"
+	"@overview_bg2"
+	"@overview_msgbg"
+	"@overview_msgborder"
+	"@overview_iconsize"
+	"@overview_itemsize"
+	"@overview_iconspacing"
+)
+vals=(
+	"${vals[@]}"
+	"$overview_bg1"
+	"$overview_bg2"
+	"$overview_msgbg"
+	"$overview_msgborder"
+	"${overview_iconsize}px"
+	"${overview_itemsize}px"
+	"${overview_iconspacing}px"
+)
 # Dash
 make_gradient "$dash_bg" "$dash_gradient"
 dash_bg1="$color1"
 dash_bg2="$color2"
-make_chameleon "$color" "$dash_bg1" "$dash_chameleon"
+make_tint "$color" "$dash_bg1" "$dash_tint"
 dash_bg1="$chameleon"
-make_chameleon "$color" "$dash_bg2" "$dash_chameleon"
+make_tint "$color" "$dash_bg2" "$dash_tint"
 dash_bg2="$chameleon"
-# Generate message tray background
-make_chameleon "$color" "$dash_bg" "$dash_chameleon"
-message_bg=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
-make_chameleon "$color" "$dash_border" "$dash_chameleon"
-message_border=$(echo "$chameleon" | sed -e 's/[a-z() ]//g' | awk -F "," '{print "rgba(" $1 "," $2 "," $3 ",0.1)"}' )
-# Icon size dash
-dash_itemsize=$(( dash_iconsize + dash_iconspacing - 2 ))
 vars=(
 	"${vars[@]}"
 	"@dash_fg"
 	"@dash_bg1"
 	"@dash_bg2"
 	"@dash_border"
-	"@dash_iconsize"
-	"@dash_itemsize"
-	"@dash_iconspacing"
-	"@message_bg"
-	"@message_border"
 	"\/\*dashshadow_$dash_shadow"
 	"dashshadow_$dash_shadow\*\/"
-	"\/\*dashpanel_$dash_panel"
-	"dashpanel_$dash_panel\*\/"
 )
 vals=(
 	"${vals[@]}"
@@ -314,13 +353,6 @@ vals=(
 	"$dash_bg1"
 	"$dash_bg2"
 	"$dash_border"
-	"${dash_iconsize}px"
-	"${dash_itemsize}px"
-	"${dash_iconspacing}px"
-	"$message_bg"
-	"$message_border"
-	"\/\*\*\/"
-	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
@@ -328,9 +360,9 @@ vals=(
 make_gradient "$menu_bg" "$menu_gradient"
 menu_bg1="$color1"
 menu_bg2="$color2"
-make_chameleon "$color" "$menu_bg1" "$menu_chameleon"
+make_tint "$color" "$menu_bg1" "$menu_tint"
 menu_bg1="$chameleon"
-make_chameleon "$color" "$menu_bg2" "$menu_chameleon"
+make_tint "$color" "$menu_bg2" "$menu_tint"
 menu_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
@@ -354,13 +386,90 @@ vals=(
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
+# Buttons
+make_gradient "$button_bg" "$button_gradient"
+button_bg1="$color1"
+button_bg2="$color2"
+make_gradient "$button_hoverbg" "$button_gradient"
+button_hoverbg1="$color1"
+button_hoverbg2="$color2"
+make_gradient "$button_activebg" "$button_gradient"
+button_activebg1="$color1"
+button_activebg2="$color2"
+vars=(
+	"${vars[@]}"
+	"@button_bg1"
+	"@button_bg2"
+	"@button_hoverbg1"
+	"@button_hoverbg2"
+	"@button_activebg1"
+	"@button_activebg2"
+	"@button_fg"
+	"@button_hoverfg"
+	"@button_activefg"
+	"@button_border"
+	"@button_hoverborder"
+	"@button_activeborder"
+	"\/\*buttonbold_$button_bold"
+	"buttonbold_$button_bold\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$button_bg1"
+	"$button_bg2"
+	"$button_hoverbg1"
+	"$button_hoverbg2"
+	"$button_activebg1"
+	"$button_activebg2"
+	"$button_fg"
+	"$button_hoverfg"
+	"$button_activefg"
+	"$button_border"
+	"$button_hoverborder"
+	"$button_activeborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Entry
+make_gradient "$entry_bg" "$entry_gradient"
+entry_bg1="$color1"
+entry_bg2="$color2"
+make_gradient "$entry_hoverbg" "$entry_gradient"
+entry_hoverbg1="$color1"
+entry_hoverbg2="$color2"
+vars=(
+	"${vars[@]}"
+	"@entry_bg1"
+	"@entry_bg2"
+	"@entry_hoverbg1"
+	"@entry_hoverbg2"
+	"@entry_fg"
+	"@entry_hoverfg"
+	"@entry_border"
+	"@entry_hoverborder"
+	"\/\*entryshadow_$entry_shadow"
+	"entryshadow_$entry_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$entry_bg1"
+	"$entry_bg2"
+	"$entry_hoverbg1"
+	"$entry_hoverbg2"
+	"$entry_fg"
+	"$entry_hoverfg"
+	"$entry_border"
+	"$entry_hoverborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
 # Dialogs
 make_gradient "$dialog_bg" "$dialog_gradient"
 dialog_bg1="$color1"
 dialog_bg2="$color2"
-make_chameleon "$color" "$dialog_bg1" "$dialog_chameleon"
+make_tint "$color" "$dialog_bg1" "$dialog_tint"
 dialog_bg1="$chameleon"
-make_chameleon "$color" "$dialog_bg2" "$dialog_chameleon"
+make_tint "$color" "$dialog_bg2" "$dialog_tint"
 dialog_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
@@ -400,6 +509,7 @@ do
 	elif [[ "${vals[i]}" = "" ]]; then
 		show_warn "The value of ${vars[i]} variable is not set"
 	else
+		[[ "${vals[i]}" = "$mode" ]] && vals[i]="$color"
 		show_info "Replacing ${vars[i]} with ${vals[i]}"
 		sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
 	fi
@@ -473,6 +583,8 @@ read_config() {
 while IFS='= ' read var val; do
 	# Escape comments
 	[[ $var =~ ^# ]] && continue
+	# Escape custom values
+	[[ $var =~ \[custom\]$ ]] && continue
 	# Read the section header
 	[[ $var =~ ^\[ ]] && section="$var"
 	# Write the non-existent value into the config file
@@ -484,10 +596,10 @@ while IFS='= ' read var val; do
 	[[ $var =~ ^# || $var =~ ^\[ || ! $val ]] && continue
 	# Workaround for locales which use "," instead of "."
 	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val="${val//,/.}"
+	# Symbolic values
+	[[ "$val" =~ ^@ ]] && val="${val//@/}" && val="${!val}"
 	# Escape "(", ")" and " " for safe use in eval
-	[[ "$val" =~ \( ]] && val="${val//\(/\\(}"
-	[[ "$val" =~ \) ]] && val="${val//\)/\\)}"
-	[[ "$val" =~ \  ]] && val="${val//\ /\\ }"
+	val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
 	# Define variables
 	eval "$var"="$val"
 done < "$configfile"

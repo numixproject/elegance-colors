@@ -316,20 +316,18 @@ StScrollBar StButton#vhandle:active {
 .notification-icon-button,
 .hotplug-notification-item,
 .modal-dialog-button {
-    /*newbutton_true
-    color: #333;
+    color: @button_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,1.0);
-    background-gradient-end: rgba(233,233,233,1.0);
-    border: 1px solid rgba(0,0,0,0.2);
-    box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
-    newbutton_true*/
-    /*newbutton_false
-    color: white;
+    background-gradient-start: @button_bg1;
+    background-gradient-end: @button_bg2;
+    border-width: 1px;
+    border-color: @button_border;
+    /*buttonbold_true
     font-weight: bold;
-    background-color: rgba(0,0,0,0.8);
-    border: 1px solid rgba(0,0,0,0.2);
-    newbutton_false*/
+    buttonbold_true*/
+    /*buttonbold_false
+    font-weight: normal;
+    buttonbold_false*/
     transition-duration: @transition;
 }
 
@@ -338,17 +336,11 @@ StScrollBar StButton#vhandle:active {
 .notification-icon-button:hover,
 .hotplug-notification-item:hover,
 .modal-dialog-button:hover {
-    /*newbutton_true
-    background-gradient-start: rgba(255,255,255,1.0);
-    background-gradient-end: rgba(233,233,233,1.0);
-    border: 1px solid rgba(0,0,0,0.3);
-    box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);
-    newbutton_true*/
-    /*newbutton_false
-    color: @selected_fg;
-    background-color: @selected_bg2;
-    border: 1px solid @selected_bg2;
-    newbutton_false*/
+    color: @button_hoverfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
+    border-color: @button_hoverborder;
 }
 
 .dash-search-button:selected,
@@ -357,14 +349,11 @@ StScrollBar StButton#vhandle:active {
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus {
-    /*newbutton_true
-    border: 1px solid rgba(150,150,150,1.0);
-    newbutton_true*/
-    /*newbutton_false
-    color: @selected_fg;
-    background-color: @selected_bg2;
-    border: 1px solid @selected_bg2;
-    newbutton_false*/
+    color: @button_hoverfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
+    border-color: @button_hoverborder;
 }
 
 .dash-search-button:active,
@@ -374,14 +363,11 @@ StScrollBar StButton#vhandle:active {
 .hotplug-notification-item:active,
 .modal-dialog-button:active,
 .modal-dialog-button:pressed {
-    /*newbutton_true
-    background-gradient-start: rgba(233,233,233,0.9);
-    background-gradient-end: rgba(255,255,255,0.9);
-    newbutton_true*/
-    /*newbutton_false
-    background-color: rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.2);
-    newbutton_false*/
+    color: @button_activefg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_activebg1;
+    background-gradient-end: @button_activebg2;
+    border-color: @button_activeborder;
 }
 
 .hotplug-resident-eject-button {
@@ -427,19 +413,17 @@ StScrollBar StButton#vhandle:active {
 .notification StEntry,
 .login-dialog-prompt-entry,
 .prompt-dialog-password-entry {
-    /*entry_true
-    color: #333;
+    color: @entry_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,0.85);
-    background-gradient-end: rgba(255,255,255,0.72);
-    border: 1px solid rgba(0,0,0,0.3);
+    background-gradient-start: @entry_bg1;
+    background-gradient-end: @entry_bg2;
+    border-width: 1px;
+    border-color: @entry_border;
+    /*entryshadow_true
     box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
-    entry_true*/
-    /*entry_false
-    color: white;
-    background-color: rgba(0,0,0,0.8);
-    border: 1px solid rgba(0,0,0,0.2);
-    entry_false*/
+    entryshadow_true*/
+    /*entryshadow_false
+    entryshadow_false*/
     transition-duration: @transition;
 }
 
@@ -447,45 +431,34 @@ StScrollBar StButton#vhandle:active {
 .notification StEntry:focus,
 .prompt-dialog-password-entry:focus,
 .login-dialog-prompt-entry:focus {
-    /*entry_true
-    border: 1px solid rgba(0,0,0,0.5);
-    entry_true*/
-    /*entry_false
-    border: 1px solid @selected_bg2;
-    entry_false*/
+    color: @entry_hoverfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @entry_hoverbg1;
+    background-gradient-end: @entry_hoverbg2;
+    border-color: @entry_hoverborder;
 }
 
 #searchEntry {
-    /*entry_true
-    color: black;
+    color: @entry_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,0.21);
-    background-gradient-end: rgba(255,255,255,0.15);
-    border: 1px solid rgba(0,0,0,0.2);
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.1);
-    entry_true*/
-    /*entry_false
-    color: #ccc;
-    background-color: rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.2);
-    entry_false*/
+    background-gradient-start: @entry_bg1;
+    background-gradient-end: @entry_bg2;
+    border-width: 1px;
+    border-color: @entry_border;
+    /*entryshadow_true
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
+    entryshadow_true*/
+    /*entryshadow_false
+    entryshadow_false*/
 }
 
 #searchEntry:focus,
 #searchEntry:hover {
-    /*entry_true
-    color: #333;
+    color: @entry_hoverfg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,0.85);
-    background-gradient-end: rgba(255,255,255,0.72);
-    border: 1px solid rgba(0,0,0,0.3);
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
-    entry_true*/
-    /*entry_false
-    color: white;
-    background-color: rgba(0,0,0,0.8);
-    border: 1px solid @selected_bg2;
-    entry_false*/
+    background-gradient-start: @entry_hoverbg1;
+    background-gradient-end: @entry_hoverbg2;
+    border-color: @entry_hoverborder;
     caret-color: #666;
     transition-duration: @transition;
 }
@@ -530,20 +503,18 @@ StScrollBar StButton#vhandle:active {
 }
 
 #panel.in-overview {
-    /*dashpanel_true
-    color: @dash_fg;
-    background-gradient-start: @dash_bg1;
-    background-gradient-end: @dash_bg2;
-    border-color: @dash_border;
-    dashpanel_true*/
-    /*dashpanel_false
-    dashpanel_false*/
-    /*dashshadow_true
+    color: @paneloverview_fg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @paneloverview_bg1;
+    background-gradient-end: @paneloverview_bg2;
+    border-color: @paneloverview_border;
+    border-bottom-width: 1px;
+    /*paneloverviewshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    dashshadow_true*/
-    /*dashshadow_false
+    paneloverviewshadow_true*/
+    /*paneloverviewshadow_false
     box-shadow: none;
-    dashshadow_false*/
+    paneloverviewshadow_false*/
 }
 
 #panelLeft, #panelCenter {
@@ -721,6 +692,9 @@ StScrollBar StButton#vhandle:active {
 /* Overview */
 
 #overview {
+    background-gradient-direction: vertical;
+    background-gradient-start: @overview_bg1;
+    background-gradient-end: @overview_bg2;
     spacing: 12px;
 }
 
@@ -849,12 +823,7 @@ StScrollBar StButton#vhandle:active {
 
 .search-entry-icon {
     icon-size: 1em;
-    /*entry_true
-    color: black;
-    entry_true*/
-    /*entry_false
-    color: #ccc;
-    entry_false*/
+    color: @entry_fg;
 }
 
 /* Search Results */
@@ -928,13 +897,13 @@ StScrollBar StButton#vhandle:active {
 /* Application Launchers and Grid */
 
 .icon-grid {
-    spacing: @dash_iconspacing;
-    -shell-grid-horizontal-item-size: @dash_itemsize;
-    -shell-grid-vertical-item-size: @dash_itemsize;
+    spacing: @overview_iconspacing;
+    -shell-grid-horizontal-item-size: @overview_itemsize;
+    -shell-grid-vertical-item-size: @overview_itemsize;
 }
 
 .icon-grid .overview-icon {
-    icon-size: @dash_iconsize;
+    icon-size: @overview_iconsize;
 }
 
 .all-app {
@@ -1388,8 +1357,8 @@ StScrollBar StButton#vhandle:active {
 }
 
 #message-tray:overview {
-    background: @message_bg;
-    border-top: 1px solid @message_border;
+    background: @overview_msgbg;
+    border-top: 1px solid @overview_msgborder;
 }
 
 .notification {
@@ -2193,21 +2162,12 @@ StScrollBar StButton#vhandle:active {
 .keyboard-key {
     min-height: 30px;
     min-width: 30px;
-    /*newbutton_true
-    color: #333;
-    font-weight: bold;
+    color: @button_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,1.0);
-    background-gradient-end: rgba(233,233,233,1.0);
-    border: 1px solid rgba(0,0,0,0.2);
-    box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
-    newbutton_true*/
-    /*newbutton_false
-    color: white;
-    font-weight: bold;
-    background-color: rgba(0,0,0,0.8);
-    border: 1px solid rgba(0,0,0,0.2);
-    newbutton_false*/
+    background-gradient-start: @button_bg1;
+    background-gradient-end: @button_bg2;
+    border-width: 1px;
+    border-color: @button_border;
     transition-duration: @transition;
     border-radius: @roundness;
     font-size: 14pt;
@@ -2221,28 +2181,19 @@ StScrollBar StButton#vhandle:active {
 
 .keyboard-key:checked,
 .keyboard-key:hover {
-    /*newbutton_true
-    background-gradient-start: rgba(255,255,255,1.0);
-    background-gradient-end: rgba(233,233,233,1.0);
-    border: 1px solid rgba(0,0,0,0.3);
-    box-shadow: 0 0 2px 1px rgba(0,0,0,0.2);
-    newbutton_true*/
-    /*newbutton_false
-    color: @selected_fg;
-    background-color: @selected_bg2;
-    border: 1px solid @selected_bg2;
-    newbutton_false*/
+    color: @button_hoverfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
+    border-color: @button_hoverborder;
 }
 
 .keyboard-key:active {
-    /*newbutton_true
-    background-gradient-start: rgba(233,233,233,0.9);
-    background-gradient-end: rgba(255,255,255,0.9);
-    newbutton_true*/
-    /*newbutton_false
-    background-color: rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.2);
-    newbutton_false*/
+    color: @button_activefg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_activebg1;
+    background-gradient-end: @button_activebg2;
+    border-color: @button_activeborder;
 }
 
 .keyboard-subkeys {
