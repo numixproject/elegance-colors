@@ -358,11 +358,12 @@ class EleganceColorsWindow : ApplicationWindow {
 			} else if (mode == "gtk") {
 				match_theme.set_active (true);
 				color_button.set_sensitive (false);
-			} else if ("#" in mode || "rgb" in mode) {
-				color_value = mode;
+			} else {
 				custom_color.set_active (true);
 				color_button.set_sensitive (true);
 			}
+
+			color_value = key_file.get_string ("Settings", "color");
 
 			monitor_switch.set_active (key_file.get_boolean ("Settings", "monitor"));
 
@@ -632,10 +633,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		match_wallpaper = new RadioButton (null);
 		match_wallpaper.set_label ("Wallpaper");
+		match_wallpaper.set_mode (false);
 		match_wallpaper.set_tooltip_text ("Derive the highlight color from the current wallpaper");
 		match_theme = new RadioButton.with_label (match_wallpaper.get_group(),"GTK theme");
+		match_theme.set_mode (false);
 		match_theme.set_tooltip_text ("Derive the highlight color from the current GTK theme");
 		custom_color = new RadioButton.with_label (match_theme.get_group(),"Custom");
+		custom_color.set_mode (false);
 		custom_color.set_tooltip_text ("Manually set a custom highlight color");
 		color_button = new ColorButton ();
 		color_button.set_use_alpha (true);
@@ -669,6 +673,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		transition_duration.set_tooltip_text ("Set the duration of the transition animations");
 		transition_duration.set_halign (Align.END);
 
+		var colorbox = new Box (Orientation.HORIZONTAL, 0);
+		colorbox.set_homogeneous (true);
+		colorbox.get_style_context().add_class("linked");
+		colorbox.add (match_wallpaper);
+		colorbox.add (match_theme);
+		colorbox.add (custom_color);
+		colorbox.add (color_button);
 
 		combobox.changed.connect (on_preset_selected);
 		match_wallpaper.toggled.connect (() => {
@@ -685,14 +696,15 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		custom_color.toggled .connect (() => {
 			if (custom_color.get_active ()) {
-				key_file.set_string ("Settings", "mode", color_button.rgba.to_string());
+				key_file.set_string ("Settings", "mode", "custom");
 				color_button.set_sensitive (true);
 			} else {
 				color_button.set_sensitive (false);
 			}
+			on_value_changed ();
 		});
 		color_button.color_set.connect (() => {
-			key_file.set_string ("Settings", "mode", color_button.rgba.to_string());
+			key_file.set_string ("Settings", "color", color_button.rgba.to_string());
 			on_value_changed ();
 		});
 		monitor_switch.notify["active"].connect (() => {
@@ -736,19 +748,16 @@ class EleganceColorsWindow : ApplicationWindow {
 		general_grid.attach (presets_label, 0, 0, 1, 1);
 		general_grid.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
 		general_grid.attach (mode_label, 0, 1, 1, 1);
-		general_grid.attach_next_to (match_wallpaper, mode_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach_next_to (match_theme, match_wallpaper, PositionType.RIGHT, 1, 1);
-		general_grid.attach_next_to (custom_color, match_wallpaper, PositionType.BOTTOM, 1, 1);
-		general_grid.attach_next_to (color_button, custom_color, PositionType.RIGHT, 1, 1);
-		general_grid.attach (monitor_label, 0, 3, 2, 1);
+		general_grid.attach_next_to (colorbox, mode_label, PositionType.RIGHT, 2, 1);
+		general_grid.attach (monitor_label, 0, 2, 2, 1);
 		general_grid.attach_next_to (monitor_switch, monitor_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (font_label, 0, 4, 1, 1);
+		general_grid.attach (font_label, 0, 3, 1, 1);
 		general_grid.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (selgradient_label, 0, 5, 2, 1);
+		general_grid.attach (selgradient_label, 0, 4, 2, 1);
 		general_grid.attach_next_to (selgradient_size, selgradient_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (roundness_label, 0, 6, 2, 1);
+		general_grid.attach (roundness_label, 0, 5, 2, 1);
 		general_grid.attach_next_to (corner_roundness, roundness_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (transition_label, 0, 7, 2, 1);
+		general_grid.attach (transition_label, 0, 6, 2, 1);
 		general_grid.attach_next_to (transition_duration, transition_label, PositionType.RIGHT, 1, 1);
 
 		// Panel
