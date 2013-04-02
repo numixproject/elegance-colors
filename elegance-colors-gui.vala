@@ -671,17 +671,30 @@ class EleganceColorsWindow : ApplicationWindow {
 
 
 		combobox.changed.connect (on_preset_selected);
-		match_wallpaper.toggled.connect (on_value_changed);
-		match_theme.toggled.connect (on_value_changed);
-		custom_color.toggled.connect (() => {
+		match_wallpaper.toggled.connect (() => {
+			if (match_wallpaper.get_active()) {
+				key_file.set_string ("Settings", "mode", "wallpaper");
+			}
+			on_value_changed ();
+		});
+		match_theme.toggled.connect (() => {
+			if (match_theme.get_active()) {
+				key_file.set_string ("Settings", "mode", "gtk");
+			}
+			on_value_changed ();
+		});
+		custom_color.toggled .connect (() => {
 			if (custom_color.get_active ()) {
+				key_file.set_string ("Settings", "mode", color_button.rgba.to_string());
 				color_button.set_sensitive (true);
 			} else {
 				color_button.set_sensitive (false);
 			}
-			apply_button.set_sensitive (true);
 		});
-		color_button.color_set.connect (on_value_changed);
+		color_button.color_set.connect (() => {
+			key_file.set_string ("Settings", "mode", color_button.rgba.to_string());
+			on_value_changed ();
+		});
 		monitor_switch.notify["active"].connect (() => {
 			if (monitor_switch.get_active ()) {
 				try {
@@ -696,12 +709,25 @@ class EleganceColorsWindow : ApplicationWindow {
 					stderr.printf ("Failed to stop background process: %s\n", e.message);
 				}
 			}
-			apply_button.set_sensitive (true);
+			key_file.set_boolean ("Settings", "monitor", monitor_switch.get_active());
+			on_value_changed ();
 		});
-		fontchooser.font_set.connect (on_value_changed);
-		selgradient_size.adjustment.value_changed.connect (on_value_changed);
-		corner_roundness.adjustment.value_changed.connect (on_value_changed);
-		transition_duration.adjustment.value_changed.connect (on_value_changed);
+		fontchooser.font_set.connect (() => {
+			key_file.set_string ("Settings", "fontname", fontchooser.get_font_name());
+			on_value_changed ();
+		});
+		selgradient_size.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Settings", "selgradient", selgradient_size.adjustment.value);
+			on_value_changed ();
+		});
+		corner_roundness.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);
+			on_value_changed ();
+		});
+		transition_duration.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
+			on_value_changed ();
+		});
 
 		var general_grid = new Grid ();
 		general_grid.set_column_homogeneous (true);
@@ -788,14 +814,38 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_grid.attach (panel_corner_label, 0, 7, 2, 1);
 		panel_grid.attach_next_to (panel_corner_value, panel_corner_label, PositionType.RIGHT, 1, 1);
 
-		panel_bg_color.color_set.connect (on_value_changed);
-		panel_fg_color.color_set.connect (on_value_changed);
-		panel_border_color.color_set.connect (on_value_changed);
-		panel_shadow_switch.notify["active"].connect (on_value_changed);
-		panel_icon_switch.notify["active"].connect (on_value_changed);
-		panel_tint_value.adjustment.value_changed.connect (on_value_changed);
-		panel_gradient_value.adjustment.value_changed.connect (on_value_changed);
-		panel_corner_value.adjustment.value_changed.connect (on_value_changed);
+		panel_bg_color.color_set.connect (() => {
+			key_file.set_string ("Panel", "panel_bg", panel_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		panel_fg_color.color_set.connect (() => {
+			key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		panel_border_color.color_set.connect (() => {
+			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		panel_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Panel", "panel_shadow", panel_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		panel_icon_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
+			on_value_changed ();
+		});
+		panel_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Panel", "panel_tint", panel_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		panel_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Panel", "panel_gradient", panel_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
+		panel_corner_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		// Panel in overview
 		var paneloverview_bg_label = new Label.with_mnemonic ("Background color");
@@ -846,12 +896,30 @@ class EleganceColorsWindow : ApplicationWindow {
 		paneloverview_grid.attach (paneloverview_gradient_label, 0, 5, 2, 1);
 		paneloverview_grid.attach_next_to (paneloverview_gradient_value, paneloverview_gradient_label, PositionType.RIGHT, 1, 1);
 
-		paneloverview_bg_color.color_set.connect (on_value_changed);
-		paneloverview_fg_color.color_set.connect (on_value_changed);
-		paneloverview_border_color.color_set.connect (on_value_changed);
-		paneloverview_shadow_switch.notify["active"].connect (on_value_changed);
-		paneloverview_tint_value.adjustment.value_changed.connect (on_value_changed);
-		paneloverview_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		paneloverview_bg_color.color_set.connect (() => {
+			key_file.set_string ("PanelOverview", "paneloverview_bg", paneloverview_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		paneloverview_fg_color.color_set.connect (() => {
+			key_file.set_string ("PanelOverview", "paneloverview_fg", paneloverview_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		paneloverview_border_color.color_set.connect (() => {
+			key_file.set_string ("PanelOverview", "paneloverview_border", paneloverview_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		paneloverview_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("PanelOverview", "paneloverview_shadow", paneloverview_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		paneloverview_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("PanelOverview", "paneloverview_tint", paneloverview_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		paneloverview_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("PanelOverview", "paneloverview_gradient", paneloverview_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		// Overview
 		var overview_bg_label = new Label.with_mnemonic ("Overview background color");
@@ -890,13 +958,34 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_iconspacing_value.set_tooltip_text ("Set the spacing between icons in the application grid");
 		overview_iconspacing_value.set_halign (Align.END);
 
-		overview_bg_color.color_set.connect (on_value_changed);
-		overview_msgbg_color.color_set.connect (on_value_changed);
-		overview_msgborder_color.color_set.connect (on_value_changed);
-		overview_tint_value.adjustment.value_changed.connect (on_value_changed);
-		overview_gradient_value.adjustment.value_changed.connect (on_value_changed);
-		overview_iconsize_value.adjustment.value_changed.connect (on_value_changed);
-		overview_iconspacing_value.adjustment.value_changed.connect (on_value_changed);
+		overview_bg_color.color_set.connect (() => {
+			key_file.set_string ("Overview", "overview_bg", overview_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		overview_msgbg_color.color_set.connect (() => {
+			key_file.set_string ("Overview", "overview_msgbg", overview_msgbg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		overview_msgborder_color.color_set.connect (() => {
+			key_file.set_string ("Overview", "overview_msgborder", overview_msgborder_color.rgba.to_string());
+			on_value_changed ();
+		});
+		overview_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		overview_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Overview", "overview_gradient", overview_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
+		overview_iconsize_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Overview", "overview_iconsize", overview_iconsize_value.adjustment.value);
+			on_value_changed ();
+		});
+		overview_iconspacing_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Overview", "overview_iconspacing", overview_iconspacing_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		var overview_grid = new Grid ();
 		overview_grid.set_column_homogeneous (true);
@@ -949,12 +1038,30 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_gradient_value.set_tooltip_text ("Set the gradient size of the background of the dash and workspace panel");
 		dash_gradient_value.set_halign (Align.END);
 
-		dash_bg_color.color_set.connect (on_value_changed);
-		dash_fg_color.color_set.connect (on_value_changed);
-		dash_border_color.color_set.connect (on_value_changed);
-		dash_shadow_switch.notify["active"].connect (on_value_changed);
-		dash_tint_value.adjustment.value_changed.connect (on_value_changed);
-		dash_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		dash_bg_color.color_set.connect (() => {
+			key_file.set_string ("Dash", "dash_bg", dash_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dash_fg_color.color_set.connect (() => {
+			key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dash_border_color.color_set.connect (() => {
+			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dash_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Dash", "dash_shadow", dash_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		dash_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Dash", "dash_tint", dash_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		dash_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Dash", "dash_gradient", dash_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		var dash_grid = new Grid ();
 		dash_grid.set_column_homogeneous (true);
@@ -1057,14 +1164,50 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_grid.attach (button_gradient_label, 0, 10, 2, 1);
 		button_grid.attach_next_to (button_gradient_value, button_gradient_label, PositionType.RIGHT, 1, 1);
 
-		button_bg_color.color_set.connect (on_value_changed);
-		button_hoverbg_color.color_set.connect (on_value_changed);
-		button_activebg_color.color_set.connect (on_value_changed);
-		button_fg_color.color_set.connect (on_value_changed);
-		button_border_color.color_set.connect (on_value_changed);
-		button_hoverborder_color.color_set.connect (on_value_changed);
-		button_bold_switch.notify["active"].connect (on_value_changed);
-		button_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		button_bg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_bg", button_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_hoverbg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_hoverbg", button_hoverbg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_activebg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_activebg", button_activebg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_fg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_hoverfg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_activefg_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_border_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_hoverborder_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_activeborder_color.color_set.connect (() => {
+			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string());
+			on_value_changed ();
+		});
+		button_bold_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active());
+			on_value_changed ();
+		});
+		button_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Buttons", "button_gradient", button_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		// Entry
 		var entry_bg_label = new Label.with_mnemonic ("Background color");
@@ -1129,13 +1272,38 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_grid.attach (entry_gradient_label, 0, 7, 2, 1);
 		entry_grid.attach_next_to (entry_gradient_value, entry_gradient_label, PositionType.RIGHT, 1, 1);
 
-		entry_bg_color.color_set.connect (on_value_changed);
-		entry_hoverbg_color.color_set.connect (on_value_changed);
-		entry_fg_color.color_set.connect (on_value_changed);
-		entry_border_color.color_set.connect (on_value_changed);
-		entry_hoverborder_color.color_set.connect (on_value_changed);
-		entry_shadow_switch.notify["active"].connect (on_value_changed);
-		entry_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		entry_bg_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_bg", entry_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_hoverbg_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_hoverbg", entry_hoverbg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_fg_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_hoverfg_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_hoverfg", entry_hoverfg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_border_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_hoverborder_color.color_set.connect (() => {
+			key_file.set_string ("Entry", "entry_hoverborder", entry_hoverborder_color.rgba.to_string());
+			on_value_changed ();
+		});
+		entry_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		entry_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Entry", "entry_gradient", entry_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		// Menu
 		var menu_bg_label = new Label.with_mnemonic ("Background color");
@@ -1174,13 +1342,34 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_gradient_value.set_tooltip_text ("Set the gradient size of the background of the popup menu");
 		menu_gradient_value.set_halign (Align.END);
 
-		menu_bg_color.color_set.connect (on_value_changed);
-		menu_fg_color.color_set.connect (on_value_changed);
-		menu_border_color.color_set.connect (on_value_changed);
-		menu_shadow_switch.notify["active"].connect (on_value_changed);
-		menu_arrow_switch.notify["active"].connect (on_value_changed);
-		menu_tint_value.adjustment.value_changed.connect (on_value_changed);
-		menu_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		menu_bg_color.color_set.connect (() => {
+			key_file.set_string ("Menu", "menu_bg", menu_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		menu_fg_color.color_set.connect (() => {
+			key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		menu_border_color.color_set.connect (() => {
+			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		menu_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Menu", "menu_shadow", menu_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		menu_arrow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active());
+			on_value_changed ();
+		});
+		menu_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Menu", "menu_tint", menu_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		menu_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Menu", "menu_gradient", menu_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		var menu_grid = new Grid ();
 		menu_grid.set_column_homogeneous (true);
@@ -1238,13 +1427,34 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_gradient_value.set_tooltip_text ("Set the gradient size of the background of the modal dialogs");
 		dialog_gradient_value.set_halign (Align.END);
 
-		dialog_bg_color.color_set.connect (on_value_changed);
-		dialog_fg_color.color_set.connect (on_value_changed);
-		dialog_heading_color.color_set.connect (on_value_changed);
-		dialog_border_color.color_set.connect (on_value_changed);
-		dialog_shadow_switch.notify["active"].connect (on_value_changed);
-		dialog_tint_value.adjustment.value_changed.connect (on_value_changed);
-		dialog_gradient_value.adjustment.value_changed.connect (on_value_changed);
+		dialog_bg_color.color_set.connect (() => {
+			key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dialog_fg_color.color_set.connect (() => {
+			key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dialog_heading_color.color_set.connect (() => {
+			key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dialog_border_color.color_set.connect (() => {
+			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string());
+			on_value_changed ();
+		});
+		dialog_shadow_switch.notify["active"].connect (() => {
+			key_file.set_boolean ("Dialogs", "dialog_shadow", dialog_shadow_switch.get_active());
+			on_value_changed ();
+		});
+		dialog_tint_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Dialogs", "dialog_tint", dialog_tint_value.adjustment.value);
+			on_value_changed ();
+		});
+		dialog_gradient_value.adjustment.value_changed.connect (() => {
+			key_file.set_double ("Dialogs", "dialog_gradient", dialog_gradient_value.adjustment.value);
+			on_value_changed ();
+		});
 
 		var dialog_grid = new Grid ();
 		dialog_grid.set_column_homogeneous (true);
@@ -1337,99 +1547,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		this.add (hbox);
 	}
 
-	void set_keys () {
-
-		if (match_wallpaper.get_active()) {
-			key_file.set_string ("Settings", "mode", "wallpaper");
-		} else if (match_theme.get_active()) {
-			key_file.set_string ("Settings", "mode", "gtk");
-		} else if (custom_color.get_active()) {
-			key_file.set_string ("Settings", "mode", color_button.rgba.to_string());
-		}
-
-		key_file.set_boolean ("Settings", "monitor", monitor_switch.get_active());
-
-		key_file.set_string ("Settings", "fontname", fontchooser.get_font_name());
-
-		key_file.set_double ("Settings", "selgradient", selgradient_size.adjustment.value);
-		key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);
-		key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
-
-		key_file.set_string ("Panel", "panel_bg", panel_bg_color.rgba.to_string());
-		key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string());
-		key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string());
-
-		key_file.set_boolean ("Panel", "panel_shadow", panel_shadow_switch.get_active());
-		key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
-
-		key_file.set_double ("Panel", "panel_tint", panel_tint_value.adjustment.value);
-		key_file.set_double ("Panel", "panel_gradient", panel_gradient_value.adjustment.value);
-		key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
-
-		key_file.set_string ("Overview", "overview_bg", overview_bg_color.rgba.to_string());
-		key_file.set_string ("Overview", "overview_msgbg", overview_msgbg_color.rgba.to_string());
-		key_file.set_string ("Overview", "overview_msgborder", overview_msgborder_color.rgba.to_string());
-
-		key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
-		key_file.set_double ("Overview", "overview_gradient", overview_gradient_value.adjustment.value);
-		key_file.set_double ("Overview", "overview_iconsize", overview_iconsize_value.adjustment.value);
-		key_file.set_double ("Overview", "overview_iconspacing", overview_iconspacing_value.adjustment.value);
-
-		key_file.set_string ("Dash", "dash_bg", dash_bg_color.rgba.to_string());
-		key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string());
-		key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string());
-
-		key_file.set_boolean ("Dash", "dash_shadow", dash_shadow_switch.get_active());
-
-		key_file.set_double ("Dash", "dash_tint", dash_tint_value.adjustment.value);
-		key_file.set_double ("Dash", "dash_gradient", dash_gradient_value.adjustment.value);
-
-		key_file.set_string ("Buttons", "button_bg", button_bg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_hoverbg", button_hoverbg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_activebg", button_activebg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string());
-		key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string());
-
-		key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active());
-
-		key_file.set_double ("Buttons", "button_gradient", button_gradient_value.adjustment.value);
-
-		key_file.set_string ("Entry", "entry_bg", entry_bg_color.rgba.to_string());
-		key_file.set_string ("Entry", "entry_hoverbg", entry_hoverbg_color.rgba.to_string());
-		key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string());
-		key_file.set_string ("Entry", "entry_hoverfg", entry_hoverfg_color.rgba.to_string());
-		key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string());
-		key_file.set_string ("Entry", "entry_hoverborder", entry_hoverborder_color.rgba.to_string());
-
-		key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active());
-
-		key_file.set_double ("Entry", "entry_gradient", entry_gradient_value.adjustment.value);
-
-		key_file.set_string ("Menu", "menu_bg", menu_bg_color.rgba.to_string());
-		key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string());
-		key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string());
-
-		key_file.set_boolean ("Menu", "menu_shadow", menu_shadow_switch.get_active());
-		key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active());
-
-		key_file.set_double ("Menu", "menu_tint", menu_tint_value.adjustment.value);
-		key_file.set_double ("Menu", "menu_gradient", menu_gradient_value.adjustment.value);
-
-		key_file.set_string ("Dialogs", "dialog_bg", dialog_bg_color.rgba.to_string());
-		key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string());
-		key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string());
-		key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string());
-
-		key_file.set_boolean ("Dialogs", "dialog_shadow", dialog_shadow_switch.get_active());
-
-		key_file.set_double ("Dialogs", "dialog_tint", dialog_tint_value.adjustment.value);
-		key_file.set_double ("Dialogs", "dialog_gradient", dialog_gradient_value.adjustment.value);
-	}
-
 	void on_selection_changed (TreeSelection selection) {
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
@@ -1460,15 +1577,12 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_load_keyfile () {
-
 		write_keys ();
 		read_keys ();
 		apply_button.set_sensitive (false);
 	}
 
 	void on_config_applied () {
-
-		set_keys ();
 		write_keys ();
 		apply_button.set_sensitive (false);
 	}
