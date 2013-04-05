@@ -1536,7 +1536,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		mainbox.add (notebook);
 		mainbox.add (buttons);
 
-		ListStore list_store = new ListStore (2, typeof (string), typeof (int));
+		var list_store = new ListStore (2, typeof (string), typeof (int));
 		TreeIter iter;
 
 		list_store.append (out iter);
@@ -1559,9 +1559,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_store.set (iter, 0, "Entry", 1, 6);
 
 		var treeview = new TreeView.with_model (list_store);
+		var treepath = new TreePath.from_string ("0");
 		treeview.set_headers_visible (false);
+		treeview.set_cursor (treepath, null, false);
 
-		CellRendererText treecell = new CellRendererText ();
+		var treecell = new CellRendererText ();
 		treeview.insert_column_with_attributes (-1, null, treecell, "text", 0);
 
 		var selection = treeview.get_selection ();
