@@ -160,9 +160,11 @@ class EleganceColorsWindow : ApplicationWindow {
 	// Others
 	Notebook notebook;
 
+	//undo redo clear
 	ToolButton undo_button;
 	ToolButton redo_button;
 	ToolButton clear_button;
+	List<string> list_undo = new List<string> ();	
 
 	Button apply_button;
 
@@ -355,7 +357,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 	}
 
-	void set_states (KeyFile key_file) {
+	void set_states () {
 
 		try {
 			var mode = key_file.get_string ("Settings", "mode");
@@ -1581,7 +1583,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		vbox.add (hbox);
 
 		// Setup widgets
-		set_states (key_file);
+		set_states ();
 
 		notebook.set_current_page (0);
 		apply_button.set_sensitive (false);
@@ -1603,16 +1605,56 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void on_value_changed () {
 		apply_button.set_sensitive (true);
+		list_undo.append(key_file.to_data(null,null));
+
+		int i=0;
+		list_undo.foreach ((entry) => {
+			stdout.printf("add:-------------------------- %i \n",i);
+			stdout.puts (entry);
+			stdout.putc ('\n');
+			i=i+1;
+		});
+
 	}
 
 	void on_clear_clicked () {
-		load_config ();
-		set_states (key_file);
-		combobox.set_active (0);
-		apply_button.set_sensitive (false);
+		//load_config ();
+		//set_states ();
+		//combobox.set_active (0);
+		//apply_button.set_sensitive (false);
+
+		list_undo = new List<string> ();
+
+		
 	}
 
 	void on_undo_clicked () {
+		unowned string? data = list_undo.nth_data (list_undo.length()-1);
+		key_file.load_from_data(data,-1, KeyFileFlags.NONE);
+		list_undo.remove(data);
+		set_states();
+
+		int i=0;
+		list_undo.foreach ((entry) => {
+			stdout.printf("remove:-------------------------- %i \n",i);
+			stdout.puts (entry);
+			stdout.putc ('\n');
+			i=i+1;
+		});
+
+		data = list_undo.nth_data (list_undo.length()-1);
+		key_file.load_from_data(data,-1, KeyFileFlags.NONE);
+		list_undo.remove(data);
+		set_states();
+		
+		i=0;
+		list_undo.foreach ((entry) => {
+			stdout.printf("remove:-------------------------- %i \n",i);
+			stdout.puts (entry);
+			stdout.putc ('\n');
+			i=i+1;
+		});
+		
 	}
 
 	void on_redo_clicked () {
@@ -1632,7 +1674,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_load_keyfile () {
-		set_states (key_file);
+		set_states ();
 		on_value_changed ();
 	}
 
