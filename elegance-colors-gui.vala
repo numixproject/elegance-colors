@@ -355,7 +355,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 	}
 
-	void set_states () {
+	void set_states (KeyFile key_file) {
 
 		try {
 			var mode = key_file.get_string ("Settings", "mode");
@@ -1581,7 +1581,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		vbox.add (hbox);
 
 		// Setup widgets
-		set_states ();
+		set_states (key_file);
 
 		notebook.set_current_page (0);
 		apply_button.set_sensitive (false);
@@ -1607,7 +1607,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void on_clear_clicked () {
 		load_config ();
-		set_states ();
+		set_states (key_file);
 		combobox.set_active (0);
 		apply_button.set_sensitive (false);
 	}
@@ -1632,7 +1632,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_load_keyfile () {
-		set_states ();
+		set_states (key_file);
 		on_value_changed ();
 	}
 
