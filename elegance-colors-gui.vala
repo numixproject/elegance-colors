@@ -1597,9 +1597,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_undo = new List<string> ();
 		list_redo = new List<string> ();
 
-		redo_button.set_sensitive(false);
-		undo_button.set_sensitive(false);
-		clear_button.set_sensitive(false);
+		redo_button.set_sensitive (false);
+		undo_button.set_sensitive (false);
+		clear_button.set_sensitive (false);
 	}
 
 	void on_selection_changed (TreeSelection selection) {
@@ -1615,58 +1615,61 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_value_changed () {
-		apply_button.set_sensitive (true);
-		undo_button.set_sensitive(true);
-		list_undo.append(key_file.to_data(null,null));
 
-		if (new_button_clicked == true){
+		apply_button.set_sensitive (true);
+		undo_button.set_sensitive (true);
+		clear_button.set_sensitive (true);
+
+		list_undo.append (key_file.to_data(null,null));
+
+		if (new_button_clicked == true) {
 				
 		} else {
 			list_redo = new List<string> ();
-			redo_button.set_sensitive(false);
+			redo_button.set_sensitive (false);
 		}
-
 	}
 
 	void on_clear_clicked () {
+
 		load_config ();
 		set_states ();
+
 		combobox.set_active (0);
 		apply_button.set_sensitive (false);
 
 		list_undo = new List<string> ();
 		list_redo = new List<string> ();
 
-		redo_button.set_sensitive(false);
-		undo_button.set_sensitive(false);
-		clear_button.set_sensitive(false);
-
-		
+		redo_button.set_sensitive (false);
+		undo_button.set_sensitive (false);
+		clear_button.set_sensitive (false);		
 	}
 
 	void on_undo_clicked () {
-		clear_button.set_sensitive(true);
-		redo_button.set_sensitive(true);
-		list_redo.append(key_file.to_data(null,null));
-		unowned string? data = list_undo.nth_data (list_undo.length()-1);
-		try{
-			key_file.load_from_data(data,-1, KeyFileFlags.NONE);
-			
-		} catch (KeyFileError e) {
-			stdout.printf ("Error: %s\n", e.message);
-		}
-		new_button_clicked = true;
-		list_undo.remove(data);
-		new_button_clicked = true;
-		set_states();
-		new_button_clicked = true;
-		data = list_undo.nth_data (list_undo.length()-1);
-		list_undo.remove(data);
-		
 
+		clear_button.set_sensitive (true);
+		redo_button.set_sensitive (true);
+		list_redo.append (key_file.to_data(null,null));
+		unowned string? data = list_undo.nth_data (list_undo.length()-1);
+		try {
+			key_file.load_from_data (data,-1, KeyFileFlags.NONE);			
+		} catch (KeyFileError e) {
+			stderr.printf ("Failed to undo: %s\n", e.message);
+		}
+
+		new_button_clicked = true;
+		list_undo.remove (data);
+		new_button_clicked = true;
+
+		set_states ();
+
+		new_button_clicked = true;
 		data = list_undo.nth_data (list_undo.length()-1);
-		if (data == null){
-			undo_button.set_sensitive(false);
+		list_undo.remove (data);
+		data = list_undo.nth_data (list_undo.length()-1);
+		if (data == null) {
+			undo_button.set_sensitive (false);
 		}
 
 		new_button_clicked = false;
@@ -1674,26 +1677,28 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_redo_clicked () {
-		undo_button.set_sensitive(true);
-		list_undo.append(key_file.to_data(null,null));
+
+		undo_button.set_sensitive (true);
+		list_undo.append (key_file.to_data(null,null));
 		unowned string? data = list_redo.nth_data (list_redo.length()-1);
-		try{
-			key_file.load_from_data(data,-1, KeyFileFlags.NONE);
+		try {
+			key_file.load_from_data (data,-1, KeyFileFlags.NONE);
 		} catch (KeyFileError e) {
-			stdout.printf ("Error: %s\n", e.message);
+			stderr.printf ("Failed to redo: %s\n", e.message);
 		}
+
 		new_button_clicked = true;
-		list_redo.remove(data);
+		list_redo.remove (data);
 		new_button_clicked = true;
-		set_states();
+
+		set_states ();
+
 		new_button_clicked = true;
 		data = list_undo.nth_data (list_undo.length()-1);
-		list_undo.remove(data);
-		
-
+		list_undo.remove (data);
 		data = list_redo.nth_data (list_redo.length()-1);
-		if (data == null){
-			redo_button.set_sensitive(false);
+		if (data == null) {
+			redo_button.set_sensitive (false);
 		}
 
 		new_button_clicked = false;
@@ -1742,6 +1747,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 
 		apply_button.set_sensitive (false);
+		clear_button.set_sensitive (false);
 	}
 }
 
