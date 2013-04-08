@@ -19,14 +19,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Set paths and variables
+shellversion=
 selfdir=`cd $(dirname "${BASH_SOURCE[0]}") && pwd`
 selffile="$selfdir/elegance-colors"
 configdir="$HOME/.config/elegance-colors"
 configfile="$configdir/elegance-colors.ini"
 tempdir="/tmp/elegance-colors"
-installdir=`if [[ -d "$selfdir/gnome-shell" && -d "$selfdir/presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
+installdir=`if [[ -d "$selfdir/templates" && -d "$selfdir/presets" ]]; then printf "$selfdir"; else printf "/usr/share/elegance-colors"; fi`
 defaultconfig="$installdir/presets/default.ini"
-template="$installdir/gnome-shell"
+template="$installdir/templates/$(gnome-shell --version | cut -f3 -d\  | cut -f1-2 -d.)"
 glibschemas="/usr/share/glib-2.0/schemas"
 extensiondir="$HOME/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas"
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
@@ -491,11 +492,12 @@ vals=(
 	"\/\*\*\/"
 )
 # Set a temporary directory
-makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)"
+makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/gnome-shell"
 # Copy Elegance Colors to create a new theme
 if [[ -d "$template" ]]; then
 	mkdir -p "$makedir"
-	cp -rf "$template" "$makedir"
+	show_info "Using template $template"
+	cp -rf "$template/." "$makedir"
 else
 	show_err "Failed to copy files"
 fi
@@ -503,29 +505,29 @@ fi
 show_info "Making the theme"
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
-	if [[ ! `grep "${vars[i]}" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+	if [[ ! `grep "${vars[i]}" "$makedir/gnome-shell.css"` ]]; then
 		show_warn "Template does not have any ${vars[i]} variable"
 	elif [[ "${vals[i]}" = "" ]]; then
 		show_warn "The value of ${vars[i]} variable is not set"
 	else
 		[[ "${vals[i]}" = "$mode" ]] && vals[i]="$color"
 		show_info "Replacing ${vars[i]} with ${vals[i]}"
-		sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/gnome-shell/gnome-shell.css"
+		sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/gnome-shell.css"
 	fi
 done
 # Copy the newly created theme
-if [[ ! -d "$makedir/gnome-shell" ]]; then
+if [[ ! -d "$makedir" ]]; then
 	show_err "Failed to make the theme, files were lost"
-elif [[ `grep "@" "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+elif [[ `grep "@" "$makedir/gnome-shell.css"` ]]; then
 	show_err "Failed to make the theme, could not replace variables"
-	grep "@" "$makedir/gnome-shell/gnome-shell.css" | sort -u
-elif [[ `grep ",," "$makedir/gnome-shell/gnome-shell.css"` ]]; then
+	grep "@" "$makedir/gnome-shell.css" | sort -u
+elif [[ `grep ",," "$makedir/gnome-shell.css"` ]]; then
 	show_err "Failed to make the theme, invalid color expression"
-	grep ",," "$makedir/gnome-shell/gnome-shell.css" | sort -u
+	grep ",," "$makedir/gnome-shell.css" | sort -u
 else
 	rm -rf "$HOME/.themes/elegance-colors"
 	mkdir -p "$HOME/.themes/elegance-colors"
-	mv "$makedir/gnome-shell" "$HOME/.themes/elegance-colors/"
+	mv "$makedir" "$HOME/.themes/elegance-colors/"
 	# Set the theme
 	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		show_info "Reloading the theme"
