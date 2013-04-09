@@ -1,4 +1,3 @@
-using Notify;
 using Gtk;
 
 class EleganceColorsWindow : ApplicationWindow {
@@ -57,8 +56,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	// Overview
 	ColorButton overview_bg_color;
-	ColorButton overview_msgbg_color;
-	ColorButton overview_msgborder_color;
 
 	SpinButton overview_tint_value;
 	SpinButton overview_gradient_value;
@@ -66,8 +63,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	SpinButton overview_iconspacing_value;
 
 	string overview_bg_value;
-	string overview_msgbg_value;
-	string overview_msgborder_value;
 
 	// Dash
 	ColorButton dash_bg_color;
@@ -406,8 +401,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			paneloverview_gradient_value.adjustment.value = key_file.get_double ("PanelOverview", "paneloverview_gradient");
 
 			overview_bg_value = key_file.get_string ("Overview", "overview_bg");
-			overview_msgbg_value = key_file.get_string ("Overview", "overview_msgbg");
-			overview_msgborder_value = key_file.get_string ("Overview", "overview_msgborder");
 
 			overview_tint_value.adjustment.value = key_file.get_double ("Overview", "overview_tint");
 			overview_gradient_value.adjustment.value = key_file.get_double ("Overview", "overview_gradient");
@@ -499,12 +492,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (overview_bg_value));
 		overview_bg_color.set_rgba (color);
-
-		color.parse ("%s".printf (overview_msgbg_value));
-		overview_msgbg_color.set_rgba (color);
-
-		color.parse ("%s".printf (overview_msgborder_value));
-		overview_msgborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (dash_bg_value));
 		dash_bg_color.set_rgba (color);
@@ -945,27 +932,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Overview
-		var overview_bg_label = new Label.with_mnemonic ("Overview background color");
+		var overview_bg_label = new Label.with_mnemonic ("Background color");
 		overview_bg_label.set_halign (Align.START);
 		overview_bg_color = new ColorButton ();
 		overview_bg_color.set_use_alpha (true);
 		overview_bg_color.set_tooltip_text ("Set the background color of the overview");
-		var overview_msgbg_label = new Label.with_mnemonic ("Message tray background color");
-		overview_msgbg_label.set_halign (Align.START);
-		overview_msgbg_color = new ColorButton ();
-		overview_msgbg_color.set_use_alpha (true);
-		overview_msgbg_color.set_tooltip_text ("Set the background color of the message tray");
-		var overview_msgborder_label = new Label.with_mnemonic ("Message tray border color");
-		overview_msgborder_label.set_halign (Align.START);
-		overview_msgborder_color = new ColorButton ();
-		overview_msgborder_color.set_use_alpha (true);
-		overview_msgborder_color.set_tooltip_text ("Set the border color of the message tray");
-		var overview_tint_label = new Label.with_mnemonic ("Overview background tint level");
+		var overview_tint_label = new Label.with_mnemonic ("Background tint level");
 		overview_tint_label.set_halign (Align.START);
 		overview_tint_value = new SpinButton.with_range (0, 100, 1);
 		overview_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the overview");
 		overview_tint_value.set_halign (Align.END);
-		var overview_gradient_label = new Label.with_mnemonic ("Overview gradient size");
+		var overview_gradient_label = new Label.with_mnemonic ("Gradient size");
 		overview_gradient_label.set_halign (Align.START);
 		overview_gradient_value = new SpinButton.with_range (0, 255, 1);
 		overview_gradient_value.set_tooltip_text ("Set the gradient size of the background of the overview");
@@ -984,14 +961,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_bg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Overview", "overview_bg", overview_bg_color.rgba.to_string());
-		});
-		overview_msgbg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_msgbg", overview_msgbg_color.rgba.to_string());
-		});
-		overview_msgborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_msgborder", overview_msgborder_color.rgba.to_string());
 		});
 		overview_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1016,17 +985,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_grid.set_row_spacing (12);
 		overview_grid.attach (overview_bg_label, 0, 0, 2, 1);
 		overview_grid.attach_next_to (overview_bg_color, overview_bg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_msgbg_label, 0, 1, 2, 1);
-		overview_grid.attach_next_to (overview_msgbg_color, overview_msgbg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_msgborder_label, 0, 2, 2, 1);
-		overview_grid.attach_next_to (overview_msgborder_color, overview_msgborder_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_tint_label, 0, 3, 2, 1);
+		overview_grid.attach (overview_tint_label, 0, 1, 2, 1);
 		overview_grid.attach_next_to (overview_tint_value, overview_tint_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_gradient_label, 0, 4, 2, 1);
+		overview_grid.attach (overview_gradient_label, 0, 2, 2, 1);
 		overview_grid.attach_next_to (overview_gradient_value, overview_gradient_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconsize_label, 0, 5, 2, 1);
+		overview_grid.attach (overview_iconsize_label, 0, 3, 2, 1);
 		overview_grid.attach_next_to (overview_iconsize_value, overview_iconsize_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconspacing_label, 0, 6, 2, 1);
+		overview_grid.attach (overview_iconspacing_label, 0, 4, 2, 1);
 		overview_grid.attach_next_to (overview_iconspacing_value, overview_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Dash
