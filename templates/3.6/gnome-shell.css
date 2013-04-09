@@ -294,6 +294,7 @@ StScrollBar StButton#vhandle:active {
 .toggle-switch-intl {
     background-image: url("toggle-off.png");
     background-size: contain;
+    background-color: rgba(204,204,204,1.0);
     border: 1px solid rgba(0,0,0,0.4);
     border-radius: @roundness;
 }
