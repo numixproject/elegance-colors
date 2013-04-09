@@ -496,7 +496,7 @@ makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/gnome-shell"
 # Copy Elegance Colors to create a new theme
 if [[ -d "$template" ]]; then
 	mkdir -p "$makedir"
-	show_info "Using template $template"
+	show_info "Using template '$template'"
 	cp -rf "$template/." "$makedir"
 else
 	show_err "Failed to copy files"

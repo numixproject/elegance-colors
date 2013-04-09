@@ -1,3 +1,4 @@
+using Notify;
 using Gtk;
 
 class EleganceColorsWindow : ApplicationWindow {
@@ -244,7 +245,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			}
 		}
 	}
-
 
 	void export_theme () {
 
@@ -1556,13 +1556,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Dash", 1, 4);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Menu", 1, 7);
+		list_store.set (iter, 0, "Menu", 1, 5);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Dialogs", 1, 8);
+		list_store.set (iter, 0, "Dialogs", 1, 6);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Buttons", 1, 5);
+		list_store.set (iter, 0, "Buttons", 1, 7);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Entry", 1, 6);
+		list_store.set (iter, 0, "Entry", 1, 8);
 
 		var treeview = new TreeView.with_model (list_store);
 		var treepath = new TreePath.from_string ("0");
@@ -1603,8 +1603,8 @@ class EleganceColorsWindow : ApplicationWindow {
 	}
 
 	void on_selection_changed (TreeSelection selection) {
-		Gtk.TreeModel model;
-		Gtk.TreeIter iter;
+		TreeModel model;
+		TreeIter iter;
 
 		int page;
 
