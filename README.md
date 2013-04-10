@@ -1,8 +1,8 @@
 ### Introduction
 
-Elegance Colors is a chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or a user defined color. Also various other aspects of the theme are customizable.
+Elegance Colors is a customizable chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or a user defined color. Also various other aspects of the theme are customizable.
 
-Currently Elegance Colors supports only Gnome Shell 3.6.
+Currently Elegance Colors supports Gnome Shell 3.6 and 3.8.
 
 ### License
 
@@ -21,9 +21,9 @@ Ubuntu users can install Elegance Colors from our themes PPA using the following
 `sudo add-apt-repository ppa:satyajit-happy/themes`
 `sudo apt-get update && sudo apt-get install gnome-shell-theme-elegance-colors`
 
-Fedora users can add the [repo](http://download.opensuse.org/repositories/home:/satya164:/elegance-colors/Fedora_18/home:satya164:elegance-colors.repo) and then install Elegance Colors using the following commands,
+Fedora and OpenSUSE users can add the appropriate repo from [opensuse build service](http://download.opensuse.org/repositories/home:/satya164:/elegance-colors/) and install the package `gnome-shell-theme-elegance-colors` via the distro's package manager.
 
-`sudo yum install gnome-shell-theme-elegance-colors`
+Arch Linux users can install Elegance Colors from [aur](https://aur.archlinux.org/packages/gnome-shell-themes-elegance-colors/).
 
 If you use another distro, you need to compile from source. This is needed for the GUI.
 
@@ -54,13 +54,12 @@ You can launch the GUI from the menu which lets you customise various aspects of
 
 ### Troubleshooting
 
-It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can kill running processes of elegance-colors with the command,
-
-`killall elegance-colors`
-
-To view any error messages produced, stop the background process first and then run the process in Terminal,
+It is recommended to stop any previous instances of elegance-colors when updating to a new version. You can stop the running process of elegance-colors with the command,
 
 `elegance-colors stop`
+
+To view any error messages produced, run the process in Terminal,
+
 `elegance-colors start`
 
 To manually apply changes, run,

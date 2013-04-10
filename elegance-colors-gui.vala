@@ -332,7 +332,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			"program-name", "Elegance Colors",
 			"logo_icon_name", "elegance-colors",
 			"copyright", "Copyright \xc2\xa9 Satyajit Sahoo",
-			"comments", "A tint theme for Gnome Shell",
+			"comments", "A customizable chameleon theme for Gnome Shell",
 			"license", license,
 			"wrap-license", true,
 			"website", "https://github.com/satya164/elegance-colors",
