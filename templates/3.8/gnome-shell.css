@@ -475,16 +475,16 @@ StScrollBar StButton#vhandle:active {
 #searchEntry:hover,
 .notification StEntry:focus,
 .modal-dialog StEntry {
-    color: @entry_hoverfg;
+    color: @entry_focusfg;
     background-gradient-direction: vertical;
-    background-gradient-start: @entry_hoverbg1;
-    background-gradient-end: @entry_hoverbg2;
-    border-color: @entry_hoverborder;
+    background-gradient-start: @entry_focusbg1;
+    background-gradient-end: @entry_focusbg2;
+    border-color: @entry_focusborder;
 }
 
 .notification StEntry:focus,
 .modal-dialog StEntry:focus {
-    border: @entry_hoverborder;
+    border: @entry_focusborder;
 }
 
 #searchEntry {
@@ -503,11 +503,11 @@ StScrollBar StButton#vhandle:active {
 
 #searchEntry:focus,
 #searchEntry:hover {
-    color: @entry_hoverfg;
+    color: @entry_focusfg;
     background-gradient-direction: vertical;
-    background-gradient-start: @entry_hoverbg1;
-    background-gradient-end: @entry_hoverbg2;
-    border-color: @entry_hoverborder;
+    background-gradient-start: @entry_focusbg1;
+    background-gradient-end: @entry_focusbg2;
+    border-color: @entry_focusborder;
     caret-color: #666;
     transition-duration: @transition;
 }
@@ -548,21 +548,6 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
     height: 2.1em;
     transition-duration: @transition;
-}
-
-#panel.in-overview {
-    color: @paneloverview_fg;
-    background-gradient-direction: vertical;
-    background-gradient-start: @paneloverview_bg1;
-    background-gradient-end: @paneloverview_bg2;
-    border-color: @paneloverview_border;
-    border-bottom-width: 1px;
-    /*paneloverviewshadow_true
-    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    paneloverviewshadow_true*/
-    /*paneloverviewshadow_false
-    box-shadow: none;
-    paneloverviewshadow_false*/
 }
 
 #panel.lock-screen {
@@ -646,7 +631,6 @@ StScrollBar StButton#vhandle:active {
 .panel-button {
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
-    font-weight: bold;
     transition-duration: @transition;
 }
 
@@ -728,8 +712,8 @@ StScrollBar StButton#vhandle:active {
 .status-chooser-user-icon {
     border: 1px solid #666;
     border-radius: @roundness;
-    width: 36pt;
-    height: 36pt;
+    width: 48pt;
+    height: 48pt;
     background-size: contain;
     transition-duration: @transition;
 }
@@ -959,7 +943,7 @@ StScrollBar StButton#vhandle:active {
 
 #searchEntry:hover .search-entry-icon,
 #searchEntry:focus .search-entry-icon {
-    color: @entry_hoverfg;
+    color: @entry_focusfg;
 }
 
 /* Search Results */
