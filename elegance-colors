@@ -145,10 +145,10 @@ blue1=$(( blue2 + gradient ))
 red3=$(( red2 - gradient ))
 green3=$(( green2 - gradient ))
 blue3=$(( blue2 - gradient ))
-if [[ "$red1" -lt 255 && "$green1" -lt 255 && "$blue1" -lt 255 ]]; then
+if [[ "$red1" -le 255 && "$green1" -le 255 && "$blue1" -le 255 ]]; then
 	color1="rgba($red1,$green1,$blue1,$opacity)"
 	color2="rgba($red2,$green2,$blue2,$opacity)"
-elif [[ "$red3" -gt 0 && "$green3" -gt 0 && "$blue3" -gt 0 ]]; then
+elif [[ "$red3" -ge 0 && "$green3" -ge 0 && "$blue3" -ge 0 ]]; then
 	color1="rgba($red2,$green2,$blue2,$opacity)"
 	color2="rgba($red3,$green3,$blue3,$opacity)"
 else
@@ -458,6 +458,24 @@ vals=(
 	"$dialog_border"
 	"\/\*\*\/"
 	"\/\*\*\/"
+)
+# Misc
+make_gradient "$misc_runningbg" "$selgradient"
+misc_runningbg1="$color1"
+misc_runningbg2="$color2"
+vars=(
+	"${vars[@]}"
+	"@misc_separator1"
+	"@misc_separator2"
+	"@misc_runningbg1"
+	"@misc_runningbg2"
+)
+vals=(
+	"${vals[@]}"
+	"$misc_separator1"
+	"$misc_separator2"
+	"$misc_runningbg1"
+	"$misc_runningbg2"
 )
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/gnome-shell"

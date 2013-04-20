@@ -139,6 +139,15 @@ class EleganceColorsWindow : ApplicationWindow {
 	string dialog_heading_value;
 	string dialog_border_value;
 
+	// Misc
+	ColorButton misc_runningbg_color;
+	ColorButton misc_separator1_color;
+	ColorButton misc_separator2_color;
+
+	string misc_runningbg_value;
+	string misc_separator1_value;
+	string misc_separator2_value;
+
 	// Others
 	Notebook notebook;
 
@@ -438,6 +447,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			entry_gradient_value.adjustment.value = key_file.get_double ("Entry", "entry_gradient");
 
+			misc_runningbg_value = key_file.get_string ("Misc", "misc_runningbg");
+			misc_separator1_value = key_file.get_string ("Misc", "misc_separator1");
+			misc_separator2_value = key_file.get_string ("Misc", "misc_separator2");
 
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
@@ -535,6 +547,15 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (entry_focusborder_value));
 		entry_focusborder_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_runningbg_value));
+		misc_runningbg_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_separator1_value));
+		misc_separator1_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_separator2_value));
+		misc_separator2_color.set_rgba (color);
 	}
 
 	void create_widgets () {
@@ -1357,6 +1378,47 @@ class EleganceColorsWindow : ApplicationWindow {
 			key_file.set_double ("Entry", "entry_gradient", entry_gradient_value.adjustment.value);
 		});
 
+		// Misc
+		var misc_runningbg_label = new Label.with_mnemonic ("Background color for running apps");
+		misc_runningbg_label.set_halign (Align.START);
+		misc_runningbg_color = new ColorButton ();
+		misc_runningbg_color.set_use_alpha (true);
+		misc_runningbg_color.set_tooltip_text ("Set the background color for the icons of running apps");
+		var misc_separator1_label = new Label.with_mnemonic ("Separator gradient start");
+		misc_separator1_label.set_halign (Align.START);
+		misc_separator1_color = new ColorButton ();
+		misc_separator1_color.set_use_alpha (true);
+		misc_separator1_color.set_tooltip_text ("Set the starting gradient color of separators");
+		var misc_separator2_label = new Label.with_mnemonic ("Separator gradient end");
+		misc_separator2_label.set_halign (Align.START);
+		misc_separator2_color = new ColorButton ();
+		misc_separator2_color.set_use_alpha (true);
+		misc_separator2_color.set_tooltip_text ("Set the ending gradient color of separators");
+
+		var misc_grid = new Grid ();
+		misc_grid.set_column_homogeneous (true);
+		misc_grid.set_column_spacing (12);
+		misc_grid.set_row_spacing (12);
+		misc_grid.attach (misc_runningbg_label, 0, 0, 2, 1);
+		misc_grid.attach_next_to (misc_runningbg_color, misc_runningbg_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_separator1_label, 0, 1, 2, 1);
+		misc_grid.attach_next_to (misc_separator1_color, misc_separator1_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_separator2_label, 0, 2, 2, 1);
+		misc_grid.attach_next_to (misc_separator2_color, misc_separator2_label, PositionType.RIGHT, 1, 1);
+
+		misc_runningbg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_runningbg", misc_runningbg_color.rgba.to_string());
+		});
+		misc_separator1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_separator1", misc_separator1_color.rgba.to_string());
+		});
+		misc_separator2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string());
+		});
+
 		// Toolbar
 		undo_button = new ToolButton.from_stock (Stock.UNDO);
 		undo_button.set_tooltip_text ("Undo the last change");
@@ -1394,6 +1456,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		notebook.append_page (dialog_grid, null);
 		notebook.append_page (button_grid, null);
 		notebook.append_page (entry_grid, null);
+		notebook.append_page (misc_grid, null);
 
 		var mainbox = new Box (Orientation.VERTICAL, 12);
 		mainbox.set_border_width (12);
@@ -1419,6 +1482,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_store.set (iter, 0, "Buttons", 1, 6);
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Entry", 1, 7);
+		list_store.append (out iter);
+		list_store.set (iter, 0, "Misc", 1, 8);
 
 		var treeview = new TreeView.with_model (list_store);
 		var treepath = new TreePath.from_string ("0");

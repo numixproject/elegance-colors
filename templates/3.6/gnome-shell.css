@@ -240,9 +240,9 @@ StScrollBar StButton#vhandle:active {
 
 .popup-separator-menu-item {
     -gradient-height: 1px;
-    -gradient-start: rgba(255,255,255,0);
-    -gradient-end: rgba(255,255,255,0.2);
-    -margin-horizontal: 1em;
+    -gradient-start: @misc_separator1;
+    -gradient-end: @misc_separator2;
+    -margin-horizontal: 0em;
     height: 1px;
 }
 
@@ -408,7 +408,7 @@ StScrollBar StButton#vhandle:active {
     caret-size: 1px;
     selection-background-color: @selected_bg2;
     selected-color: @selected_fg;
-    padding: 4px 12px;
+    padding: 4px 12px 5px;
 }
 
 .notification StEntry,
@@ -939,8 +939,8 @@ StScrollBar StButton#vhandle:active {
 
 .app-well-app.running > .overview-icon {
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,0.2);
-    background-gradient-end: rgba(255,255,255,0.2);
+    background-gradient-start: @misc_runningbg1;
+    background-gradient-end: @misc_runningbg2;
 }
 
 .app-well-app:hover > .overview-icon,
@@ -1820,7 +1820,7 @@ StScrollBar StButton#vhandle:active {
     border-radius: @roundness;
     margin-left: 7px;
     margin-right: 7px;
-    padding: 3px 20px 4px;
+    padding: 4px 20px 5px;
 }
 
 .modal-dialog-button:insensitive {

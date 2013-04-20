@@ -239,9 +239,9 @@ StScrollBar StButton#vhandle:active {
 
 .popup-separator-menu-item {
     -gradient-height: 1px;
-    -gradient-start: rgba(255,255,255,0);
-    -gradient-end: rgba(255,255,255,0.2);
-    -margin-horizontal: 1em;
+    -gradient-start: @misc_separator1;
+    -gradient-end: @misc_separator2;
+    -margin-horizontal: 0em;
     height: 1px;
 }
 
@@ -451,7 +451,7 @@ StScrollBar StButton#vhandle:active {
     caret-size: 1px;
     selection-background-color: @selected_bg2;
     selected-color: @selected_fg;
-    padding: 4px 12px;
+    padding: 4px 12px 5px;
 }
 
 #searchEntry,
@@ -817,7 +817,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .window-caption:hover {
-    border: 2px solid rgba(255, 255, 255, 0); /* TODO */
+    border: 1px solid @dash_border;
 }
 
 .window-close, .notification-close {
@@ -832,8 +832,8 @@ StScrollBar StButton#vhandle:active {
 }
 
 .window-clone-border {
-    border: 4px solid rgba(255, 255, 255, 0.5); /* TODO */
-    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: @roundness;
 }
 
 .notification-close {
@@ -968,13 +968,11 @@ StScrollBar StButton#vhandle:active {
     spacing: 16px;
 }
 
-/* TODO */
-
 .search-section-separator {
     -gradient-height: 1px;
-    -gradient-start: rgba(255,255,255,0);
-    -gradient-end: rgba(255,255,255,0.5);
-    -margin-horizontal: 1.5em;
+    -gradient-start: @misc_separator1;
+    -gradient-end: @misc_separator2;
+    -margin-horizontal: 1em;
     height: 1px;
 }
 
@@ -1071,7 +1069,6 @@ StScrollBar StButton#vhandle:active {
 .search-provider-icon,
 .list-search-result,
 .grid-search-result .overview-icon {
-    border-radius: @roundness;
     padding: 3px;
     border: 1px transparent;
     text-align: center;
@@ -1079,10 +1076,35 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-folder-popup {
-    -arrow-border-radius: 8px;
-    -arrow-background-color: black;
-    -arrow-base: 24px;
-    -arrow-rise: 11px;
+    color: @menu_fg;
+    border-radius: @roundness;
+    border-width: 1px;
+    /*menushadow_true
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    menushadow_true*/
+    /*menushadow_false
+    box-shadow: none;
+    menushadow_false*/
+    -arrow-border-radius: @roundness;
+    -arrow-border-width: 1px;
+    /*arrow_true
+    background-color: transparent;
+    border-color: transparent;
+    -arrow-background-color: @menu_bg1;
+    -arrow-border-color: @menu_border;
+    -arrow-base: 21px;
+    -arrow-rise: 9px;
+    arrow_true*/
+    /*arrow_false
+    background-gradient-direction: vertical;
+    background-gradient-start: @menu_bg1;
+    background-gradient-end: @menu_bg2;
+    border-color: @menu_border;
+    -arrow-background-color: transparent;
+    -arrow-border-color: transparent;
+    -arrow-base: 0;
+    -arrow-rise: 3px;
+    arrow_false*/
 }
 
 .app-folder-popup-bin {
@@ -1091,12 +1113,12 @@ StScrollBar StButton#vhandle:active {
 
 .app-well-app.running > .overview-icon {
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255,255,255,0.2);
-    background-gradient-end: rgba(255,255,255,0.2);
+    background-gradient-start: @misc_runningbg1;
+    background-gradient-end: @misc_runningbg2;
 }
 
 .app-well-app.app-folder > .overview-icon {
-    background-color: rgba(0,0,0,0.5); /* TODO */ 
+    background-color: rgba(0,0,0,0.5);
 }
 
 .app-well-app:hover > .overview-icon,
@@ -1111,10 +1133,8 @@ StScrollBar StButton#vhandle:active {
     transition-duration: @transition;
 }
 
-/* TODO */
-
 .app-display .app-well-app > .overview-icon {
-    border-radius: 10px;
+    border-radius: @roundness;
 }
 
 .list-search-result:hover .list-search-result-description {
@@ -1140,7 +1160,6 @@ StScrollBar StButton#vhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,0.3);
     background-gradient-end: rgba(255,255,255,0.3);
-    border-radius: 4px;
     transition-duration: @transition;
 }
 
@@ -1510,7 +1529,6 @@ StScrollBar StButton#vhandle:active {
 /* TODO */
 
 .no-messages-label {
-    font-family: cantarell, sans-serif;
     font-size: 11pt;
     color: #999999;
 }
@@ -2006,7 +2024,7 @@ StScrollBar StButton#vhandle:active {
 .modal-dialog-button {
     margin-left: 7px;
     margin-right: 7px;
-    padding: 3px 20px 4px;
+    padding: 4px 20px 5px;
 }
 
 .modal-dialog-button:insensitive {
@@ -2440,11 +2458,11 @@ StScrollBar StButton#vhandle:active {
 }
 
 .candidate-page-button-previous {
-    border-radius: 4px 0px 0px 4px;
+    border-radius: @roundness 0px 0px @roundness;
 }
 
 .candidate-page-button-next {
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 0px @roundness @roundness 0px;
 }
 
 .candidate-page-button-icon {
