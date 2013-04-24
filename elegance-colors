@@ -112,100 +112,74 @@ else
 fi
 }
 
-make_gradient() {
+get_rgba() {
 basecolor="$1"
-gradient="$2"
 [[ "$basecolor" = "$mode" ]] && basecolor="$color"
 if [[ "$basecolor" =~ ^rgba ]]; then
-	red2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
+	red=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+	alpha=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
 elif [[ "$basecolor" =~ ^rgb ]]; then
-	red2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity="1.0"
+	red=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
+	green=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
+	blue=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+	alpha="1.0"
 elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 4 ]]; then
-	red2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-	opacity="1.0"
+	red=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
+	green=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
+	blue=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+	alpha="1.0"
 elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 7 ]]; then
-	red2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
-	opacity="1.0"
+	red=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
+	green=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
+	blue=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+	alpha="1.0"
 else
 	show_err "Invalid color '$basecolor'"
 fi
-red1=$(( red2 + gradient ))
-green1=$(( green2 + gradient ))
-blue1=$(( blue2 + gradient ))
-red3=$(( red2 - gradient ))
-green3=$(( green2 - gradient ))
-blue3=$(( blue2 - gradient ))
-if [[ "$red1" -le 255 && "$green1" -le 255 && "$blue1" -le 255 ]]; then
-	color1="rgba($red1,$green1,$blue1,$opacity)"
-	color2="rgba($red2,$green2,$blue2,$opacity)"
-elif [[ "$red3" -ge 0 && "$green3" -ge 0 && "$blue3" -ge 0 ]]; then
-	color1="rgba($red2,$green2,$blue2,$opacity)"
-	color2="rgba($red3,$green3,$blue3,$opacity)"
-else
-	show_warn "Consider adjusting the color or gradient size"
-	color1="rgba($red2,$green2,$blue2,$opacity)"
-	color2="rgba($red2,$green2,$blue2,$opacity)"
-fi
 }
 
-make_tint() {
+shade() {
+basecolor="$1"
+amount="$2"
+get_rgba "$basecolor"
+red1=$(( red + amount ))
+green1=$(( green + amount ))
+blue1=$(( blue + amount ))
+[[ "$red1" -le 0 ]] && red1=0
+[[ "$green1" -le 0 ]] && green1=0
+[[ "$blue1" -le 0 ]] && blue1=0
+[[ "$red1" -ge 255 ]] && red1=255
+[[ "$green1" -ge 255 ]] && green1=255
+[[ "$blue1" -ge 255 ]] && blue1=255
+printf "rgba($red1,$green1,$blue1,$alpha)"
+}
+
+alpha() {
+basecolor="$1"
+opacity="$2"
+get_rgba "$basecolor"
+printf "rgba($red,$green,$blue,$opacity)"
+}
+
+tint() {
 color1="$1"
 color2="$2"
 amount="$3"
-[[ "$color1" = "$mode" ]] && color1="$color"
-[[ "$color2" = "$mode" ]] && color2="$color"
-if [[ "$color1" =~ ^rgb ]]; then
-	red1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue1=$(echo "$color1" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-elif [[ "$color1" =~ ^# && "${#color1}" -eq 4 ]]; then
-	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-elif [[ "$color1" =~ ^# && "${#color1}" -eq 7 ]]; then
-	red1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue1=$((`echo "$color1" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
-else
-	show_err "Invalid color '$color1'"
-fi
-if [[ "$color2" =~ ^rgba ]]; then
-	red2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
-elif [[ "$color2" =~ ^rgb ]]; then
-	red2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue2=$(echo "$color2" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	opacity="1.0"
-elif [[ "$color2" =~ ^# && "${#color2}" -eq 4 ]]; then
-	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
-	opacity="1.0"
-elif [[ "$color2" =~ ^# && "${#color2}" -eq 7 ]]; then
-	red2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue2=$((`echo "$color2" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
-	opacity="1.0"
-else
-	show_err "Invalid color '$color2'"
-fi
-red=$(( ( ( red1 * amount ) + ( red2 * 30 ) ) / ( amount + 30 ) ))
-green=$(( ( ( green1 * amount ) + ( green2 * 30 ) ) / ( amount + 30 ) ))
-blue=$(( ( ( blue1 * amount ) + ( blue2 * 30 ) ) / ( amount + 30 ) ))
-chameleon="rgba($red,$green,$blue,$opacity)"
+get_rgba "$color1"
+red1=$(( red * 30 ))
+green1=$(( green * 30 ))
+blue1=$(( blue * 30 ))
+opacity="$alpha"
+get_rgba "$color2"
+red2=$(( red * amount ))
+green2=$(( green * amount ))
+blue2=$(( blue * amount ))
+red3=$(( ( red1 + red2 ) / ( amount + 30 ) ))
+green3=$(( ( green1 + green2 ) / ( amount + 30 ) ))
+blue3=$(( ( blue1 + blue2 ) / ( amount + 30 ) ))
+printf "rgba($red3,$green3,$blue3,$opacity)"
 }
 
 set_theme() {
@@ -213,11 +187,11 @@ set_theme() {
 SAVEIFS="$IFS"
 IFS=''
 unset vars vals
+# Read the configuration
+read_config
 # General settings
-get_color
-make_gradient "$color" "$selgradient"
-selected_bg1="$color1"
-selected_bg2="$color2"
+selected_bg1="$color"
+selected_bg2=$(shade "$color" "$selgradient")
 font_family=$(echo "$fontname" | sed 's/\ \w*$//')
 font_size=$(echo "$fontname" | sed 's/.* //')
 vars=(
@@ -241,13 +215,8 @@ vals=(
 	"$transition"
 )
 # Panel
-make_gradient "$panel_bg" "$panel_gradient"
-panel_bg1="$color1"
-panel_bg2="$color2"
-make_tint "$color" "$panel_bg1" "$panel_tint"
-panel_bg1="$chameleon"
-make_tint "$color" "$panel_bg2" "$panel_tint"
-panel_bg2="$chameleon"
+panel_bg1=$(tint "$panel_bg1" "$color" "$panel_tint")
+panel_bg2=$(tint "$panel_bg2" "$color" "$panel_tint")
 vars=(
 	"${vars[@]}"
 	"@panel_bg1"
@@ -273,13 +242,8 @@ vals=(
 	"\/\*\*\/"
 )
 # Overview
-make_gradient "$overview_bg" "$overview_gradient"
-overview_bg1="$color1"
-overview_bg2="$color2"
-make_tint "$color" "$overview_bg1" "$overview_tint"
-overview_bg1="$chameleon"
-make_tint "$color" "$overview_bg2" "$overview_tint"
-overview_bg2="$chameleon"
+overview_bg1=$(tint "$overview_bg1" "$color" "$overview_tint")
+overview_bg2=$(tint "$overview_bg2" "$color" "$overview_tint")
 # Icon size dash
 overview_itemsize=$(( overview_iconsize + overview_iconspacing - 2 ))
 vars=(
@@ -299,13 +263,8 @@ vals=(
 	"${overview_iconspacing}px"
 )
 # Dash
-make_gradient "$dash_bg" "$dash_gradient"
-dash_bg1="$color1"
-dash_bg2="$color2"
-make_tint "$color" "$dash_bg1" "$dash_tint"
-dash_bg1="$chameleon"
-make_tint "$color" "$dash_bg2" "$dash_tint"
-dash_bg2="$chameleon"
+dash_bg1=$(tint "$dash_bg1" "$color" "$dash_tint")
+dash_bg2=$(tint "$dash_bg2" "$color" "$dash_tint")
 vars=(
 	"${vars[@]}"
 	"@dash_fg"
@@ -325,13 +284,8 @@ vals=(
 	"\/\*\*\/"
 )
 # Menu
-make_gradient "$menu_bg" "$menu_gradient"
-menu_bg1="$color1"
-menu_bg2="$color2"
-make_tint "$color" "$menu_bg1" "$menu_tint"
-menu_bg1="$chameleon"
-make_tint "$color" "$menu_bg2" "$menu_tint"
-menu_bg2="$chameleon"
+menu_bg1=$(tint "$menu_bg1" "$color" "$menu_tint")
+menu_bg2=$(tint "$menu_bg2" "$color" "$menu_tint")
 vars=(
 	"${vars[@]}"
 	"@menu_bg1"
@@ -355,15 +309,6 @@ vals=(
 	"\/\*\*\/"
 )
 # Buttons
-make_gradient "$button_bg" "$button_gradient"
-button_bg1="$color1"
-button_bg2="$color2"
-make_gradient "$button_hoverbg" "$button_gradient"
-button_hoverbg1="$color1"
-button_hoverbg2="$color2"
-make_gradient "$button_activebg" "$button_gradient"
-button_activebg1="$color1"
-button_activebg2="$color2"
 vars=(
 	"${vars[@]}"
 	"@button_bg1"
@@ -399,12 +344,6 @@ vals=(
 	"\/\*\*\/"
 )
 # Entry
-make_gradient "$entry_bg" "$entry_gradient"
-entry_bg1="$color1"
-entry_bg2="$color2"
-make_gradient "$entry_focusbg" "$entry_gradient"
-entry_focusbg1="$color1"
-entry_focusbg2="$color2"
 vars=(
 	"${vars[@]}"
 	"@entry_bg1"
@@ -432,13 +371,6 @@ vals=(
 	"\/\*\*\/"
 )
 # Dialogs
-make_gradient "$dialog_bg" "$dialog_gradient"
-dialog_bg1="$color1"
-dialog_bg2="$color2"
-make_tint "$color" "$dialog_bg1" "$dialog_tint"
-dialog_bg1="$chameleon"
-make_tint "$color" "$dialog_bg2" "$dialog_tint"
-dialog_bg2="$chameleon"
 vars=(
 	"${vars[@]}"
 	"@dialog_bg1"
@@ -460,9 +392,6 @@ vals=(
 	"\/\*\*\/"
 )
 # Misc
-make_gradient "$misc_runningbg" "$selgradient"
-misc_runningbg1="$color1"
-misc_runningbg2="$color2"
 vars=(
 	"${vars[@]}"
 	"@misc_separator1"
@@ -522,6 +451,15 @@ else
 fi
 # Remove the temporary directory
 rm -rf "$makedir"
+# Enable or disable autostart
+if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
+	show_info "Disabling autostart"
+	cp -f "/etc/xdg/autostart/elegance-colors-process.desktop" "$HOME/.config/autostart/elegance-colors-process.desktop"
+	echo "X-GNOME-Autostart-enabled=false" >> "$HOME/.config/autostart/elegance-colors-process.desktop"
+elif [[ "$monitor" = "true" && -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
+	show_info "Enabling autostart"
+	rm -f "$HOME/.config/autostart/elegance-colors-process.desktop"
+fi
 # Restore previous IFS
 IFS="$SAVEIFS"
 }
@@ -583,8 +521,19 @@ while IFS='= ' read var val; do
 	[[ $var =~ ^# || $var =~ ^\[ || ! $val ]] && continue
 	# Workaround for locales which use "," instead of "."
 	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val="${val//,/.}"
+	# Detect color
+	[[ $var = "color" ]] && get_color && val="$color"
 	# Symbolic values
 	[[ "$val" =~ ^@ ]] && val="${val//@/}" && val="${!val}"
+	delim=$(echo "$val" | awk -F';' '{ print NF }')
+	for ((i=1; i < $delim; i++)); do
+		val1=$(echo "$val" | cut -f"$i" -d";")
+		[[ "$val1" =~ ^@ ]] && val1="${val1//@/}" && val=$(echo "$val" | sed "s/@${val1}/${!val1}/g")
+	done
+	# Color operations
+	[[ "$val" =~ ^alpha\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val=$(alpha "$val1" "$val2")
+	[[ "$val" =~ ^shade\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val=$(shade "$val1" "$val2")
+	[[ "$val" =~ ^tint\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val3=$(echo "$val" | cut -f4 -d";") && val=$(tint "$val1" "$val2" "$val3")
 	# Escape "(", ")" and " " for safe use in eval
 	val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
 	# Define variables
@@ -619,8 +568,6 @@ fi
 [[ -f "$configfile" ]] || cp -f "$defaultconfig" "$configfile"
 # Create the temporary directory
 [[ -d "$tempdir" ]] || mkdir -p "$tempdir"
-# Read the configuration
-read_config
 # Get the gtk theme name
 theme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
 # Get the gtk theme path
@@ -642,15 +589,6 @@ fi
 # If elegance-colors doesn't exist in ~./themes, create it
 if [[ ! -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
 	set_theme
-fi
-# Enable or disable autostart
-if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Disabling autostart"
-	cp -f "/etc/xdg/autostart/elegance-colors-process.desktop" "$HOME/.config/autostart/elegance-colors-process.desktop"
-	echo "X-GNOME-Autostart-enabled=false" >> "$HOME/.config/autostart/elegance-colors-process.desktop"
-elif [[ "$monitor" = "true" && -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Enabling autostart"
-	rm -f "$HOME/.config/autostart/elegance-colors-process.desktop"
 fi
 }
 

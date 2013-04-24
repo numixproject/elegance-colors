@@ -169,7 +169,6 @@ StScrollBar StButton#vhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
-    border: 1px solid @menu_border;
 }
 
 .popup-sub-menu:scrolled .popup-menu-item:ltr {
