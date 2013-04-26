@@ -108,6 +108,7 @@ elif [[ "$mode" = "wallpaper" ]]; then
 	fi
 else
 	show_info "Using custom color"
+	color="$1"
 	selected_fg="#fff"
 fi
 }
@@ -168,17 +169,17 @@ color1="$1"
 color2="$2"
 amount="$3"
 get_rgba "$color1"
-red1=$(( red * 30 ))
-green1=$(( green * 30 ))
-blue1=$(( blue * 30 ))
+red1=$(( red * 25 ))
+green1=$(( green * 25 ))
+blue1=$(( blue * 25 ))
 opacity="$alpha"
 get_rgba "$color2"
 red2=$(( red * amount ))
 green2=$(( green * amount ))
 blue2=$(( blue * amount ))
-red3=$(( ( red1 + red2 ) / ( amount + 30 ) ))
-green3=$(( ( green1 + green2 ) / ( amount + 30 ) ))
-blue3=$(( ( blue1 + blue2 ) / ( amount + 30 ) ))
+red3=$(( ( red1 + red2 ) / ( amount + 25 ) ))
+green3=$(( ( green1 + green2 ) / ( amount + 25 ) ))
+blue3=$(( ( blue1 + blue2 ) / ( amount + 25 ) ))
 printf "rgba($red3,$green3,$blue3,$opacity)"
 }
 
@@ -190,8 +191,8 @@ unset vars vals
 # Read the configuration
 read_config
 # General settings
-selected_bg1="$color"
-selected_bg2=$(shade "$color" "$selgradient")
+selected_bg1=$(shade "$color" "$selgradient")
+selected_bg2="$color"
 font_family=$(echo "$fontname" | sed 's/\ \w*$//')
 font_size=$(echo "$fontname" | sed 's/.* //')
 vars=(
@@ -223,6 +224,7 @@ vars=(
 	"@panel_bg2"
 	"@panel_fg"
 	"@panel_border"
+	"@panel_bwidth"
 	"@panel_corner"
 	"\/\*panelshadow_$panel_shadow"
 	"panelshadow_$panel_shadow\*\/"
@@ -235,6 +237,7 @@ vals=(
 	"$panel_bg2"
 	"$panel_fg"
 	"$panel_border"
+	"${panel_bwidth}px"
 	"${panel_corner}px"
 	"\/\*\*\/"
 	"\/\*\*\/"
@@ -250,6 +253,14 @@ vars=(
 	"${vars[@]}"
 	"@overview_bg1"
 	"@overview_bg2"
+	"@overview_searchbg1"
+	"@overview_searchbg2"
+	"@overview_searchfocusbg1"
+	"@overview_searchfocusbg2"
+	"@overview_searchfg"
+	"@overview_searchfocusfg"
+	"@overview_searchborder"
+	"@overview_searchfocusborder"
 	"@overview_iconsize"
 	"@overview_itemsize"
 	"@overview_iconspacing"
@@ -258,6 +269,14 @@ vals=(
 	"${vals[@]}"
 	"$overview_bg1"
 	"$overview_bg2"
+	"$overview_searchbg1"
+	"$overview_searchbg2"
+	"$overview_searchfocusbg1"
+	"$overview_searchfocusbg2"
+	"$overview_searchfg"
+	"$overview_searchfocusfg"
+	"$overview_searchborder"
+	"$overview_searchfocusborder"
 	"${overview_iconsize}px"
 	"${overview_itemsize}px"
 	"${overview_iconspacing}px"
@@ -271,6 +290,7 @@ vars=(
 	"@dash_bg1"
 	"@dash_bg2"
 	"@dash_border"
+	"@dash_bwidth"
 	"\/\*dashshadow_$dash_shadow"
 	"dashshadow_$dash_shadow\*\/"
 )
@@ -280,6 +300,7 @@ vals=(
 	"$dash_bg1"
 	"$dash_bg2"
 	"$dash_border"
+	"${dash_bwidth}px"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
@@ -292,6 +313,7 @@ vars=(
 	"@menu_bg2"
 	"@menu_fg"
 	"@menu_border"
+	"@menu_bwidth"
 	"\/\*menushadow_$menu_shadow"
 	"menushadow_$menu_shadow\*\/"
 	"\/\*arrow_$menu_arrow"
@@ -303,8 +325,34 @@ vals=(
 	"$menu_bg2"
 	"$menu_fg"
 	"$menu_border"
+	"${menu_bwidth}px"
 	"\/\*\*\/"
 	"\/\*\*\/"
+	"\/\*\*\/"
+	"\/\*\*\/"
+)
+# Dialogs
+dialog_bg1=$(tint "$dialog_bg1" "$color" "$dialog_tint")
+dialog_bg2=$(tint "$dialog_bg2" "$color" "$dialog_tint")
+vars=(
+	"${vars[@]}"
+	"@dialog_bg1"
+	"@dialog_bg2"
+	"@dialog_fg"
+	"@dialog_heading"
+	"@dialog_border"
+	"@dialog_bwidth"
+	"\/\*dialogshadow_$dialog_shadow"
+	"dialogshadow_$dialog_shadow\*\/"
+)
+vals=(
+	"${vals[@]}"
+	"$dialog_bg1"
+	"$dialog_bg2"
+	"$dialog_fg"
+	"$dialog_heading"
+	"$dialog_border"
+	"${dialog_bwidth}px"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
@@ -370,27 +418,6 @@ vals=(
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
-# Dialogs
-vars=(
-	"${vars[@]}"
-	"@dialog_bg1"
-	"@dialog_bg2"
-	"@dialog_fg"
-	"@dialog_heading"
-	"@dialog_border"
-	"\/\*dialogshadow_$dialog_shadow"
-	"dialogshadow_$dialog_shadow\*\/"
-)
-vals=(
-	"${vals[@]}"
-	"$dialog_bg1"
-	"$dialog_bg2"
-	"$dialog_fg"
-	"$dialog_heading"
-	"$dialog_border"
-	"\/\*\*\/"
-	"\/\*\*\/"
-)
 # Misc
 vars=(
 	"${vars[@]}"
@@ -398,6 +425,10 @@ vars=(
 	"@misc_separator2"
 	"@misc_runningbg1"
 	"@misc_runningbg2"
+	"@misc_tooltipbg1"
+	"@misc_tooltipbg2"
+	"@misc_tooltipborder"
+	"@misc_tooltipfg"
 )
 vals=(
 	"${vals[@]}"
@@ -405,6 +436,10 @@ vals=(
 	"$misc_separator2"
 	"$misc_runningbg1"
 	"$misc_runningbg2"
+	"$misc_tooltipbg1"
+	"$misc_tooltipbg2"
+	"$misc_tooltipborder"
+	"$misc_tooltipfg"
 )
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/gnome-shell"
@@ -507,22 +542,22 @@ read_config() {
 # Update the old config file to support new options
 while IFS='= ' read var val; do
 	# Escape comments
-	[[ $var =~ ^# ]] && continue
+	[[ "$var" =~ ^# ]] && continue
 	# Escape custom values
-	[[ $var =~ \[custom\]$ ]] && continue
+	[[ "$var" =~ \[custom\]$ ]] && continue
 	# Read the section header
-	[[ $var =~ ^\[ ]] && section="$var"
+	[[ "$var" =~ ^\[ ]] && section="$var"
 	# Write the non-existent value into the config file
 	[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
 done < "$defaultconfig"
 # Load the config file
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
-	[[ $var =~ ^# || $var =~ ^\[ || ! $val ]] && continue
+	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
 	# Workaround for locales which use "," instead of "."
 	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val="${val//,/.}"
 	# Detect color
-	[[ $var = "color" ]] && get_color && val="$color"
+	[[ "$var" = "color" ]] && get_color "$val" && val="$color"
 	# Symbolic values
 	[[ "$val" =~ ^@ ]] && val="${val//@/}" && val="${!val}"
 	delim=$(echo "$val" | awk -F';' '{ print NF }')
