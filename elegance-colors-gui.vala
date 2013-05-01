@@ -175,6 +175,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	Button apply_button;
 
 	File config_file;
+	File presets_dir_usr;
 	File presets_dir_sys;
 
 	KeyFile key_file;
@@ -221,6 +222,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Set variables
 		var config_dir = File.new_for_path (Environment.get_user_config_dir ());
 		config_file = config_dir.get_child ("elegance-colors").get_child ("elegance-colors.ini");
+		presets_dir_usr = config_dir.get_child ("elegance-colors").get_child ("presets");
 		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
 
 		key_file = new KeyFile ();
@@ -614,7 +616,42 @@ class EleganceColorsWindow : ApplicationWindow {
 		var presets_label = new Label.with_mnemonic ("Load config from preset");
 		presets_label.set_halign (Align.START);
 
-		// Read presets
+		// Read presets from user dir
+		try {
+			var dir = Dir.open(presets_dir_usr.get_path());
+
+			var titlechanged = false;
+
+			string preset = "";
+			string title = "";
+			while ((preset = dir.read_name()) != null) {
+				presets += preset;
+
+				try {
+					var dis = new DataInputStream (presets_dir_usr.get_child (preset).read ());
+					string line;
+					while ((line = dis.read_line (null)) != null) {
+						if ("# Name:" in line) {
+							title = line.substring (8, line.length-8);
+							titlechanged = true;
+						}
+					}
+				} catch (Error e) {
+					stderr.printf ("Could not read preset title: %s\n", e.message);
+				}
+				
+				if (!titlechanged == true) {
+					title = preset;
+				}
+
+				titles += title;
+				titlechanged = false;
+			}
+		} catch (Error e) {
+			stderr.printf ("Failed to open user presets directory: %s\n", e.message);
+		}
+
+		// Read presets from system dir
 		try {
 			var dir = Dir.open(presets_dir_sys.get_path());
 
@@ -646,7 +683,7 @@ class EleganceColorsWindow : ApplicationWindow {
 				titlechanged = false;
 			}
 		} catch (Error e) {
-			stderr.printf ("Failed to open presets directory: %s\n", e.message);
+			stderr.printf ("Failed to open systemwide presets directory: %s\n", e.message);
 		}
 
 		var liststore = new ListStore (1, typeof (string));
