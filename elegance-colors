@@ -82,8 +82,8 @@ fi
 
 get_color() {
 if [[ "$mode" = "gtk" ]]; then
-	show_info "GTK theme found at '$gtkpath'"
 	# Get the color values from the gtk.css file
+	show_info "Getting color from GTK theme $gtkpath"
 	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
 		color=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
 	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
@@ -95,21 +95,25 @@ if [[ "$mode" = "gtk" ]]; then
 		selected_fg=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
-	show_info "Wallpaper found at '$img'"
+	show_info "Getting color from wallpaper $img"
 	# Scale background image to 3x3 and take the color from top-left
-	color=`convert "$img" -brightness-contrast 15% -fuzz 15% -alpha off -filter cubic -resize 3x3 -transparent black -colorspace RGB -format '%[pixel:s]' info:-`
-	bf=`convert "$img" -colorspace gray -format "%[fx:100*mean]" info:`
-	bi="${bf/.*}"
-	# Adjust text color according to the color brightness
-	if [[ "$bi" -ge "60" ]]; then
-		selected_fg="#000"
-	else
-		selected_fg="#fff"
-	fi
+	color=`convert "$img" -brightness-contrast 30% -fuzz 30% -alpha off -filter cubic -resize 5x5 -transparent black -colorspace RGB -format '%[pixel:s]' info:-`
+	selected_fg=$(adjust_fgcolor "$color")
 else
 	show_info "Using custom color"
 	color="$1"
-	selected_fg="#fff"
+	selected_fg=$(adjust_fgcolor "$color")
+fi
+}
+
+adjust_fgcolor() {
+basecolor="$1"
+get_rgba "$basecolor"
+lum=$(echo "$red * 0.2126 + $green * 0.7152 + $blue * 0.0722" | bc -l)
+if [[ ${lum%.*} -gt 150 ]]; then
+	printf "#000"
+else
+	printf "#fff"
 fi
 }
 
@@ -117,24 +121,28 @@ get_rgba() {
 basecolor="$1"
 [[ "$basecolor" = "$mode" ]] && basecolor="$color"
 if [[ "$basecolor" =~ ^rgba ]]; then
-	red=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
-	alpha=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f4 -d\,)
+	c="${basecolor//[a-z() ]/}"
+	red=$(printf ${c//[a-z() ]/} | awk -F, '{print $1}')
+	green=$(printf ${c//[a-z() ]/} | awk -F, '{print $2}')
+	blue=$(printf ${c//[a-z() ]/} | awk -F, '{print $3}')
+	alpha=$(printf ${c//[a-z() ]/} | awk -F, '{print $4}')
 elif [[ "$basecolor" =~ ^rgb ]]; then
-	red=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f1 -d\,)
-	green=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f2 -d\,)
-	blue=$(echo "$basecolor" | sed -e 's/[a-z() ]//g' | cut -f3 -d\,)
+	c="${basecolor//[a-z() ]/}"
+	red=$(printf ${c//[a-z() ]/} | awk -F, '{print $1}')
+	green=$(printf ${c//[a-z() ]/} | awk -F, '{print $2}')
+	blue=$(printf ${c//[a-z() ]/} | awk -F, '{print $3}')
 	alpha="1.0"
 elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 4 ]]; then
-	red=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 1`))
-	green=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 2`))
-	blue=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/./0x&&,/g' | cut -d ',' -f 3`))
+	c="${basecolor//#/}"
+	red=$(printf "%d\n" 0x${c:0:1}${c:0:1})
+	green=$(printf "%d\n" 0x${c:1:1}${c:1:1})
+	blue=$(printf "%d\n" 0x${c:2:2}${c:2:1})
 	alpha="1.0"
 elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 7 ]]; then
-	red=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 1`))
-	green=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 2`))
-	blue=$((`echo "$basecolor" | sed -e 's/#//g' -e 's/../0x&,/g' | cut -d ',' -f 3`))
+	c="${basecolor//#/}"
+	red=$(printf "%d\n" 0x${c:0:2})
+	green=$(printf "%d\n" 0x${c:2:2})
+	blue=$(printf "%d\n" 0x${c:4:2})
 	alpha="1.0"
 else
 	show_err "Invalid color '$basecolor'"
@@ -188,8 +196,8 @@ set_theme() {
 SAVEIFS="$IFS"
 IFS=''
 unset vars vals
-# Read the configuration
-read_config
+# Read configuration
+process_config
 # General settings
 selected_bg1=$(shade "$color" "$selgradient")
 selected_bg2="$color"
@@ -485,7 +493,7 @@ else
 	fi
 fi
 # Remove the temporary directory
-rm -rf "$makedir"
+rm -rf $(dirname "$makedir")
 # Enable or disable autostart
 if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
 	show_info "Disabling autostart"
@@ -551,6 +559,18 @@ while IFS='= ' read var val; do
 	[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
 done < "$defaultconfig"
 # Load the config file
+while IFS='= ' read var val; do
+	# Escape comments, section headers and empty values
+	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
+	# Escape "(", ")" and " " for safe use in eval
+	val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
+	# Define variables
+	eval "$var"="$val"
+done < "$configfile"
+}
+
+process_config() {
+# Process the config file
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
 	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
@@ -675,16 +695,18 @@ do
 		exit 1
 	fi
 	initialize
+	read_config
 	# Check if the current theme name matches elegance-colors
 	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		monitor_changes
 	fi
-	sleep 5
+	sleep 3
 done
 }
 
 apply_changes() {
 initialize
+read_config
 set_theme
 }
 
