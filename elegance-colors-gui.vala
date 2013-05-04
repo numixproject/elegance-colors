@@ -34,6 +34,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	Switch panel_icon_switch;
 
 	SpinButton panel_tint_value;
+	SpinButton panel_bwidth_value;
 	SpinButton panel_corner_value;
 
 	string panel_bg1_value;
@@ -44,6 +45,14 @@ class EleganceColorsWindow : ApplicationWindow {
 	// Overview
 	ColorButton overview_bg1_color;
 	ColorButton overview_bg2_color;
+	ColorButton overview_searchbg1_color;
+	ColorButton overview_searchbg2_color;
+	ColorButton overview_searchfocusbg1_color;
+	ColorButton overview_searchfocusbg2_color;
+	ColorButton overview_searchfg_color;
+	ColorButton overview_searchfocusfg_color;
+	ColorButton overview_searchborder_color;
+	ColorButton overview_searchfocusborder_color;
 
 	SpinButton overview_tint_value;
 	SpinButton overview_iconsize_value;
@@ -51,6 +60,14 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	string overview_bg1_value;
 	string overview_bg2_value;
+	string overview_searchbg1_value;
+	string overview_searchbg2_value;
+	string overview_searchfocusbg1_value;
+	string overview_searchfocusbg2_value;
+	string overview_searchfg_value;
+	string overview_searchfocusfg_value;
+	string overview_searchborder_value;
+	string overview_searchfocusborder_value;
 
 	// Dash
 	ColorButton dash_bg1_color;
@@ -61,6 +78,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	Switch dash_shadow_switch;
 
 	SpinButton dash_tint_value;
+	SpinButton dash_bwidth_value;
 
 	string dash_bg1_value;
 	string dash_bg2_value;
@@ -77,6 +95,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	Switch menu_arrow_switch;
 
 	SpinButton menu_tint_value;
+	SpinButton menu_bwidth_value;
 
 	string menu_bg1_value;
 	string menu_bg2_value;
@@ -93,6 +112,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	Switch dialog_shadow_switch;
 
 	SpinButton dialog_tint_value;
+	SpinButton dialog_bwidth_value;
 
 	string dialog_bg1_value;
 	string dialog_bg2_value;
@@ -155,11 +175,19 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton misc_runningbg2_color;
 	ColorButton misc_separator1_color;
 	ColorButton misc_separator2_color;
+	ColorButton misc_tooltipbg1_color;
+	ColorButton misc_tooltipbg2_color;
+	ColorButton misc_tooltipfg_color;
+	ColorButton misc_tooltipborder_color;
 
 	string misc_runningbg1_value;
 	string misc_runningbg2_value;
 	string misc_separator1_value;
 	string misc_separator2_value;
+	string misc_tooltipbg1_value;
+	string misc_tooltipbg2_value;
+	string misc_tooltipfg_value;
+	string misc_tooltipborder_value;
 
 	// Others
 	Notebook notebook;
@@ -399,10 +427,19 @@ class EleganceColorsWindow : ApplicationWindow {
 			panel_icon_switch.set_active (key_file.get_boolean ("Panel", "panel_icon"));
 
 			panel_tint_value.adjustment.value = key_file.get_double ("Panel", "panel_tint");
+			panel_bwidth_value.adjustment.value = key_file.get_double ("Panel", "panel_bwidth");
 			panel_corner_value.adjustment.value = key_file.get_double ("Panel", "panel_corner");
 
 			overview_bg1_value = key_file.get_string ("Overview", "overview_bg1");
 			overview_bg2_value = key_file.get_string ("Overview", "overview_bg2");
+			overview_searchbg1_value = key_file.get_string ("Overview", "overview_searchbg1");
+			overview_searchbg2_value = key_file.get_string ("Overview", "overview_searchbg2");
+			overview_searchfocusbg1_value = key_file.get_string ("Overview", "overview_searchfocusbg1");
+			overview_searchfocusbg2_value = key_file.get_string ("Overview", "overview_searchfocusbg2");
+			overview_searchfg_value = key_file.get_string ("Overview", "overview_searchfg");
+			overview_searchfocusfg_value = key_file.get_string ("Overview", "overview_searchfocusfg");
+			overview_searchborder_value = key_file.get_string ("Overview", "overview_searchborder");
+			overview_searchfocusborder_value = key_file.get_string ("Overview", "overview_searchfocusborder");
 
 			overview_tint_value.adjustment.value = key_file.get_double ("Overview", "overview_tint");
 			overview_iconsize_value.adjustment.value = key_file.get_double ("Overview", "overview_iconsize");
@@ -416,6 +453,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			dash_shadow_switch.set_active (key_file.get_boolean ("Dash", "dash_shadow"));
 
 			dash_tint_value.adjustment.value = key_file.get_double ("Dash", "dash_tint");
+			dash_bwidth_value.adjustment.value = key_file.get_double ("Dash", "dash_bwidth");
 
 			menu_bg1_value = key_file.get_string ("Menu", "menu_bg1");
 			menu_bg2_value = key_file.get_string ("Menu", "menu_bg2");
@@ -426,6 +464,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			menu_arrow_switch.set_active (key_file.get_boolean ("Menu", "menu_arrow"));
 
 			menu_tint_value.adjustment.value = key_file.get_double ("Menu", "menu_tint");
+			menu_bwidth_value.adjustment.value = key_file.get_double ("Menu", "menu_bwidth");
 
 			dialog_bg1_value = key_file.get_string ("Dialogs", "dialog_bg1");
 			dialog_bg2_value = key_file.get_string ("Dialogs", "dialog_bg2");
@@ -436,6 +475,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			dialog_shadow_switch.set_active (key_file.get_boolean ("Dialogs", "dialog_shadow"));
 
 			dialog_tint_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_tint");
+			dialog_bwidth_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_bwidth");
 
 			button_bg1_value = key_file.get_string ("Buttons", "button_bg1");
 			button_bg2_value = key_file.get_string ("Buttons", "button_bg2");
@@ -467,6 +507,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			misc_runningbg2_value = key_file.get_string ("Misc", "misc_runningbg2");
 			misc_separator1_value = key_file.get_string ("Misc", "misc_separator1");
 			misc_separator2_value = key_file.get_string ("Misc", "misc_separator2");
+			misc_tooltipbg1_value = key_file.get_string ("Misc", "misc_tooltipbg1");
+			misc_tooltipbg2_value = key_file.get_string ("Misc", "misc_tooltipbg2");
+			misc_tooltipfg_value = key_file.get_string ("Misc", "misc_tooltipfg");
+			misc_tooltipborder_value = key_file.get_string ("Misc", "misc_tooltipborder");
 
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
@@ -495,6 +539,24 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (overview_bg2_value));
 		overview_bg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchbg1_value));
+		overview_searchbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchbg2_value));
+		overview_searchbg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchfocusbg1_value));
+		overview_searchfocusbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchfocusbg2_value));
+		overview_searchfocusbg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchfg_value));
+		overview_searchfg_color.set_rgba (color);
+
+		color.parse ("%s".printf (overview_searchborder_value));
+		overview_searchborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (dash_bg1_value));
 		dash_bg1_color.set_rgba (color);
@@ -606,6 +668,18 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (misc_separator2_value));
 		misc_separator2_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_tooltipbg1_value));
+		misc_tooltipbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_tooltipbg2_value));
+		misc_tooltipbg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_tooltipfg_value));
+		misc_tooltipfg_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_tooltipborder_value));
+		misc_tooltipborder_color.set_rgba (color);
 	}
 
 	void create_widgets () {
@@ -756,6 +830,25 @@ class EleganceColorsWindow : ApplicationWindow {
 		colorbox.add (custom_color);
 		colorbox.add (color_button);
 
+		var general_grid = new Grid ();
+		general_grid.set_column_homogeneous (true);
+		general_grid.set_column_spacing (12);
+		general_grid.set_row_spacing (12);
+		general_grid.attach (presets_label, 0, 0, 1, 1);
+		general_grid.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
+		general_grid.attach (mode_label, 0, 1, 1, 1);
+		general_grid.attach_next_to (colorbox, mode_label, PositionType.RIGHT, 2, 1);
+		general_grid.attach (monitor_label, 0, 2, 2, 1);
+		general_grid.attach_next_to (monitor_switch, monitor_label, PositionType.RIGHT, 1, 1);
+		general_grid.attach (font_label, 0, 3, 1, 1);
+		general_grid.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
+		general_grid.attach (selgradient_label, 0, 4, 2, 1);
+		general_grid.attach_next_to (selgradient_size, selgradient_label, PositionType.RIGHT, 1, 1);
+		general_grid.attach (roundness_label, 0, 5, 2, 1);
+		general_grid.attach_next_to (corner_roundness, roundness_label, PositionType.RIGHT, 1, 1);
+		general_grid.attach (transition_label, 0, 6, 2, 1);
+		general_grid.attach_next_to (transition_duration, transition_label, PositionType.RIGHT, 1, 1);
+
 		combobox.changed.connect (on_preset_selected);
 		match_wallpaper.toggled.connect (() => {
 			on_value_changed ();
@@ -816,25 +909,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
 		});
 
-		var general_grid = new Grid ();
-		general_grid.set_column_homogeneous (true);
-		general_grid.set_column_spacing (12);
-		general_grid.set_row_spacing (12);
-		general_grid.attach (presets_label, 0, 0, 1, 1);
-		general_grid.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (mode_label, 0, 1, 1, 1);
-		general_grid.attach_next_to (colorbox, mode_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (monitor_label, 0, 2, 2, 1);
-		general_grid.attach_next_to (monitor_switch, monitor_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (font_label, 0, 3, 1, 1);
-		general_grid.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (selgradient_label, 0, 4, 2, 1);
-		general_grid.attach_next_to (selgradient_size, selgradient_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (roundness_label, 0, 5, 2, 1);
-		general_grid.attach_next_to (corner_roundness, roundness_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (transition_label, 0, 6, 2, 1);
-		general_grid.attach_next_to (transition_duration, transition_label, PositionType.RIGHT, 1, 1);
-
 		// Panel
 		var panel_bg1_label = new Label.with_mnemonic ("Background gradient start");
 		panel_bg1_label.set_halign (Align.START);
@@ -871,6 +945,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_tint_value = new SpinButton.with_range (0, 100, 1);
 		panel_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the top panel");
 		panel_tint_value.set_halign (Align.END);
+		var panel_bwidth_label = new Label.with_mnemonic ("Border width");
+		panel_bwidth_label.set_halign (Align.START);
+		panel_bwidth_value = new SpinButton.with_range (0, 100, 1);
+		panel_bwidth_value.set_tooltip_text ("Set the width of the border of the top panel");
+		panel_bwidth_value.set_halign (Align.END);
 		var panel_corner_label = new Label.with_mnemonic ("Corner radius");
 		panel_corner_label.set_halign (Align.START);
 		panel_corner_value = new SpinButton.with_range (0, 100, 1);
@@ -895,7 +974,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_grid.attach_next_to (panel_icon_switch, panel_icon_label, PositionType.RIGHT, 1, 1);
 		panel_grid.attach (panel_tint_label, 0, 6, 2, 1);
 		panel_grid.attach_next_to (panel_tint_value, panel_tint_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_corner_label, 0, 7, 2, 1);
+		panel_grid.attach (panel_bwidth_label, 0, 7, 2, 1);
+		panel_grid.attach_next_to (panel_bwidth_value, panel_bwidth_label, PositionType.RIGHT, 1, 1);
+		panel_grid.attach (panel_corner_label, 0, 8, 2, 1);
 		panel_grid.attach_next_to (panel_corner_value, panel_corner_label, PositionType.RIGHT, 1, 1);
 
 		panel_bg1_color.color_set.connect (() => {
@@ -926,6 +1007,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_double ("Panel", "panel_tint", panel_tint_value.adjustment.value);
 		});
+		panel_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Panel", "panel_bwidth", panel_bwidth_value.adjustment.value);
+		});
 		panel_corner_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
 			key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
@@ -942,6 +1027,46 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_bg2_color = new ColorButton ();
 		overview_bg2_color.set_use_alpha (true);
 		overview_bg2_color.set_tooltip_text ("Set the background gradient end of the overview");
+		var overview_searchbg1_label = new Label.with_mnemonic ("Search entry background gradient start");
+		overview_searchbg1_label.set_halign (Align.START);
+		overview_searchbg1_color = new ColorButton ();
+		overview_searchbg1_color.set_use_alpha (true);
+		overview_searchbg1_color.set_tooltip_text ("Set the background gradient start of the search entry");
+		var overview_searchbg2_label = new Label.with_mnemonic ("Search entry background gradient end");
+		overview_searchbg2_label.set_halign (Align.START);
+		overview_searchbg2_color = new ColorButton ();
+		overview_searchbg2_color.set_use_alpha (true);
+		overview_searchbg2_color.set_tooltip_text ("Set the background gradient end of the search entry");
+		var overview_searchfocusbg1_label = new Label.with_mnemonic ("Focus search entry background gradient start");
+		overview_searchfocusbg1_label.set_halign (Align.START);
+		overview_searchfocusbg1_color = new ColorButton ();
+		overview_searchfocusbg1_color.set_use_alpha (true);
+		overview_searchfocusbg1_color.set_tooltip_text ("Set the background gradient start of the search entry in focus state");
+		var overview_searchfocusbg2_label = new Label.with_mnemonic ("Focus search entry background gradient end");
+		overview_searchfocusbg2_label.set_halign (Align.START);
+		overview_searchfocusbg2_color = new ColorButton ();
+		overview_searchfocusbg2_color.set_use_alpha (true);
+		overview_searchfocusbg2_color.set_tooltip_text ("Set the background gradient end of the search entry in focus state");
+		var overview_searchfg_label = new Label.with_mnemonic ("Search entry text color");
+		overview_searchfg_label.set_halign (Align.START);
+		overview_searchfg_color = new ColorButton ();
+		overview_searchfg_color.set_use_alpha (true);
+		overview_searchfg_color.set_tooltip_text ("Set the text color of the search entry");
+		var overview_searchfocusfg_label = new Label.with_mnemonic ("Focus search entry text color");
+		overview_searchfocusfg_label.set_halign (Align.START);
+		overview_searchfocusfg_color = new ColorButton ();
+		overview_searchfocusfg_color.set_use_alpha (true);
+		overview_searchfocusfg_color.set_tooltip_text ("Set the text color of the search entry in focus state");
+		var overview_searchborder_label = new Label.with_mnemonic ("Search entry border color");
+		overview_searchborder_label.set_halign (Align.START);
+		overview_searchborder_color = new ColorButton ();
+		overview_searchborder_color.set_use_alpha (true);
+		overview_searchborder_color.set_tooltip_text ("Set the border color of the search entry");
+		var overview_searchfocusborder_label = new Label.with_mnemonic ("Focus search entry border color");
+		overview_searchfocusborder_label.set_halign (Align.START);
+		overview_searchfocusborder_color = new ColorButton ();
+		overview_searchfocusborder_color.set_use_alpha (true);
+		overview_searchfocusborder_color.set_tooltip_text ("Set the border color of the search entry in focus state");
 		var overview_tint_label = new Label.with_mnemonic ("Background tint level");
 		overview_tint_label.set_halign (Align.START);
 		overview_tint_value = new SpinButton.with_range (0, 100, 1);
@@ -966,6 +1091,38 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.rgba.to_string());
 		});
+		overview_searchbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.rgba.to_string());
+		});
+		overview_searchbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchbg2", overview_searchbg2_color.rgba.to_string());
+		});
+		overview_searchfocusbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusbg1", overview_searchfocusbg1_color.rgba.to_string());
+		});
+		overview_searchfocusbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusbg2", overview_searchfocusbg2_color.rgba.to_string());
+		});
+		overview_searchfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfg", overview_searchfg_color.rgba.to_string());
+		});
+		overview_searchfocusfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusfg", overview_searchfocusfg_color.rgba.to_string());
+		});
+		overview_searchborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchborder", overview_searchborder_color.rgba.to_string());
+		});
+		overview_searchfocusborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.rgba.to_string());
+		});
 		overview_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
 			key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
@@ -987,11 +1144,27 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_grid.attach_next_to (overview_bg1_color, overview_bg1_label, PositionType.RIGHT, 1, 1);
 		overview_grid.attach (overview_bg2_label, 0, 1, 2, 1);
 		overview_grid.attach_next_to (overview_bg2_color, overview_bg2_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_tint_label, 0, 2, 2, 1);
+		overview_grid.attach (overview_searchbg1_label, 0, 2, 2, 1);
+		overview_grid.attach_next_to (overview_searchbg1_color, overview_searchbg1_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchbg2_label, 0, 3, 2, 1);
+		overview_grid.attach_next_to (overview_searchbg2_color, overview_searchbg2_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchfocusbg1_label, 0, 4, 2, 1);
+		overview_grid.attach_next_to (overview_searchfocusbg1_color, overview_searchfocusbg1_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchfocusbg2_label, 0, 5, 2, 1);
+		overview_grid.attach_next_to (overview_searchfocusbg2_color, overview_searchfocusbg2_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchfg_label, 0, 6, 2, 1);
+		overview_grid.attach_next_to (overview_searchfg_color, overview_searchfg_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchfocusfg_label, 0, 7, 2, 1);
+		overview_grid.attach_next_to (overview_searchfocusfg_color, overview_searchfocusfg_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchborder_label, 0, 8, 2, 1);
+		overview_grid.attach_next_to (overview_searchborder_color, overview_searchborder_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_searchfocusborder_label, 0, 9, 2, 1);
+		overview_grid.attach_next_to (overview_searchfocusborder_color, overview_searchfocusborder_label, PositionType.RIGHT, 1, 1);
+		overview_grid.attach (overview_tint_label, 0, 10, 2, 1);
 		overview_grid.attach_next_to (overview_tint_value, overview_tint_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconsize_label, 0, 3, 2, 1);
+		overview_grid.attach (overview_iconsize_label, 0, 11, 2, 1);
 		overview_grid.attach_next_to (overview_iconsize_value, overview_iconsize_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconspacing_label, 0, 4, 2, 1);
+		overview_grid.attach (overview_iconspacing_label, 0, 12, 2, 1);
 		overview_grid.attach_next_to (overview_iconspacing_value, overview_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Dash
@@ -1025,6 +1198,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_tint_value = new SpinButton.with_range (0, 100, 1);
 		dash_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the dash and workspace panel");
 		dash_tint_value.set_halign (Align.END);
+		var dash_bwidth_label = new Label.with_mnemonic ("Border width");
+		dash_bwidth_label.set_halign (Align.START);
+		dash_bwidth_value = new SpinButton.with_range (0, 100, 1);
+		dash_bwidth_value.set_tooltip_text ("Set the border width of the dash and workspace panel");
+		dash_bwidth_value.set_halign (Align.END);
 
 		dash_bg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1050,6 +1228,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_double ("Dash", "dash_tint", dash_tint_value.adjustment.value);
 		});
+		dash_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dash", "dash_bwidth", dash_bwidth_value.adjustment.value);
+		});
 
 		var dash_grid = new Grid ();
 		dash_grid.set_column_homogeneous (true);
@@ -1067,6 +1249,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_grid.attach_next_to (dash_shadow_switch, dash_shadow_label, PositionType.RIGHT, 1, 1);
 		dash_grid.attach (dash_tint_label, 0, 5, 2, 1);
 		dash_grid.attach_next_to (dash_tint_value, dash_tint_label, PositionType.RIGHT, 1, 1);
+		dash_grid.attach (dash_bwidth_label, 0, 6, 2, 1);
+		dash_grid.attach_next_to (dash_bwidth_value, dash_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		// Menu
 		var menu_bg1_label = new Label.with_mnemonic ("Background gradient start");
@@ -1104,6 +1288,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_tint_value = new SpinButton.with_range (0, 100, 1);
 		menu_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the popup menu");
 		menu_tint_value.set_halign (Align.END);
+		var menu_bwidth_label = new Label.with_mnemonic ("Border width");
+		menu_bwidth_label.set_halign (Align.START);
+		menu_bwidth_value = new SpinButton.with_range (0, 100, 1);
+		menu_bwidth_value.set_tooltip_text ("Set the border width of the popup menu");
+		menu_bwidth_value.set_halign (Align.END);
 
 		menu_bg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1133,6 +1322,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_double ("Menu", "menu_tint", menu_tint_value.adjustment.value);
 		});
+		menu_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Menu", "menu_bwidth", menu_bwidth_value.adjustment.value);
+		});
 
 		var menu_grid = new Grid ();
 		menu_grid.set_column_homogeneous (true);
@@ -1152,6 +1345,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_grid.attach_next_to (menu_arrow_switch, menu_arrow_label, PositionType.RIGHT, 1, 1);
 		menu_grid.attach (menu_tint_label, 0, 6, 2, 1);
 		menu_grid.attach_next_to (menu_tint_value, menu_tint_label, PositionType.RIGHT, 1, 1);
+		menu_grid.attach (menu_bwidth_label, 0, 7, 2, 1);
+		menu_grid.attach_next_to (menu_bwidth_value, menu_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		// Dialogs
 		var dialog_bg1_label = new Label.with_mnemonic ("Background gradient start");
@@ -1189,6 +1384,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_tint_value = new SpinButton.with_range (0, 100, 1);
 		dialog_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the modal dialogs");
 		dialog_tint_value.set_halign (Align.END);
+		var dialog_bwidth_label = new Label.with_mnemonic ("Border width");
+		dialog_bwidth_label.set_halign (Align.START);
+		dialog_bwidth_value = new SpinButton.with_range (0, 100, 1);
+		dialog_bwidth_value.set_tooltip_text ("Set the border width of the modal dialogs");
+		dialog_bwidth_value.set_halign (Align.END);
 
 		dialog_bg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1218,6 +1418,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_double ("Dialogs", "dialog_tint", dialog_tint_value.adjustment.value);
 		});
+		dialog_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dialogs", "dialog_bwidth", dialog_bwidth_value.adjustment.value);
+		});
 
 		var dialog_grid = new Grid ();
 		dialog_grid.set_column_homogeneous (true);
@@ -1237,6 +1441,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_grid.attach_next_to (dialog_shadow_switch, dialog_shadow_label, PositionType.RIGHT, 1, 1);
 		dialog_grid.attach (dialog_tint_label, 0, 6, 2, 1);
 		dialog_grid.attach_next_to (dialog_tint_value, dialog_tint_label, PositionType.RIGHT, 1, 1);
+		dialog_grid.attach (dialog_bwidth_label, 0, 7, 2, 1);
+		dialog_grid.attach_next_to (dialog_bwidth_value, dialog_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		// Buttons
 		var button_bg1_label = new Label.with_mnemonic ("Background gradient start");
@@ -1414,7 +1620,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_fg_label.set_halign (Align.START);
 		entry_fg_color = new ColorButton ();
 		entry_fg_color.set_use_alpha (true);
-		entry_fg_color.set_tooltip_text ("Set the text color of the entry widget");
+		entry_fg_color.set_tooltip_text ("Set the text color of the entry widget in focus state");
 		var entry_focusfg_label = new Label.with_mnemonic ("Focus text color");
 		entry_focusfg_label.set_halign (Align.START);
 		entry_focusfg_color = new ColorButton ();
@@ -1517,6 +1723,26 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator2_color = new ColorButton ();
 		misc_separator2_color.set_use_alpha (true);
 		misc_separator2_color.set_tooltip_text ("Set the ending gradient color of separators");
+		var misc_tooltipbg1_label = new Label.with_mnemonic ("Tooltip background gradient start");
+		misc_tooltipbg1_label.set_halign (Align.START);
+		misc_tooltipbg1_color = new ColorButton ();
+		misc_tooltipbg1_color.set_use_alpha (true);
+		misc_tooltipbg1_color.set_tooltip_text ("Set the starting gradient color of tooltips");
+		var misc_tooltipbg2_label = new Label.with_mnemonic ("Tooltip background gradient end");
+		misc_tooltipbg2_label.set_halign (Align.START);
+		misc_tooltipbg2_color = new ColorButton ();
+		misc_tooltipbg2_color.set_use_alpha (true);
+		misc_tooltipbg2_color.set_tooltip_text ("Set the ending gradient color of tooltips");
+		var misc_tooltipfg_label = new Label.with_mnemonic ("Tooltip text color");
+		misc_tooltipfg_label.set_halign (Align.START);
+		misc_tooltipfg_color = new ColorButton ();
+		misc_tooltipfg_color.set_use_alpha (true);
+		misc_tooltipfg_color.set_tooltip_text ("Set the text color of tooltips");
+		var misc_tooltipborder_label = new Label.with_mnemonic ("Tooltip border color");
+		misc_tooltipborder_label.set_halign (Align.START);
+		misc_tooltipborder_color = new ColorButton ();
+		misc_tooltipborder_color.set_use_alpha (true);
+		misc_tooltipborder_color.set_tooltip_text ("Set the border color of tooltips");
 
 		var misc_grid = new Grid ();
 		misc_grid.set_column_homogeneous (true);
@@ -1530,6 +1756,14 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach_next_to (misc_separator1_color, misc_separator1_label, PositionType.RIGHT, 1, 1);
 		misc_grid.attach (misc_separator2_label, 0, 3, 2, 1);
 		misc_grid.attach_next_to (misc_separator2_color, misc_separator2_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipbg1_label, 0, 4, 2, 1);
+		misc_grid.attach_next_to (misc_tooltipbg1_color, misc_tooltipbg1_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipbg2_label, 0, 5, 2, 1);
+		misc_grid.attach_next_to (misc_tooltipbg2_color, misc_tooltipbg2_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipfg_label, 0, 6, 2, 1);
+		misc_grid.attach_next_to (misc_tooltipfg_color, misc_tooltipfg_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipborder_label, 0, 7, 2, 1);
+		misc_grid.attach_next_to (misc_tooltipborder_color, misc_tooltipborder_label, PositionType.RIGHT, 1, 1);
 
 		misc_runningbg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1546,6 +1780,22 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator2_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string());
+		});
+		misc_tooltipbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string());
+		});
+		misc_tooltipbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipbg2", misc_tooltipbg2_color.rgba.to_string());
+		});
+		misc_tooltipfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string());
+		});
+		misc_tooltipborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string());
 		});
 
 		// Toolbar

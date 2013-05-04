@@ -19,7 +19,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Set paths and variables
-shellversion=
 selfdir=`cd $(dirname "${BASH_SOURCE[0]}") && pwd`
 selffile="$selfdir/elegance-colors"
 configdir="$HOME/.config/elegance-colors"
@@ -80,43 +79,6 @@ else
 fi
 }
 
-get_color() {
-if [[ "$mode" = "gtk" ]]; then
-	# Get the color values from the gtk.css file
-	show_info "Getting color from GTK theme $gtkpath"
-	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
-		color=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
-	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
-		color=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
-	fi
-	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
-		selected_fg=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
-	elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
-		selected_fg=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
-	fi
-elif [[ "$mode" = "wallpaper" ]]; then
-	show_info "Getting color from wallpaper $img"
-	# Scale background image to 3x3 and take the color from top-left
-	color=`convert "$img" -brightness-contrast 30% -fuzz 30% -alpha off -filter cubic -resize 5x5 -transparent black -colorspace RGB -format '%[pixel:s]' info:-`
-	selected_fg=$(adjust_fgcolor "$color")
-else
-	show_info "Using custom color"
-	color="$1"
-	selected_fg=$(adjust_fgcolor "$color")
-fi
-}
-
-adjust_fgcolor() {
-basecolor="$1"
-get_rgba "$basecolor"
-lum=$(echo "$red * 0.2126 + $green * 0.7152 + $blue * 0.0722" | bc -l)
-if [[ ${lum%.*} -gt 150 ]]; then
-	printf "#000"
-else
-	printf "#fff"
-fi
-}
-
 get_rgba() {
 basecolor="$1"
 [[ "$basecolor" = "$mode" ]] && basecolor="$color"
@@ -147,6 +109,13 @@ elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 7 ]]; then
 else
 	show_err "Invalid color '$basecolor'"
 fi
+}
+
+get_luma() {
+basecolor="$1"
+get_rgba "$basecolor"
+luma=$(echo "$red * 0.2126 + $green * 0.7152 + $blue * 0.0722" | bc -l)
+printf ${luma%.*}
 }
 
 shade() {
@@ -189,6 +158,48 @@ red3=$(( ( red1 + red2 ) / ( amount + 25 ) ))
 green3=$(( ( green1 + green2 ) / ( amount + 25 ) ))
 blue3=$(( ( blue1 + blue2 ) / ( amount + 25 ) ))
 printf "rgba($red3,$green3,$blue3,$opacity)"
+}
+
+get_color() {
+if [[ "$mode" = "gtk" ]]; then
+	# Get the color values from the gtk.css file
+	show_info "Getting color from GTK theme $gtkpath"
+	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
+		color=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
+	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
+		color=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
+	fi
+	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
+		selected_fg=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
+	elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
+		selected_fg=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
+	fi
+elif [[ "$mode" = "wallpaper" ]]; then
+	show_info "Getting color from wallpaper $img"
+	# Scale background image to 3x3 and take the color from top-left
+	color=`convert "$img" -fuzz 30% -filter cubic -resize 3x3 -colorspace RGB -format '%[pixel:s]' info:-`
+	# Adjust colors
+	if [[ $(get_luma "$color") -gt 200 ]]; then
+		show_info "Adjusting color to be darker"
+		color=$(shade "$color" "-50")
+	elif [[ $(get_luma "$color") -lt 50 ]]; then
+		show_info "Adjusting color to be brighter"
+		color=$(shade "$color" "50")
+	fi
+	selected_fg=$(adjust_fgcolor "$color")
+else
+	show_info "Using custom color"
+	color="$1"
+	selected_fg=$(adjust_fgcolor "$color")
+fi
+}
+
+adjust_fgcolor() {
+if [[ $(get_luma "$color") -gt 150 ]]; then
+	printf "#000"
+else
+	printf "#fff"
+fi
 }
 
 set_theme() {

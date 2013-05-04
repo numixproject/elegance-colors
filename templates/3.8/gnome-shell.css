@@ -626,6 +626,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 #appMenu {
+    spinner-image: url("process-working.svg");
     spacing: 4px;
 }
 
@@ -1568,7 +1569,7 @@ StScrollBar StButton#hhandle:active {
     border: @menu_bwidth solid @menu_border;
     border-bottom: 0;
     padding: 8px 8px 4px 8px;
-    spacing-rows: 10px;
+    spacing-rows: 4px;
     spacing-columns: 10px;
     /*menushadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
@@ -1683,6 +1684,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .notification-button {
+    -st-natural-width: 140px;
     border-radius: @roundness;
     padding: 4px 42px 5px;
 }
