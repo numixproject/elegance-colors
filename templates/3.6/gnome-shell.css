@@ -22,7 +22,7 @@
 /* default text style */
 stage {
     font-family: @font_family;
-    font-size: @font_size;
+    font-size: @font_sizept;
     color: white;
 }
 
@@ -76,7 +76,7 @@ StScrollView StScrollBar {
 
 StScrollBar StBin#trough {
     background-color: transparent;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 StScrollBar StButton#vhandle {
@@ -85,7 +85,7 @@ StScrollBar StButton#vhandle {
     background-gradient-end: @button_bg2;
     border-width: 1px;
     border-color: @button_border;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     transition-duration: @transition;
 }
 
@@ -109,7 +109,7 @@ StScrollBar StButton#hhandle {
     background-gradient-end: @button_bg2;
     border-width: 1px;
     border-color: @button_border;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     transition-duration: @transition;
 }
 
@@ -155,16 +155,16 @@ StScrollBar StButton#hhandle:active {
 
 .popup-menu-boxpointer {
     color: @menu_fg;
-    border-radius: @roundness;
-    border-width: @menu_bwidth;
+    border-radius: @roundnesspx;
+    border-width: @menu_bwidthpx;
     /*menushadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     menushadow_true*/
     /*menushadow_false
     box-shadow: none;
     menushadow_false*/
-    -arrow-border-radius: @roundness;
-    -arrow-border-width: @menu_bwidth;
+    -arrow-border-radius: @roundnesspx;
+    -arrow-border-width: @menu_bwidthpx;
     /*arrow_true
     background-color: transparent;
     border-color: transparent;
@@ -225,8 +225,8 @@ StScrollBar StButton#hhandle:active {
     color: @menu_fg;
     background-color: @menu_bg1;
     padding: 1em 0em;
-    border: @menu_bwidth solid @menu_border;
-    border-radius: @roundness;
+    border: @menu_bwidthpx solid @menu_border;
+    border-radius: @roundnesspx;
     /*menushadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     menushadow_true*/
@@ -264,7 +264,7 @@ StScrollBar StButton#hhandle:active {
     /*arrow_true
     arrow_true*/
     /*arrow_false
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     arrow_false*/
 }
 
@@ -338,7 +338,7 @@ StScrollBar StButton#hhandle:active {
     background-size: contain;
     background-color: rgba(233,233,233,1.0);
     border: 1px solid rgba(0,0,0,0.3);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 .toggle-switch-us:checked,
@@ -365,7 +365,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @button_bg2;
     border-width: 1px;
     border-color: @button_border;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     /*buttonbold_true
     font-weight: bold;
     buttonbold_true*/
@@ -446,7 +446,7 @@ StScrollBar StButton#hhandle:active {
 .notification StEntry,
 .login-dialog-prompt-entry,
 .prompt-dialog-password-entry {
-    font-size: @font_size;
+    font-size: @font_sizept;
     caret-color: #666;
     caret-size: 1px;
     selection-background-color: @selected_bg1;
@@ -512,7 +512,7 @@ StScrollBar StButton#hhandle:active {
 .notification StEntry,
 .prompt-dialog-password-entry,
 .login-dialog-prompt-entry {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 4px 4px;
 }
 
@@ -536,7 +536,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @panel_bg1;
     background-gradient-end: @panel_bg2;
     border-color: @panel_border;
-    border-bottom-width: @panel_bwidth;
+    border-bottom-width: @panel_bwidthpx;
     /*panelshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     panelshadow_true*/
@@ -545,7 +545,7 @@ StScrollBar StButton#hhandle:active {
     panelshadow_false*/
     font-weight: bold;
     height: 2.1em;
-    transition-duration: @transition;
+    transition-duration: 500;
 }
 
 #panelLeft, #panelCenter {
@@ -569,7 +569,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .panel-corner {
-    -panel-corner-radius: @panel_corner;
+    -panel-corner-radius: @panel_cornerpx;
     -panel-corner-background-color: @panel_bg2;
     -panel-corner-border-width: 0;
     -panel-corner-border-color: transparent;
@@ -677,7 +677,7 @@ StScrollBar StButton#hhandle:active {
 
 .status-chooser-user-icon {
     border: 1px solid #666;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     width: 48pt;
     height: 48pt;
     background-size: contain;
@@ -704,8 +704,8 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     padding: .4em 0em;
-    border-radius: @roundness;
-    border: @menu_bwidth solid @menu_border;
+    border-radius: @roundnesspx;
+    border: @menu_bwidthpx solid @menu_border;
 }
 
 .status-chooser-status-item,
@@ -736,9 +736,9 @@ StScrollBar StButton#hhandle:active {
 }
 
 .workspace-thumbnails-background {
-    border: @dash_bwidth solid @dash_border;
+    border: @dash_bwidthpx solid @dash_border;
     border-right: 0;
-    border-radius: @roundness 0 0 @roundness;
+    border-radius: @roundnesspx 0 0 @roundnesspx;
     background-gradient-direction: vertical;
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
@@ -754,7 +754,7 @@ StScrollBar StButton#hhandle:active {
 .workspace-thumbnails-background:rtl {
     border-right: 1px;
     border-left: 0;
-    border-radius: 0 @roundness @roundness 0;
+    border-radius: 0 @roundnesspx @roundnesspx 0;
     padding: 9px 9px 9px 7px;
 }
 
@@ -764,7 +764,7 @@ StScrollBar StButton#hhandle:active {
 
 .workspace-thumbnail-indicator {
     border: 2px solid @selected_bg2;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 1px;
 }
 
@@ -774,7 +774,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @misc_tooltipbg1;
     background-gradient-end: @misc_tooltipbg2;
     border: 1px solid @misc_tooltipborder;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 2px 12px;
     -shell-caption-spacing: 6px;
 }
@@ -815,14 +815,14 @@ StScrollBar StButton#hhandle:active {
 
 #dash {
     color: @dash_fg;
-    font-size: @font_size;
+    font-size: @font_sizept;
     padding: 4px 0;
     background-gradient-direction: vertical;
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
-    border: @dash_bwidth solid @dash_border;
+    border: @dash_bwidthpx solid @dash_border;
     border-left: 0;
-    border-radius: 0 @roundness @roundness 0;
+    border-radius: 0 @roundnesspx @roundnesspx 0;
     /*dashshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     dashshadow_true*/
@@ -834,7 +834,7 @@ StScrollBar StButton#hhandle:active {
 #dash:rtl {
     border-left: 1px;
     border-right: 0;
-    border-radius: @roundness 0 0 @roundness;
+    border-radius: @roundnesspx 0 0 @roundnesspx;
 }
 
 .placeholder {
@@ -850,7 +850,7 @@ StScrollBar StButton#hhandle:active {
 /* Search Box */
 
 #searchEntry {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     width: 300px;
 }
 
@@ -909,7 +909,7 @@ StScrollBar StButton#hhandle:active {
  * padding compensates for this and ensures that the label is vertically
  * centered */
 .dash-search-button {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding-top: 4px;
     padding-bottom: 5px;
     width: 200px;
@@ -926,7 +926,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @misc_tooltipbg1;
     background-gradient-end: @misc_tooltipbg2;
     border: 1px solid @misc_tooltipborder;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 2px 12px;
     text-align: center;
     -x-offset: 6px;
@@ -935,13 +935,13 @@ StScrollBar StButton#hhandle:active {
 /* Application Launchers and Grid */
 
 .icon-grid {
-    spacing: @overview_iconspacing;
-    -shell-grid-horizontal-item-size: @overview_itemsize;
-    -shell-grid-vertical-item-size: @overview_itemsize;
+    spacing: @overview_iconspacingpx;
+    -shell-grid-horizontal-item-size: @overview_itemsizepx;
+    -shell-grid-vertical-item-size: @overview_itemsizepx;
 }
 
 .icon-grid .overview-icon {
-    icon-size: @overview_iconsize;
+    icon-size: @overview_iconsizepx;
 }
 
 .all-app {
@@ -960,7 +960,7 @@ StScrollBar StButton#hhandle:active {
     border: 1px solid transparent;
     width: 150px;
     padding: 7px auto 7px 15px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     transition-duration: @transition;
 }
 
@@ -984,10 +984,10 @@ StScrollBar StButton#hhandle:active {
 .app-well-app > .overview-icon,
 .show-apps > .overview-icon,
 .search-result-content > .overview-icon {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 3px;
     border: 1px solid transparent;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     text-align: center;
     transition-duration: @transition;
 }
@@ -1059,12 +1059,12 @@ StScrollBar StButton#hhandle:active {
     spacing: 4px;
     padding: 4px;
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 #LookingGlassDialog > #Toolbar {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 #LookingGlassDialog .labels {
@@ -1112,7 +1112,7 @@ StScrollBar StButton#hhandle:active {
     background-color: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.2);
     padding: 4px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     transition-duration: @transition;
 }
 
@@ -1148,7 +1148,7 @@ StScrollBar StButton#hhandle:active {
 
 .lg-extension {
     border: 1px solid #666;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 4px;
 }
 
@@ -1163,7 +1163,7 @@ StScrollBar StButton#hhandle:active {
 #LookingGlassPropertyInspector {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 6px;
 }
 
@@ -1192,7 +1192,7 @@ StScrollBar StButton#hhandle:active {
 
 .calendar-month-label {
     color: @menu_fg;
-    font-size: @font_size;
+    font-size: @font_sizept;
     font-weight: bold;
     padding-bottom: 8px;
     padding-top: 8px;
@@ -1407,11 +1407,11 @@ StScrollBar StButton#hhandle:active {
 
 .notification {
     color: @menu_fg;
-    border-radius: @roundness @roundness 0 0;
+    border-radius: @roundnesspx @roundnesspx 0 0;
     background-gradient-direction: vertical;
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
-    border: @menu_bwidth solid @menu_border;
+    border: @menu_bwidthpx solid @menu_border;
     border-bottom: 0;
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
@@ -1449,16 +1449,16 @@ StScrollBar StButton#hhandle:active {
 
 .summary-boxpointer {
     color: @menu_fg;
-    border-radius: @roundness;
-    border-width: @menu_bwidth;
+    border-radius: @roundnesspx;
+    border-width: @menu_bwidthpx;
     /*menushadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     menushadow_true*/
     /*menushadow_false
     box-shadow: none;
     menushadow_false*/
-    -arrow-border-radius: @roundness;
-    -arrow-border-width: @menu_bwidth;
+    -arrow-border-radius: @roundnesspx;
+    -arrow-border-width: @menu_bwidthpx;
     -boxpointer-gap: 6px;
     /*arrow_true
     background-color: transparent;
@@ -1481,7 +1481,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .summary-boxpointer .notification {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     background-gradient-start: transparent !important;
     background-gradient-end: transparent !important;
     padding-bottom: 12px;
@@ -1529,7 +1529,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .notification-button {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 4px 42px 5px;
 }
 
@@ -1537,7 +1537,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .notification-icon-button {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 5px;
 }
 
@@ -1560,7 +1560,7 @@ StScrollBar StButton#hhandle:active {
 
 .hotplug-notification-item {
     padding: 2px 10px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 .hotplug-notification-item:focus {
@@ -1578,7 +1578,7 @@ StScrollBar StButton#hhandle:active {
 
 .hotplug-resident-mount {
     spacing: 8px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     transition-duration: @transition;
 }
 
@@ -1606,7 +1606,7 @@ StScrollBar StButton#hhandle:active {
 
 .hotplug-resident-eject-button {
     padding: 7px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     color: @menu_fg;
 }
 
@@ -1654,7 +1654,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .notification StEntry {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 #summary-mode {
@@ -1689,7 +1689,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .summary-source {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 0 6px 0 6px;
     transition-duration: @transition;
 }
@@ -1699,7 +1699,7 @@ StScrollBar StButton#hhandle:active {
     background-color: @selected_bg2;
     border: 2px solid @selected_fg;
     border-radius: 2.1em;
-    font-size: @font_size;
+    font-size: @font_sizept;
     font-weight: bold;
     height: 2.1em;
     width: 2.1em;
@@ -1716,8 +1716,8 @@ StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
-    border: @dialog_bwidth solid @dialog_border;
-    border-radius: @roundness;
+    border: @dialog_bwidthpx solid @dialog_border;
+    border-radius: @roundnesspx;
     padding: 20px;
 }
 
@@ -1747,7 +1747,7 @@ StScrollBar StButton#hhandle:active {
 
 .switcher-list .item-box {
     padding: 8px;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 .switcher-list .item-box:outlined {
@@ -1807,8 +1807,8 @@ StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
-    border: @dialog_bwidth solid @dialog_border;
-    border-radius: @roundness;
+    border: @dialog_bwidthpx solid @dialog_border;
+    border-radius: @roundnesspx;
     padding: 20px;
 }
 
@@ -1825,7 +1825,7 @@ StScrollBar StButton#hhandle:active {
     border: 0;
     background-color: @selected_bg1;
     background-image: url("ws-switch-arrow-up.png");
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 .ws-switcher-active-down {
@@ -1833,14 +1833,14 @@ StScrollBar StButton#hhandle:active {
     border: 0;
     background-color: @selected_bg1;
     background-image: url("ws-switch-arrow-down.png");
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 .ws-switcher-box {
     height: 96px;
     border: 1px solid rgba(0,0,0,0.2);
     background: transparent;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
 }
 
 /* Modal Dialogs */
@@ -1855,12 +1855,12 @@ StScrollBar StButton#hhandle:active {
 }
 
 .modal-dialog {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     color: @dialog_fg;
     background-gradient-direction: vertical;
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
-    border: @dialog_bwidth solid @dialog_border;
+    border: @dialog_bwidthpx solid @dialog_border;
     padding-right: 20px;
     padding-left: 20px;
     padding-bottom: 15px;
@@ -1905,7 +1905,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .run-dialog {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding-right: 21px;
     padding-left: 21px;
     padding-bottom: 15px;
@@ -1946,7 +1946,7 @@ StScrollBar StButton#hhandle:active {
 
 .end-session-dialog-logout-icon {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     width: 32px;
     height: 32px;
     background-size: contain;
@@ -1959,7 +1959,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .end-session-dialog-app-list {
-    font-size: @font_size;
+    font-size: @font_sizept;
     max-height: 200px;
     padding-top: 42px;
     padding-left: 49px;
@@ -1996,7 +1996,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .end-session-dialog-app-list-item-name {
-    font-size: @font_size;
+    font-size: @font_sizept;
 }
 
 .end-session-dialog-app-list-item-description {
@@ -2047,7 +2047,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .show-processes-dialog-app-list {
-    font-size: @font_size;
+    font-size: @font_sizept;
     max-height: 200px;
     padding-top: 24px;
     padding-left: 49px;
@@ -2084,7 +2084,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .show-processes-dialog-app-list-item-name {
-    font-size: @font_size;
+    font-size: @font_sizept;
 }
 
 /* Password or Authentication Dialog */
@@ -2114,13 +2114,13 @@ StScrollBar StButton#hhandle:active {
 }
 
 .prompt-dialog-error-label {
-    font-size: @font_size;
+    font-size: @font_sizept;
     color: #ff0;
     padding-bottom: 8px;
 }
 
 .prompt-dialog-info-label {
-    font-size: @font_size;
+    font-size: @font_sizept;
     padding-bottom: 8px;
 }
 
@@ -2129,7 +2129,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .prompt-dialog-null-label {
-    font-size: @font_size;
+    font-size: @font_sizept;
     padding-bottom: 8px;
 }
 
@@ -2151,7 +2151,7 @@ StScrollBar StButton#hhandle:active {
 
 .polkit-dialog-user-icon {
     border: 1px solid #666;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     background-size: contain;
     width: 48px;
     height: 48px;
@@ -2214,7 +2214,7 @@ StScrollBar StButton#hhandle:active {
     border-width: 1px;
     border-color: @button_border;
     transition-duration: @transition;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     font-size: 14pt;
     font-weight: bold;
     transition-duration: @transition;
@@ -2244,16 +2244,16 @@ StScrollBar StButton#hhandle:active {
 .keyboard-subkeys {
     color: @menu_fg;
     padding: 4px;
-    border-radius: @roundness;
-    border-width: @menu_bwidth;
+    border-radius: @roundnesspx;
+    border-width: @menu_bwidthpx;
     /*menushadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
     menushadow_true*/
     /*menushadow_false
     box-shadow: none;
     menushadow_false*/
-    -arrow-border-radius: @roundness;
-    -arrow-border-width: @menu_bwidth;
+    -arrow-border-radius: @roundnesspx;
+    -arrow-border-width: @menu_bwidthpx;
     -boxpointer-gap: 6px;
     /*arrow_true
     background-color: transparent;
@@ -2285,7 +2285,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .candidate-label:selected {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     color: @selected_fg;
     background-color: @selected_bg1;
 }
@@ -2293,7 +2293,7 @@ StScrollBar StButton#hhandle:active {
 /* Login Dialog */
 
 .login-dialog-banner {
-    font-size: @font_size;
+    font-size: @font_sizept;
     font-weight: bold;
     text-align: center;
     color: #666;
@@ -2311,7 +2311,7 @@ StScrollBar StButton#hhandle:active {
     /* Reset border and background */
     border: none;
     background-color: transparent;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     min-height: 150px;
     max-height: 700px;
     min-width: 350px;
@@ -2332,7 +2332,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog-user-list-item {
     color: #666;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: .2em;
 }
 
@@ -2390,7 +2390,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog-user-list-item-icon {
     border: 1px solid #666;
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     width: 64px;
     height: 64px;
 }
@@ -2454,7 +2454,7 @@ StScrollBar StButton#hhandle:active {
 .login-dialog-session-list-scroll-view {
     background-color: rgba(255,255,255,0.3);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: .5em;
 }
 
@@ -2477,7 +2477,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button {
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     padding: 3px 18px;
 }
 
@@ -2558,7 +2558,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 #screenShieldNotifications {
-    border-radius: @roundness;
+    border-radius: @roundnesspx;
     background-color: @menu_bg1;
     border: 1px solid @menu_border;
     max-height: 500px;

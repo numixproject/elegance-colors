@@ -230,8 +230,8 @@ vals=(
 	"$selected_bg2"
 	"$selected_fg"
 	"$font_family"
-	"${font_size}pt"
-	"${roundness}px"
+	"$font_size"
+	"$roundness"
 	"$transition"
 )
 # Panel
@@ -256,8 +256,8 @@ vals=(
 	"$panel_bg2"
 	"$panel_fg"
 	"$panel_border"
-	"${panel_bwidth}px"
-	"${panel_corner}px"
+	"$panel_bwidth"
+	"$panel_corner"
 	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
@@ -296,9 +296,9 @@ vals=(
 	"$overview_searchfocusfg"
 	"$overview_searchborder"
 	"$overview_searchfocusborder"
-	"${overview_iconsize}px"
-	"${overview_itemsize}px"
-	"${overview_iconspacing}px"
+	"$overview_iconsize"
+	"$overview_itemsize"
+	"$overview_iconspacing"
 )
 # Dash
 dash_bg1=$(tint "$dash_bg1" "$color" "$dash_tint")
@@ -319,7 +319,7 @@ vals=(
 	"$dash_bg1"
 	"$dash_bg2"
 	"$dash_border"
-	"${dash_bwidth}px"
+	"$dash_bwidth"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
@@ -344,7 +344,7 @@ vals=(
 	"$menu_bg2"
 	"$menu_fg"
 	"$menu_border"
-	"${menu_bwidth}px"
+	"$menu_bwidth"
 	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
@@ -371,7 +371,7 @@ vals=(
 	"$dialog_fg"
 	"$dialog_heading"
 	"$dialog_border"
-	"${dialog_bwidth}px"
+	"$dialog_bwidth"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
