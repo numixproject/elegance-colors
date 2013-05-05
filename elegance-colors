@@ -573,8 +573,8 @@ done < "$defaultconfig"
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
 	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
-	# Escape "(", ")" and " " for safe use in eval
-	val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
+	# Escape ";", "(", ")" and " " for safe use in eval
+	val="${val//\;/\\;}" && val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
 	# Define variables
 	eval "$var"="$val"
 done < "$configfile"
@@ -600,8 +600,8 @@ while IFS='= ' read var val; do
 	[[ "$val" =~ ^alpha\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val=$(alpha "$val1" "$val2")
 	[[ "$val" =~ ^shade\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val=$(shade "$val1" "$val2")
 	[[ "$val" =~ ^tint\; ]] && val1=$(echo "$val" | cut -f2 -d";") && val2=$(echo "$val" | cut -f3 -d";") && val3=$(echo "$val" | cut -f4 -d";") && val=$(tint "$val1" "$val2" "$val3")
-	# Escape "(", ")" and " " for safe use in eval
-	val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
+	# Escape ";", "(", ")" and " " for safe use in eval
+	val="${val//\;/\\;}" && val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
 	# Define variables
 	eval "$var"="$val"
 done < "$configfile"

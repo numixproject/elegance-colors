@@ -244,6 +244,13 @@ StScrollBar StButton#hhandle:active {
 .popup-menu-item {
     padding: .4em 1.75em;
     spacing: 1em;
+    border: 1px solid transparent;
+    /*arrow_true
+    border-left-width: 0;
+    border-right-width: 0;
+    arrow_true*/
+    /*arrow_false
+    arrow_false*/
     transition-duration: @transition;
 }
 
@@ -435,7 +442,7 @@ StScrollBar StButton#hhandle:active {
 .hotplug-resident-eject-button:hover,
 .hotplug-resident-eject-button:active {
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
 }
 
 /* fix for media player extension buttons */
@@ -476,7 +483,7 @@ StScrollBar StButton#hhandle:active {
     font-size: @font_size;
     caret-color: #666;
     caret-size: 1px;
-    selection-background-color: @selected_bg2;
+    selection-background-color: @selected_bg1;
     selected-color: @selected_fg;
     padding: 4px 12px 5px;
 }
@@ -615,7 +622,7 @@ StScrollBar StButton#hhandle:active {
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-background-color: @selected_bg2;
+    -panel-corner-background-color: @selected_bg1;
 }
 
 .panel-corner.lock-screen,
@@ -658,6 +665,9 @@ StScrollBar StButton#hhandle:active {
 .panel-button {
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
+    border: 1px solid transparent;
+    border-top-width: 0;
+    border-bottom-width: 0;
     transition-duration: @transition;
 }
 
@@ -848,9 +858,11 @@ StScrollBar StButton#hhandle:active {
     background-image: url("close-window.svg");
     background-size: contain;
     background-color: @selected_bg2;
+    border: 2px solid rgba(255, 255, 255, 1);
     border-radius: 16px;
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
 }
 
 .window-close {
@@ -1253,7 +1265,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .lg-dialog StEntry {
-    selection-background-color: @selected_bg2;
+    selection-background-color: @selected_bg1;
     selected-color: @selected_fg;
 }
 
@@ -1933,6 +1945,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
+    border-color: @selected_bg2;
 }
 
 .switcher-list .thumbnail-box {
@@ -1996,7 +2009,7 @@ StScrollBar StButton#hhandle:active {
 .ws-switcher-active-up {
     height: 100px;
     border: 0;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
     background-image: url("ws-switch-arrow-up.png");
     border-radius: @roundness;
 }
@@ -2004,7 +2017,7 @@ StScrollBar StButton#hhandle:active {
 .ws-switcher-active-down {
     height: 100px;
     border: 0;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
     background-image: url("ws-switch-arrow-down.png");
     border-radius: @roundness;
 }
@@ -2078,7 +2091,7 @@ StScrollBar StButton#hhandle:active {
 
 .modal-dialog .run-dialog-entry {
     width: 20em;
-    selection-background-color: @selected_bg2;
+    selection-background-color: @selected_bg1;
     selected-color: @selected_fg;
 }
 
@@ -2463,13 +2476,13 @@ StScrollBar StButton#hhandle:active {
 .candidate-box:selected {
     border-radius: @roundness;
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
 }
 
 .candidate-box:hover {
     border-radius: @roundness;
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
 }
 
 /* TODO */
@@ -2577,7 +2590,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item:focus {
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
@@ -2702,7 +2715,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button:default {
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
     border: 1px solid @selected_bg2;
 }
 
@@ -2712,7 +2725,7 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button:default:hover {
     color: @selected_fg;
-    background-color: @selected_bg2;
+    background-color: @selected_bg1;
     border: 1px solid @selected_bg2;
 }
 
