@@ -13,9 +13,6 @@ all: $(MAIN)
 $(MAIN): $(SRC)
 	$(CC) $(CFLAGS) $(SRC) -o $(MAIN)
 
-test: $(MAIN)
-	./$(MAIN)
-
 clean:
 	$(RM) *~ $(MAIN)
 
