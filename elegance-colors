@@ -178,19 +178,15 @@ elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Getting color from wallpaper $img"
 	# Scale background image to 3x3 and take the color from top-left
 	color=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
-	selected_fg=$(adjust_fgcolor "$color")
+	if [[ $(get_luma "$color") -gt 150 ]]; then
+		selected_fg="#000"
+	else
+		selected_fg="#fff"
+	fi
 else
 	show_info "Using custom color"
 	color="$1"
-	selected_fg=$(adjust_fgcolor "$color")
-fi
-}
-
-adjust_fgcolor() {
-if [[ $(get_luma "$color") -gt 150 ]]; then
-	printf "#000"
-else
-	printf "#fff"
+	selected_fg="#fff"
 fi
 }
 
