@@ -1,6 +1,6 @@
 ### Introduction
 
-Elegance Colors is a customizable chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or a user defined color. Also various other aspects of the theme are customizable.
+Elegance Colors is a highly customizable chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or use a user defined color.
 
 Currently Elegance Colors supports Gnome Shell 3.6 and 3.8.
 
@@ -51,6 +51,30 @@ To set the theme, run the following commands,
 `gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'`
 
 You can launch the GUI from the menu which lets you customise various aspects of the the theme. You can also export your customized theme, import/export settings from the GMenu. Click on the title in the Gnome Shell top bar to get the GMenu.
+
+### Advanced configuration
+
+Apart from the included presets, Elegance Colors supports user presets installed under `~/.config/elegance-colors/presets/`
+
+To create a preset, just export your customized settings from the GMenu and give it a name by editing the exported file and adding the following at the beginning,
+
+`# Name: Your Awesome Name`
+
+You can also change the settings by editing the file `~/.config/elegance-colors.ini` instead of using the GUI. It also gives more power to you by enabling you to use symbolic colors.
+
+For example, you can use,
+
+`button_activebg1=@mode`
+
+Where `@mode` is the color derived from the wallpaper, GTK theme or a custom color.
+
+There are 3 methods for manipulating colors, `alpha` - for making a color translucent, `shade` - to darken or lighten a color, `tint` - to mix a color with another.
+
+For example, you can use,
+
+`button_activebg1=shade;@mode;-10`
+
+It takes the symbolic color `@mode`, and darkens it by "10". You can have a look at the included presets to have more understanding.
 
 ### Troubleshooting
 
