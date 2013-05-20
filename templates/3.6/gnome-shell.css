@@ -269,7 +269,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .popup-menu-item:insensitive {
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .popup-image-menu-item {
@@ -310,7 +310,7 @@ StScrollBar StButton#hhandle:active {
 
 .popup-status-menu-item {
     font-weight: normal;
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .popup-inactive-menu-item, .popup-inactive-menu-item:insensitive {
@@ -428,7 +428,7 @@ StScrollBar StButton#hhandle:active {
 
 .notification-icon-button:insensitive,
 .notification-button:insensitive {
-    color: #999;
+    color: @misc_insensitive;
 }
 
 /* fix for media player extension buttons */
@@ -524,7 +524,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .login-dialog-prompt-entry:insensitive {
-    color: #999;
+    color: @misc_insensitive;
     border: 1px solid rgba(255,255,255,0.2);
 }
 
@@ -759,7 +759,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .workspace-thumbnails {
-    spacing: 9px;
+    spacing: 11px;
 }
 
 .workspace-thumbnail-indicator {
@@ -1311,7 +1311,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .calendar-other-month-day {
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .calendar-day-with-events {
@@ -1611,7 +1611,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .chat-log-message {
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .chat-group-sent,
@@ -1752,10 +1752,11 @@ StScrollBar StButton#hhandle:active {
 
 .switcher-list .item-box:outlined {
     padding: 6px;
-    border: 1px solid rgba(72,72,72,1.0);
+    border: 1px solid @selected_bg2;
 }
 
 .switcher-list .item-box:selected {
+    color: @selected_fg;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1794,7 +1795,7 @@ StScrollBar StButton#hhandle:active {
 
 .switcher-arrow:highlighted {
     border-color: transparent;
-    color: white;
+    color: @selected_bg2;
 }
 
 /* Workspace Switcher */
@@ -1885,7 +1886,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .modal-dialog-button:insensitive {
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .modal-dialog-button:focus {

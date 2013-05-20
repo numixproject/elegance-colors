@@ -179,6 +179,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton misc_tooltipbg2_color;
 	ColorButton misc_tooltipfg_color;
 	ColorButton misc_tooltipborder_color;
+	ColorButton misc_insensitive_color;
 
 	string misc_runningbg1_value;
 	string misc_runningbg2_value;
@@ -188,6 +189,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	string misc_tooltipbg2_value;
 	string misc_tooltipfg_value;
 	string misc_tooltipborder_value;
+	string misc_insensitive_value;
 
 	// Toolbar
 	ToolButton undo_button;
@@ -513,6 +515,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			misc_tooltipbg2_value = key_file.get_string ("Misc", "misc_tooltipbg2");
 			misc_tooltipfg_value = key_file.get_string ("Misc", "misc_tooltipfg");
 			misc_tooltipborder_value = key_file.get_string ("Misc", "misc_tooltipborder");
+			misc_insensitive_value = key_file.get_string ("Misc", "misc_insensitive");
 
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
@@ -682,6 +685,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (misc_tooltipborder_value));
 		misc_tooltipborder_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_insensitive_value));
+		misc_insensitive_color.set_rgba (color);
 	}
 
 	void create_widgets () {
@@ -1762,6 +1768,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipborder_color = new ColorButton ();
 		misc_tooltipborder_color.set_use_alpha (true);
 		misc_tooltipborder_color.set_tooltip_text ("Set the border color of tooltips");
+		var misc_insensitive_label = new Label.with_mnemonic ("Insensitive text color");
+		misc_insensitive_label.set_halign (Align.START);
+		misc_insensitive_color = new ColorButton ();
+		misc_insensitive_color.set_use_alpha (true);
+		misc_insensitive_color.set_tooltip_text ("Set the text color of insensitive and faded items");
 
 		var misc_runningbg_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_runningbg_box.set_homogeneous (true);
@@ -1795,6 +1806,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach_next_to (misc_tooltipfg_color, misc_tooltipfg_label, PositionType.RIGHT, 1, 1);
 		misc_grid.attach (misc_tooltipborder_label, 0, 4, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipborder_color, misc_tooltipborder_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_insensitive_label, 0, 5, 2, 1);
+		misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, PositionType.RIGHT, 1, 1);
 
 		misc_runningbg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1827,6 +1840,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipborder_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string());
+		});
+		misc_insensitive_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.rgba.to_string());
 		});
 
 		// Toolbar

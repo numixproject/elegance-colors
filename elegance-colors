@@ -438,8 +438,9 @@ vars=(
 	"@misc_runningbg2"
 	"@misc_tooltipbg1"
 	"@misc_tooltipbg2"
-	"@misc_tooltipborder"
 	"@misc_tooltipfg"
+	"@misc_tooltipborder"
+	"@misc_insensitive"
 )
 vals=(
 	"${vals[@]}"
@@ -449,8 +450,9 @@ vals=(
 	"$misc_runningbg2"
 	"$misc_tooltipbg1"
 	"$misc_tooltipbg2"
-	"$misc_tooltipborder"
 	"$misc_tooltipfg"
+	"$misc_tooltipborder"
+	"$misc_insensitive"
 )
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/gnome-shell"
