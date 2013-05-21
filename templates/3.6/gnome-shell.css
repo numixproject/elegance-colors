@@ -393,11 +393,24 @@ StScrollBar StButton#hhandle:active {
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus {
-    color: @button_hoverfg;
+    color: @button_focusfg;
     background-gradient-direction: vertical;
-    background-gradient-start: @button_hoverbg1;
-    background-gradient-end: @button_hoverbg2;
-    border-color: @button_hoverborder;
+    background-gradient-start: @button_focusbg1;
+    background-gradient-end: @button_focusbg2;
+    border-color: @button_focusborder;
+}
+
+.dash-search-button:selected:active,
+.dash-search-button:focus:active,
+.notification-button:focus:active,
+.notification-icon-button:focus:active,
+.hotplug-notification-item:focus:active,
+.modal-dialog-button:focus:active {
+    color: @button_focusfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @button_focusbg1;
+    background-gradient-end: @button_focusbg2;
+    border-color: @button_focusborder;
 }
 
 .dash-search-button:active,

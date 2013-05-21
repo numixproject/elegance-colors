@@ -127,12 +127,16 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton button_hoverbg2_color;
 	ColorButton button_activebg1_color;
 	ColorButton button_activebg2_color;
+	ColorButton button_focusbg1_color;
+	ColorButton button_focusbg2_color;
 	ColorButton button_fg_color;
 	ColorButton button_hoverfg_color;
 	ColorButton button_activefg_color;
+	ColorButton button_focusfg_color;
 	ColorButton button_border_color;
 	ColorButton button_hoverborder_color;
 	ColorButton button_activeborder_color;
+	ColorButton button_focusborder_color;
 
 	Switch button_bold_switch;
 
@@ -142,12 +146,16 @@ class EleganceColorsWindow : ApplicationWindow {
 	string button_hoverbg2_value;
 	string button_activebg1_value;
 	string button_activebg2_value;
+	string button_focusbg1_value;
+	string button_focusbg2_value;
 	string button_fg_value;
 	string button_hoverfg_value;
 	string button_activefg_value;
+	string button_focusfg_value;
 	string button_border_value;
 	string button_hoverborder_value;
 	string button_activeborder_value;
+	string button_focusborder_value;
 
 	// Entry
 	ColorButton entry_bg1_color;
@@ -487,12 +495,16 @@ class EleganceColorsWindow : ApplicationWindow {
 			button_hoverbg2_value = key_file.get_string ("Buttons", "button_hoverbg2");
 			button_activebg1_value = key_file.get_string ("Buttons", "button_activebg1");
 			button_activebg2_value = key_file.get_string ("Buttons", "button_activebg2");
+			button_focusbg1_value = key_file.get_string ("Buttons", "button_focusbg1");
+			button_focusbg2_value = key_file.get_string ("Buttons", "button_focusbg2");
 			button_fg_value = key_file.get_string ("Buttons", "button_fg");
 			button_hoverfg_value = key_file.get_string ("Buttons", "button_hoverfg");
 			button_activefg_value = key_file.get_string ("Buttons", "button_activefg");
+			button_focusfg_value = key_file.get_string ("Buttons", "button_focusfg");
 			button_border_value = key_file.get_string ("Buttons", "button_border");
-			button_border_value = key_file.get_string ("Buttons", "button_hoverborder");
-			button_border_value = key_file.get_string ("Buttons", "button_activeborder");
+			button_hoverborder_value = key_file.get_string ("Buttons", "button_hoverborder");
+			button_activeborder_value = key_file.get_string ("Buttons", "button_activeborder");
+			button_focusborder_value = key_file.get_string ("Buttons", "button_focusborder");
 
 			button_bold_switch.set_active (key_file.get_boolean ("Buttons", "button_bold"));
 
@@ -503,7 +515,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			entry_fg_value = key_file.get_string ("Entry", "entry_fg");
 			entry_focusfg_value = key_file.get_string ("Entry", "entry_focusfg");
 			entry_border_value = key_file.get_string ("Entry", "entry_border");
-			entry_border_value = key_file.get_string ("Entry", "entry_focusborder");
+			entry_focusborder_value = key_file.get_string ("Entry", "entry_focusborder");
 
 			entry_shadow_switch.set_active (key_file.get_boolean ("Entry", "entry_shadow"));
 
@@ -620,6 +632,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (button_activebg2_value));
 		button_activebg2_color.set_rgba (color);
 
+		color.parse ("%s".printf (button_focusbg1_value));
+		button_focusbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (button_focusbg2_value));
+		button_focusbg2_color.set_rgba (color);
+
 		color.parse ("%s".printf (button_fg_value));
 		button_fg_color.set_rgba (color);
 
@@ -629,6 +647,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (button_activefg_value));
 		button_activefg_color.set_rgba (color);
 
+		color.parse ("%s".printf (button_focusfg_value));
+		button_focusfg_color.set_rgba (color);
+
 		color.parse ("%s".printf (button_border_value));
 		button_border_color.set_rgba (color);
 
@@ -637,6 +658,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (button_activeborder_value));
 		button_activeborder_color.set_rgba (color);
+
+		color.parse ("%s".printf (button_focusborder_value));
+		button_focusborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (entry_bg1_value));
 		entry_bg1_color.set_rgba (color);
@@ -1490,6 +1514,14 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activebg2_color = new ColorButton ();
 		button_activebg2_color.set_use_alpha (true);
 		button_activebg2_color.set_tooltip_text ("Set the background gradient end of the buttons in active state");
+		var button_focusbg_label = new Label.with_mnemonic ("Focus background gradient colors");
+		button_focusbg_label.set_halign (Align.START);
+		button_focusbg1_color = new ColorButton ();
+		button_focusbg1_color.set_use_alpha (true);
+		button_focusbg1_color.set_tooltip_text ("Set the background gradient start of the buttons in focus state");
+		button_focusbg2_color = new ColorButton ();
+		button_focusbg2_color.set_use_alpha (true);
+		button_focusbg2_color.set_tooltip_text ("Set the background gradient end of the buttons in focus state");
 		var button_fg_label = new Label.with_mnemonic ("Text color");
 		button_fg_label.set_halign (Align.START);
 		button_fg_color = new ColorButton ();
@@ -1505,6 +1537,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activefg_color = new ColorButton ();
 		button_activefg_color.set_use_alpha (true);
 		button_activefg_color.set_tooltip_text ("Set the text color of the buttons in active state");
+		var button_focusfg_label = new Label.with_mnemonic ("Focus text color");
+		button_focusfg_label.set_halign (Align.START);
+		button_focusfg_color = new ColorButton ();
+		button_focusfg_color.set_use_alpha (true);
+		button_focusfg_color.set_tooltip_text ("Set the text color of the buttons in focus state");
 		var button_border_label = new Label.with_mnemonic ("Border color");
 		button_border_label.set_halign (Align.START);
 		button_border_color = new ColorButton ();
@@ -1520,6 +1557,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activeborder_color = new ColorButton ();
 		button_activeborder_color.set_use_alpha (true);
 		button_activeborder_color.set_tooltip_text ("Set the border color of the buttons in active state");
+		var button_focusborder_label = new Label.with_mnemonic ("Focus border color");
+		button_focusborder_label.set_halign (Align.START);
+		button_focusborder_color = new ColorButton ();
+		button_focusborder_color.set_use_alpha (true);
+		button_focusborder_color.set_tooltip_text ("Set the border color of the buttons in focus state");
 		var button_bold_label = new Label.with_mnemonic ("Bold label");
 		button_bold_label.set_halign (Align.START);
 		button_bold_switch = new Switch ();
@@ -1544,6 +1586,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activebg_box.add (button_activebg1_color);
 		button_activebg_box.add (button_activebg2_color);
 
+		var button_focusbg_box = new Box (Orientation.HORIZONTAL, 0);
+		button_focusbg_box.set_homogeneous (true);
+		button_focusbg_box.get_style_context().add_class("linked");
+		button_focusbg_box.add (button_focusbg1_color);
+		button_focusbg_box.add (button_focusbg2_color);
+
 		var button_grid = new Grid ();
 		button_grid.set_column_homogeneous (true);
 		button_grid.set_column_spacing (10);
@@ -1554,19 +1602,25 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_grid.attach_next_to (button_hoverbg_box, button_hoverbg_label, PositionType.RIGHT, 1, 1);
 		button_grid.attach (button_activebg_label, 0, 2, 2, 1);
 		button_grid.attach_next_to (button_activebg_box, button_activebg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_fg_label, 0, 3, 2, 1);
+		button_grid.attach (button_focusbg_label, 0, 3, 2, 1);
+		button_grid.attach_next_to (button_focusbg_box, button_focusbg_label, PositionType.RIGHT, 1, 1);
+		button_grid.attach (button_fg_label, 0, 4, 2, 1);
 		button_grid.attach_next_to (button_fg_color, button_fg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_hoverfg_label, 0, 4, 2, 1);
+		button_grid.attach (button_hoverfg_label, 0, 5, 2, 1);
 		button_grid.attach_next_to (button_hoverfg_color, button_hoverfg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_activefg_label, 0, 5, 2, 1);
+		button_grid.attach (button_activefg_label, 0, 6, 2, 1);
 		button_grid.attach_next_to (button_activefg_color, button_activefg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_border_label, 0, 6, 2, 1);
+		button_grid.attach (button_focusfg_label, 0, 7, 2, 1);
+		button_grid.attach_next_to (button_focusfg_color, button_focusfg_label, PositionType.RIGHT, 1, 1);
+		button_grid.attach (button_border_label, 0, 8, 2, 1);
 		button_grid.attach_next_to (button_border_color, button_border_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_hoverborder_label, 0, 7, 2, 1);
+		button_grid.attach (button_hoverborder_label, 0, 9, 2, 1);
 		button_grid.attach_next_to (button_hoverborder_color, button_hoverborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_activeborder_label, 0, 8, 2, 1);
+		button_grid.attach (button_activeborder_label, 0, 10, 2, 1);
 		button_grid.attach_next_to (button_activeborder_color, button_activeborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_bold_label, 0, 9, 2, 1);
+		button_grid.attach (button_focusborder_label, 0, 11, 2, 1);
+		button_grid.attach_next_to (button_focusborder_color, button_focusborder_label, PositionType.RIGHT, 1, 1);
+		button_grid.attach (button_bold_label, 0, 12, 2, 1);
 		button_grid.attach_next_to (button_bold_switch, button_bold_label, PositionType.RIGHT, 1, 1);
 
 		button_bg1_color.color_set.connect (() => {
@@ -1593,6 +1647,14 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string());
 		});
+		button_focusbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_focusbg1", button_focusbg1_color.rgba.to_string());
+		});
+		button_focusbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_focusbg2", button_focusbg2_color.rgba.to_string());
+		});
 		button_fg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string());
@@ -1605,6 +1667,10 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string());
 		});
+		button_focusfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_focusfg", button_focusfg_color.rgba.to_string());
+		});
 		button_border_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string());
@@ -1616,6 +1682,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activeborder_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string());
+		});
+		button_focusborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_focusborder", button_focusborder_color.rgba.to_string());
 		});
 		button_bold_switch.notify["active"].connect (() => {
 			on_value_changed ();
