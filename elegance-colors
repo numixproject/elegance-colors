@@ -440,9 +440,15 @@ vars=(
 	"@misc_separator2"
 	"@misc_runningbg1"
 	"@misc_runningbg2"
+	"@misc_scrollbarbg1"
+	"@misc_scrollbarbg2"
+	"@misc_scrollbarhoverbg1"
+	"@misc_scrollbarhoverbg2"
 	"@misc_tooltipbg1"
 	"@misc_tooltipbg2"
 	"@misc_tooltipfg"
+	"@misc_scrollbarborder"
+	"@misc_scrollbarhoverborder"
 	"@misc_tooltipborder"
 	"@misc_insensitive"
 )
@@ -452,9 +458,15 @@ vals=(
 	"$misc_separator2"
 	"$misc_runningbg1"
 	"$misc_runningbg2"
+	"$misc_scrollbarbg1"
+	"$misc_scrollbarbg2"
+	"$misc_scrollbarhoverbg1"
+	"$misc_scrollbarhoverbg2"
 	"$misc_tooltipbg1"
 	"$misc_tooltipbg2"
 	"$misc_tooltipfg"
+	"$misc_scrollbarborder"
+	"$misc_scrollbarhoverborder"
 	"$misc_tooltipborder"
 	"$misc_insensitive"
 )
@@ -467,6 +479,31 @@ if [[ -d "$template" ]]; then
 	cp -rf "$template/." "$makedir"
 else
 	show_err "Failed to copy files"
+fi
+# Include additional files
+if [[ ! -z "$include_dir" ]]; then
+	IFS='; ' read -a css_files <<< "$include_css"
+	for css_file in "${css_files[@]}"; do
+		show_info "Including CSS file $css_file in theme"
+		if [[ -f "$configdir/assets/$include_dir/$css_file" ]]; then
+			cat "$configdir/assets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
+		elif [[ -f "$installdir/assets/$include_dir/$css_file" ]]; then
+			cat "$installdir/assets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
+		else
+			show_err "CSS file $css_file not found"
+		fi
+	done
+	IFS='; ' read -a asset_files <<< "$include_files"
+	for asset_file in "${asset_files[@]}"; do
+		show_info "Copying file $asset_file to theme directory"
+		if [[ -f "$configdir/assets/$include_dir/$asset_file" ]]; then
+			cp -f "$configdir/assets/$include_dir/$asset_file" "$makedir/"
+		elif [[ -f "$installdir/assets/$include_dir/$asset_file" ]]; then
+			cp -f "$installdir/assets/$include_dir/$asset_file" "$makedir/"
+		else
+			show_err "File $asset_file not found"
+		fi
+	done
 fi
 # Replace variables in the template
 show_info "Making the theme"
@@ -483,7 +520,7 @@ do
 	fi
 done
 # Copy the newly created theme
-if [[ ! -d "$makedir" ]]; then
+if [[ ! -f "$makedir/gnome-shell.css" ]]; then
 	show_err "Failed to make the theme, files were lost"
 elif [[ `grep "@" "$makedir/gnome-shell.css"` ]]; then
 	show_err "Failed to make the theme, could not replace variables"

@@ -183,9 +183,15 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton misc_runningbg2_color;
 	ColorButton misc_separator1_color;
 	ColorButton misc_separator2_color;
+	ColorButton misc_scrollbarbg1_color;
+	ColorButton misc_scrollbarbg2_color;
+	ColorButton misc_scrollbarhoverbg1_color;
+	ColorButton misc_scrollbarhoverbg2_color;
 	ColorButton misc_tooltipbg1_color;
 	ColorButton misc_tooltipbg2_color;
 	ColorButton misc_tooltipfg_color;
+	ColorButton misc_scrollbarborder_color;
+	ColorButton misc_scrollbarhoverborder_color;
 	ColorButton misc_tooltipborder_color;
 	ColorButton misc_insensitive_color;
 
@@ -193,9 +199,15 @@ class EleganceColorsWindow : ApplicationWindow {
 	string misc_runningbg2_value;
 	string misc_separator1_value;
 	string misc_separator2_value;
+	string misc_scrollbarbg1_value;
+	string misc_scrollbarbg2_value;
+	string misc_scrollbarhoverbg1_value;
+	string misc_scrollbarhoverbg2_value;
 	string misc_tooltipbg1_value;
 	string misc_tooltipbg2_value;
 	string misc_tooltipfg_value;
+	string misc_scrollbarborder_value;
+	string misc_scrollbarhoverborder_value;
 	string misc_tooltipborder_value;
 	string misc_insensitive_value;
 
@@ -523,9 +535,14 @@ class EleganceColorsWindow : ApplicationWindow {
 			misc_runningbg2_value = key_file.get_string ("Misc", "misc_runningbg2");
 			misc_separator1_value = key_file.get_string ("Misc", "misc_separator1");
 			misc_separator2_value = key_file.get_string ("Misc", "misc_separator2");
+			misc_scrollbarbg1_value = key_file.get_string ("Misc", "misc_scrollbarbg1");
+			misc_scrollbarbg2_value = key_file.get_string ("Misc", "misc_scrollbarbg2");
+			misc_scrollbarhoverbg1_value = key_file.get_string ("Misc", "misc_scrollbarhoverbg1");
+			misc_scrollbarhoverbg2_value = key_file.get_string ("Misc", "misc_scrollbarhoverbg2");
 			misc_tooltipbg1_value = key_file.get_string ("Misc", "misc_tooltipbg1");
 			misc_tooltipbg2_value = key_file.get_string ("Misc", "misc_tooltipbg2");
 			misc_tooltipfg_value = key_file.get_string ("Misc", "misc_tooltipfg");
+			misc_scrollbarhoverborder_value = key_file.get_string ("Misc", "misc_scrollbarhoverborder");
 			misc_tooltipborder_value = key_file.get_string ("Misc", "misc_tooltipborder");
 			misc_insensitive_value = key_file.get_string ("Misc", "misc_insensitive");
 
@@ -698,6 +715,18 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (misc_separator2_value));
 		misc_separator2_color.set_rgba (color);
 
+		color.parse ("%s".printf (misc_scrollbarbg1_value));
+		misc_scrollbarbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_scrollbarbg2_value));
+		misc_scrollbarbg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_scrollbarhoverbg1_value));
+		misc_scrollbarhoverbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_scrollbarhoverbg2_value));
+		misc_scrollbarhoverbg2_color.set_rgba (color);
+
 		color.parse ("%s".printf (misc_tooltipbg1_value));
 		misc_tooltipbg1_color.set_rgba (color);
 
@@ -706,6 +735,12 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (misc_tooltipfg_value));
 		misc_tooltipfg_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_scrollbarborder_value));
+		misc_scrollbarborder_color.set_rgba (color);
+
+		color.parse ("%s".printf (misc_scrollbarhoverborder_value));
+		misc_scrollbarhoverborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (misc_tooltipborder_value));
 		misc_tooltipborder_color.set_rgba (color);
@@ -941,7 +976,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Panel
-		var panel_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var panel_bg_label = new Label.with_mnemonic ("Background gradient");
 		panel_bg_label.set_halign (Align.START);
 		panel_bg1_color = new ColorButton ();
 		panel_bg1_color.set_use_alpha (true);
@@ -1050,7 +1085,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Overview
-		var overview_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var overview_bg_label = new Label.with_mnemonic ("Background gradient");
 		overview_bg_label.set_halign (Align.START);
 		overview_bg1_color = new ColorButton ();
 		overview_bg1_color.set_use_alpha (true);
@@ -1058,7 +1093,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_bg2_color = new ColorButton ();
 		overview_bg2_color.set_use_alpha (true);
 		overview_bg2_color.set_tooltip_text ("Set the background gradient end of the overview");
-		var overview_searchbg_label = new Label.with_mnemonic ("Search entry gradient colors");
+		var overview_searchbg_label = new Label.with_mnemonic ("Search entry gradient");
 		overview_searchbg_label.set_halign (Align.START);
 		overview_searchbg1_color = new ColorButton ();
 		overview_searchbg1_color.set_use_alpha (true);
@@ -1066,7 +1101,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_searchbg2_color = new ColorButton ();
 		overview_searchbg2_color.set_use_alpha (true);
 		overview_searchbg2_color.set_tooltip_text ("Set the background gradient end of the search entry");
-		var overview_searchfocusbg_label = new Label.with_mnemonic ("Focused search entry gradient colors");
+		var overview_searchfocusbg_label = new Label.with_mnemonic ("Focused search entry gradient");
 		overview_searchfocusbg_label.set_halign (Align.START);
 		overview_searchfocusbg1_color = new ColorButton ();
 		overview_searchfocusbg1_color.set_use_alpha (true);
@@ -1207,7 +1242,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Dash
-		var dash_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var dash_bg_label = new Label.with_mnemonic ("Background gradient");
 		dash_bg_label.set_halign (Align.START);
 		dash_bg1_color = new ColorButton ();
 		dash_bg1_color.set_use_alpha (true);
@@ -1294,7 +1329,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Menu
-		var menu_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var menu_bg_label = new Label.with_mnemonic ("Background gradient");
 		menu_bg_label.set_halign (Align.START);
 		menu_bg1_color = new ColorButton ();
 		menu_bg1_color.set_use_alpha (true);
@@ -1392,7 +1427,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Dialogs
-		var dialog_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var dialog_bg_label = new Label.with_mnemonic ("Background gradient");
 		dialog_bg_label.set_halign (Align.START);
 		dialog_bg1_color = new ColorButton ();
 		dialog_bg1_color.set_use_alpha (true);
@@ -1490,7 +1525,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Buttons
-		var button_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var button_bg_label = new Label.with_mnemonic ("Background gradient");
 		button_bg_label.set_halign (Align.START);
 		button_bg1_color = new ColorButton ();
 		button_bg1_color.set_use_alpha (true);
@@ -1498,7 +1533,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_bg2_color = new ColorButton ();
 		button_bg2_color.set_use_alpha (true);
 		button_bg2_color.set_tooltip_text ("Set the background gradient end of the buttons");
-		var button_hoverbg_label = new Label.with_mnemonic ("Hover background gradient colors");
+		var button_hoverbg_label = new Label.with_mnemonic ("Hover background gradient");
 		button_hoverbg_label.set_halign (Align.START);
 		button_hoverbg1_color = new ColorButton ();
 		button_hoverbg1_color.set_use_alpha (true);
@@ -1506,7 +1541,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_hoverbg2_color = new ColorButton ();
 		button_hoverbg2_color.set_use_alpha (true);
 		button_hoverbg2_color.set_tooltip_text ("Set the background gradient end of the buttons in hover state");
-		var button_activebg_label = new Label.with_mnemonic ("Active background gradient colors");
+		var button_activebg_label = new Label.with_mnemonic ("Active background gradient");
 		button_activebg_label.set_halign (Align.START);
 		button_activebg1_color = new ColorButton ();
 		button_activebg1_color.set_use_alpha (true);
@@ -1514,7 +1549,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activebg2_color = new ColorButton ();
 		button_activebg2_color.set_use_alpha (true);
 		button_activebg2_color.set_tooltip_text ("Set the background gradient end of the buttons in active state");
-		var button_focusbg_label = new Label.with_mnemonic ("Focus background gradient colors");
+		var button_focusbg_label = new Label.with_mnemonic ("Focus background gradient");
 		button_focusbg_label.set_halign (Align.START);
 		button_focusbg1_color = new ColorButton ();
 		button_focusbg1_color.set_use_alpha (true);
@@ -1693,7 +1728,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Entry
-		var entry_bg_label = new Label.with_mnemonic ("Background gradient colors");
+		var entry_bg_label = new Label.with_mnemonic ("Background gradient");
 		entry_bg_label.set_halign (Align.START);
 		entry_bg1_color = new ColorButton ();
 		entry_bg1_color.set_use_alpha (true);
@@ -1701,7 +1736,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_bg2_color = new ColorButton ();
 		entry_bg2_color.set_use_alpha (true);
 		entry_bg2_color.set_tooltip_text ("Set the background gradient end of the entry widget");
-		var entry_focusbg_label = new Label.with_mnemonic ("Focus background gradient colors");
+		var entry_focusbg_label = new Label.with_mnemonic ("Focus background gradient");
 		entry_focusbg_label.set_halign (Align.START);
 		entry_focusbg1_color = new ColorButton ();
 		entry_focusbg1_color.set_use_alpha (true);
@@ -1804,7 +1839,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Misc
-		var misc_runningbg_label = new Label.with_mnemonic ("Background gradient colors for running apps");
+		var misc_runningbg_label = new Label.with_mnemonic ("Background gradient for running apps");
 		misc_runningbg_label.set_halign (Align.START);
 		misc_runningbg1_color = new ColorButton ();
 		misc_runningbg1_color.set_use_alpha (true);
@@ -1812,7 +1847,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_runningbg2_color = new ColorButton ();
 		misc_runningbg2_color.set_use_alpha (true);
 		misc_runningbg2_color.set_tooltip_text ("Set the background gradient end for the icons of running apps");
-		var misc_separator_label = new Label.with_mnemonic ("Separator gradient colors");
+		var misc_separator_label = new Label.with_mnemonic ("Separator gradient");
 		misc_separator_label.set_halign (Align.START);
 		misc_separator1_color = new ColorButton ();
 		misc_separator1_color.set_use_alpha (true);
@@ -1820,7 +1855,23 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator2_color = new ColorButton ();
 		misc_separator2_color.set_use_alpha (true);
 		misc_separator2_color.set_tooltip_text ("Set the ending gradient color of separators");
-		var misc_tooltipbg_label = new Label.with_mnemonic ("Tooltip background gradient colors");
+		var misc_scrollbarbg_label = new Label.with_mnemonic ("Scrollbar background gradient");
+		misc_scrollbarbg_label.set_halign (Align.START);
+		misc_scrollbarbg1_color = new ColorButton ();
+		misc_scrollbarbg1_color.set_use_alpha (true);
+		misc_scrollbarbg1_color.set_tooltip_text ("Set the starting gradient color of scrollbars");
+		misc_scrollbarbg2_color = new ColorButton ();
+		misc_scrollbarbg2_color.set_use_alpha (true);
+		misc_scrollbarbg2_color.set_tooltip_text ("Set the ending gradient color of scrollbars");
+		var misc_scrollbarhoverbg_label = new Label.with_mnemonic ("Hovered scrollbar background gradient");
+		misc_scrollbarhoverbg_label.set_halign (Align.START);
+		misc_scrollbarhoverbg1_color = new ColorButton ();
+		misc_scrollbarhoverbg1_color.set_use_alpha (true);
+		misc_scrollbarhoverbg1_color.set_tooltip_text ("Set the starting gradient color of scrollbars in hover state");
+		misc_scrollbarhoverbg2_color = new ColorButton ();
+		misc_scrollbarhoverbg2_color.set_use_alpha (true);
+		misc_scrollbarhoverbg2_color.set_tooltip_text ("Set the ending gradient color of scrollbars hover state");
+		var misc_tooltipbg_label = new Label.with_mnemonic ("Tooltip background gradient");
 		misc_tooltipbg_label.set_halign (Align.START);
 		misc_tooltipbg1_color = new ColorButton ();
 		misc_tooltipbg1_color.set_use_alpha (true);
@@ -1833,6 +1884,16 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipfg_color = new ColorButton ();
 		misc_tooltipfg_color.set_use_alpha (true);
 		misc_tooltipfg_color.set_tooltip_text ("Set the text color of tooltips");
+		var misc_scrollbarborder_label = new Label.with_mnemonic ("Scrollbar border color");
+		misc_scrollbarborder_label.set_halign (Align.START);
+		misc_scrollbarborder_color = new ColorButton ();
+		misc_scrollbarborder_color.set_use_alpha (true);
+		misc_scrollbarborder_color.set_tooltip_text ("Set the border color of scrollbars");
+		var misc_scrollbarhoverborder_label = new Label.with_mnemonic ("Hovered scrollbar border color");
+		misc_scrollbarhoverborder_label.set_halign (Align.START);
+		misc_scrollbarhoverborder_color = new ColorButton ();
+		misc_scrollbarhoverborder_color.set_use_alpha (true);
+		misc_scrollbarhoverborder_color.set_tooltip_text ("Set the border color of scrollbars in hover state");
 		var misc_tooltipborder_label = new Label.with_mnemonic ("Tooltip border color");
 		misc_tooltipborder_label.set_halign (Align.START);
 		misc_tooltipborder_color = new ColorButton ();
@@ -1856,6 +1917,18 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator_box.add (misc_separator1_color);
 		misc_separator_box.add (misc_separator2_color);
 
+		var misc_scrollbarbg_box = new Box (Orientation.HORIZONTAL, 0);
+		misc_scrollbarbg_box.set_homogeneous (true);
+		misc_scrollbarbg_box.get_style_context().add_class("linked");
+		misc_scrollbarbg_box.add (misc_scrollbarbg1_color);
+		misc_scrollbarbg_box.add (misc_scrollbarbg2_color);
+
+		var misc_scrollbarhoverbg_box = new Box (Orientation.HORIZONTAL, 0);
+		misc_scrollbarhoverbg_box.set_homogeneous (true);
+		misc_scrollbarhoverbg_box.get_style_context().add_class("linked");
+		misc_scrollbarhoverbg_box.add (misc_scrollbarhoverbg1_color);
+		misc_scrollbarhoverbg_box.add (misc_scrollbarhoverbg2_color);
+
 		var misc_tooltipbg_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_tooltipbg_box.set_homogeneous (true);
 		misc_tooltipbg_box.get_style_context().add_class("linked");
@@ -1870,13 +1943,21 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach_next_to (misc_runningbg_box, misc_runningbg_label, PositionType.RIGHT, 1, 1);
 		misc_grid.attach (misc_separator_label, 0, 1, 2, 1);
 		misc_grid.attach_next_to (misc_separator_box, misc_separator_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipbg_label, 0, 2, 2, 1);
+		misc_grid.attach (misc_scrollbarbg_label, 0, 2, 2, 1);
+		misc_grid.attach_next_to (misc_scrollbarbg_box, misc_scrollbarbg_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_scrollbarhoverbg_label, 0, 3, 2, 1);
+		misc_grid.attach_next_to (misc_scrollbarhoverbg_box, misc_scrollbarhoverbg_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipbg_label, 0, 4, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipbg_box, misc_tooltipbg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipfg_label, 0, 3, 2, 1);
+		misc_grid.attach (misc_scrollbarborder_label, 0, 5, 2, 1);
+		misc_grid.attach_next_to (misc_scrollbarborder_color, misc_scrollbarborder_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_scrollbarhoverborder_label, 0, 6, 2, 1);
+		misc_grid.attach_next_to (misc_scrollbarhoverborder_color, misc_scrollbarhoverborder_label, PositionType.RIGHT, 1, 1);
+		misc_grid.attach (misc_tooltipfg_label, 0, 7, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipfg_color, misc_tooltipfg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipborder_label, 0, 4, 2, 1);
+		misc_grid.attach (misc_tooltipborder_label, 0, 8, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipborder_color, misc_tooltipborder_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_insensitive_label, 0, 5, 2, 1);
+		misc_grid.attach (misc_insensitive_label, 0, 9, 2, 1);
 		misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, PositionType.RIGHT, 1, 1);
 
 		misc_runningbg1_color.color_set.connect (() => {
@@ -1895,6 +1976,14 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string());
 		});
+		misc_scrollbarbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_scrollbarbg1", misc_scrollbarbg1_color.rgba.to_string());
+		});
+		misc_scrollbarbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_scrollbarbg2", misc_scrollbarbg2_color.rgba.to_string());
+		});
 		misc_tooltipbg1_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string());
@@ -1906,6 +1995,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipfg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string());
+		});
+		misc_scrollbarborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_scrollbarborder", misc_scrollbarborder_color.rgba.to_string());
 		});
 		misc_tooltipborder_color.color_set.connect (() => {
 			on_value_changed ();

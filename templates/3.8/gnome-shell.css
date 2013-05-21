@@ -79,50 +79,38 @@ StScrollBar StBin#trough {
 
 StScrollBar StButton#vhandle {
     background-gradient-direction: horizontal;
-    background-gradient-start: @button_bg1;
-    background-gradient-end: @button_bg2;
+    background-gradient-start: @misc_scrollbarbg1;
+    background-gradient-end: @misc_scrollbarbg2;
     border-width: 1px;
-    border-color: @button_border;
+    border-color: @misc_scrollbarborder;
     border-radius: @roundnesspx;
     transition-duration: @transitionms;
 }
 
-StScrollBar StButton#vhandle:hover {
-    background-gradient-direction: horizontal;
-    background-gradient-start: @button_hoverbg1;
-    background-gradient-end: @button_hoverbg2;
-    border-color: @button_hoverborder;
-}
-
+StScrollBar StButton#vhandle:hover,
 StScrollBar StButton#vhandle:active {
     background-gradient-direction: horizontal;
-    background-gradient-start: @button_activebg1;
-    background-gradient-end: @button_activebg2;
-    border-color: @button_activeborder;
+    background-gradient-start: @misc_scrollbarhoverbg1;
+    background-gradient-end: @misc_scrollbarhoverbg2;
+    border-color: @misc_scrollbarhoverborder;
 }
 
 StScrollBar StButton#hhandle {
     background-gradient-direction: vertical;
-    background-gradient-start: @button_bg1;
-    background-gradient-end: @button_bg2;
+    background-gradient-start: @misc_scrollbarbg1;
+    background-gradient-end: @misc_scrollbarbg2;
     border-width: 1px;
-    border-color: @button_border;
+    border-color: @misc_scrollbarborder;
     border-radius: @roundnesspx;
     transition-duration: @transitionms;
 }
 
-StScrollBar StButton#hhandle:hover {
-    background-gradient-direction: vertical;
-    background-gradient-start: @button_hoverbg1;
-    background-gradient-end: @button_hoverbg2;
-    border-color: @button_hoverborder;
-}
-
+StScrollBar StButton#hhandle:hover,
 StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
-    background-gradient-start: @button_activebg1;
-    background-gradient-end: @button_activebg2;
-    border-color: @button_activeborder;
+    background-gradient-start: @misc_scrollbarhoverbg1;
+    background-gradient-end: @misc_scrollbarhoverbg2;
+    border-color: @button_hoverborder;
 }
 
 /* Check Boxes */

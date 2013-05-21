@@ -18,8 +18,8 @@ Copyright (C) [Satyajit Sahoo](mailto:satyajit.happy@gmail.com)
 
 Ubuntu users can install Elegance Colors from our themes PPA using the following commands,
 
-`sudo add-apt-repository ppa:satyajit-happy/themes`
-`sudo apt-get update && sudo apt-get install gnome-shell-theme-elegance-colors`
+	sudo add-apt-repository ppa:satyajit-happy/themes
+	sudo apt-get update && sudo apt-get install gnome-shell-theme-elegance-colors
 
 Fedora and OpenSUSE users can add the appropriate repo from [opensuse build service](http://download.opensuse.org/repositories/home:/satya164:/elegance-colors/) and install the package `gnome-shell-theme-elegance-colors` via the distro's package manager.
 
@@ -75,6 +75,17 @@ For example, you can use,
 `button_activebg1=shade;@mode;-10`
 
 It takes the symbolic color `@mode`, and darkens it by "10". You can have a look at the included presets to have more understanding.
+
+If you want even more customization, you can also include a custom CSS file to override the values in the default template.
+
+To include a custom CSS file, create a directory under `~/.config/elegance-colors/assets/` and put all required files there. Then list the files to be included in the configuration file,
+
+For example,
+
+	[Include]
+	include_dir=custom
+	include_css=close.css;switches.css
+	include_files=close.png;on.png;off.png
 
 ### Troubleshooting
 
