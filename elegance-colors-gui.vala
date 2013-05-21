@@ -139,6 +139,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton button_focusborder_color;
 
 	Switch button_bold_switch;
+	Switch button_insetshadow_switch;
 
 	string button_bg1_value;
 	string button_bg2_value;
@@ -519,6 +520,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			button_focusborder_value = key_file.get_string ("Buttons", "button_focusborder");
 
 			button_bold_switch.set_active (key_file.get_boolean ("Buttons", "button_bold"));
+			button_insetshadow_switch.set_active (key_file.get_boolean ("Buttons", "button_insetshadow"));
 
 			entry_bg1_value = key_file.get_string ("Entry", "entry_bg1");
 			entry_bg2_value = key_file.get_string ("Entry", "entry_bg2");
@@ -1597,6 +1599,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_focusborder_color = new ColorButton ();
 		button_focusborder_color.set_use_alpha (true);
 		button_focusborder_color.set_tooltip_text ("Set the border color of the buttons in focus state");
+		var button_insetshadow_label = new Label.with_mnemonic ("Inset shadows");
+		button_insetshadow_label.set_halign (Align.START);
+		button_insetshadow_switch = new Switch ();
+		button_insetshadow_switch.set_tooltip_text ("Enable/disable inset shadow effect in the buttons");
+		button_insetshadow_switch.set_halign (Align.END);
 		var button_bold_label = new Label.with_mnemonic ("Bold label");
 		button_bold_label.set_halign (Align.START);
 		button_bold_switch = new Switch ();
@@ -1655,7 +1662,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_grid.attach_next_to (button_activeborder_color, button_activeborder_label, PositionType.RIGHT, 1, 1);
 		button_grid.attach (button_focusborder_label, 0, 11, 2, 1);
 		button_grid.attach_next_to (button_focusborder_color, button_focusborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_bold_label, 0, 12, 2, 1);
+		button_grid.attach (button_insetshadow_label, 0, 12, 2, 1);
+		button_grid.attach_next_to (button_insetshadow_switch, button_insetshadow_label, PositionType.RIGHT, 1, 1);
+		button_grid.attach (button_bold_label, 0, 13, 2, 1);
 		button_grid.attach_next_to (button_bold_switch, button_bold_label, PositionType.RIGHT, 1, 1);
 
 		button_bg1_color.color_set.connect (() => {
@@ -1721,6 +1730,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_focusborder_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_focusborder", button_focusborder_color.rgba.to_string());
+		});
+		button_insetshadow_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Buttons", "button_insetshadow", button_insetshadow_switch.get_active());
 		});
 		button_bold_switch.notify["active"].connect (() => {
 			on_value_changed ();

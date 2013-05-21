@@ -382,6 +382,8 @@ vars=(
 	"@button_hoverborder"
 	"@button_activeborder"
 	"@button_focusborder"
+	"\/\*buttoninsetshadow_$button_insetshadow"
+	"buttoninsetshadow_$button_insetshadow\*\/"
 	"\/\*buttonbold_$button_bold"
 	"buttonbold_$button_bold\*\/"
 )
@@ -403,6 +405,8 @@ vals=(
 	"$button_hoverborder"
 	"$button_activeborder"
 	"$button_focusborder"
+	"\/\*\*\/"
+	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )

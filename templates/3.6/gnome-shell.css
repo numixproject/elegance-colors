@@ -70,7 +70,7 @@ StScrollView.hfade {
 }
 
 StScrollView StScrollBar {
-    min-width: 9px;
+    min-width: 10px;
     min-height: 15px;
 }
 
@@ -89,7 +89,13 @@ StScrollBar StButton#vhandle {
     transition-duration: @transition;
 }
 
-StScrollBar StButton#vhandle:hover,
+StScrollBar StButton#vhandle:hover {
+    background-gradient-direction: horizontal;
+    background-gradient-start: @misc_scrollbarhoverbg1;
+    background-gradient-end: @misc_scrollbarhoverbg2;
+    border-color: @misc_scrollbarhoverborder;
+}
+
 StScrollBar StButton#vhandle:active {
     background-gradient-direction: horizontal;
     background-gradient-start: @misc_scrollbarhoverbg1;
@@ -107,7 +113,13 @@ StScrollBar StButton#hhandle {
     transition-duration: @transition;
 }
 
-StScrollBar StButton#hhandle:hover,
+StScrollBar StButton#hhandle:hover {
+    background-gradient-direction: vertical;
+    background-gradient-start: @misc_scrollbarhoverbg1;
+    background-gradient-end: @misc_scrollbarhoverbg2;
+    border-color: @button_hoverborder;
+}
+
 StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
     background-gradient-start: @misc_scrollbarhoverbg1;
@@ -360,6 +372,12 @@ StScrollBar StButton#hhandle:active {
     /*buttonbold_false
     font-weight: normal;
     buttonbold_false*/
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 0 1px 1px rgba(255,255,255,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
     transition-duration: @transition;
 }
 
@@ -399,6 +417,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @button_focusbg1;
     background-gradient-end: @button_focusbg2;
     border-color: @button_focusborder;
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
 }
 
 .dash-search-button:active,
@@ -413,6 +437,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
 }
 
 .hotplug-resident-eject-button {
@@ -421,10 +451,24 @@ StScrollBar StButton#hhandle:active {
     transition-duration: @transition;
 }
 
-.hotplug-resident-eject-button:hover,
+.hotplug-resident-eject-button:hover {
+    color: @selected_fg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @selected_bg1;
+    background-gradient-end: @selected_bg2;
+}
+
 .hotplug-resident-eject-button:active {
     color: @selected_fg;
-    background-color: @selected_bg1;
+    background-gradient-direction: vertical;
+    background-gradient-start: @selected_bg1;
+    background-gradient-end: @selected_bg2;
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
 }
 
 .notification-icon-button:insensitive,
@@ -1024,11 +1068,11 @@ StScrollBar StButton#hhandle:active {
 }
 
 .show-apps:checked > .overview-icon {
+    color: @selected_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @misc_runningbg1;
-    background-gradient-end: @misc_runningbg2;
-    border-color: @misc_runningbg2;
-    transition-duration: @transition;
+    background-gradient-start: @selected_bg1;
+    background-gradient-end: @selected_bg2;
+    border-color: @selected_bg2;
 }
 
 .show-apps:checked .show-apps-icon,
@@ -1257,10 +1301,10 @@ StScrollBar StButton#hhandle:active {
 }
 
 .calendar-day-base:active {
-    color: white;
+    color: @selected_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(0,0,0,0.3);
-    background-gradient-end: rgba(0,0,0,0.3);
+    background-gradient-start: @selected_bg1;
+    background-gradient-end: @selected_bg2;
 }
 
 .calendar-day-heading {
@@ -1298,9 +1342,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .calendar-today {
-    background-gradient-direction: vertical;
-    background-gradient-start: rgba(0,0,0,0.3);
-    background-gradient-end: rgba(0,0,0,0.3);
+    color: @selected_bg1;
     font-weight: bold;
 }
 
@@ -1311,13 +1353,13 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @selected_bg2;
 }
 
-.calendar-other-month-day {
-    color: @misc_insensitive;
-}
-
 .calendar-day-with-events {
     font-weight: bold;
     color: @menu_fg;
+}
+
+.calendar-other-month-day {
+    color: @misc_insensitive;
 }
 
 .events-header-vbox {
@@ -2215,10 +2257,15 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @button_bg2;
     border-width: 1px;
     border-color: @button_border;
-    transition-duration: @transition;
     border-radius: @roundnesspx;
     font-size: 14pt;
     font-weight: bold;
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 0 1px 1px rgba(255,255,255,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
     transition-duration: @transition;
 }
 
@@ -2241,6 +2288,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
+    /*buttoninsetshadow_true
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
+    buttoninsetshadow_true*/
+    /*buttoninsetshadow_false
+    box-shadow: none;
+    buttoninsetshadow_false*/
 }
 
 .keyboard-subkeys {
