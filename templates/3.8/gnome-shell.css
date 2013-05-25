@@ -79,49 +79,49 @@ StScrollBar StBin#trough {
 
 StScrollBar StButton#vhandle {
     background-gradient-direction: horizontal;
-    background-gradient-start: @misc_scrollbarbg1;
-    background-gradient-end: @misc_scrollbarbg2;
+    background-gradient-start: @button_bg1;
+    background-gradient-end: @button_bg2;
     border-width: 1px;
-    border-color: @misc_scrollbarborder;
+    border-color: @button_border;
     border-radius: @roundnesspx;
     transition-duration: @transitionms;
 }
 
 StScrollBar StButton#vhandle:hover {
     background-gradient-direction: horizontal;
-    background-gradient-start: @misc_scrollbarhoverbg1;
-    background-gradient-end: @misc_scrollbarhoverbg2;
-    border-color: @misc_scrollbarhoverborder;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
+    border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#vhandle:active {
     background-gradient-direction: horizontal;
-    background-gradient-start: @misc_scrollbarhoverbg1;
-    background-gradient-end: @misc_scrollbarhoverbg2;
-    border-color: @misc_scrollbarhoverborder;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
+    border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#hhandle {
     background-gradient-direction: vertical;
-    background-gradient-start: @misc_scrollbarbg1;
-    background-gradient-end: @misc_scrollbarbg2;
+    background-gradient-start: @button_bg1;
+    background-gradient-end: @button_bg2;
     border-width: 1px;
-    border-color: @misc_scrollbarborder;
+    border-color: @button_border;
     border-radius: @roundnesspx;
     transition-duration: @transitionms;
 }
 
 StScrollBar StButton#hhandle:hover {
     background-gradient-direction: vertical;
-    background-gradient-start: @misc_scrollbarhoverbg1;
-    background-gradient-end: @misc_scrollbarhoverbg2;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#hhandle:active {
     background-gradient-direction: vertical;
-    background-gradient-start: @misc_scrollbarhoverbg1;
-    background-gradient-end: @misc_scrollbarhoverbg2;
+    background-gradient-start: @button_hoverbg1;
+    background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
 }
 
@@ -156,12 +156,12 @@ StScrollBar StButton#hhandle:active {
     color: @menu_fg;
     border-radius: @roundnesspx;
     border-width: @menu_bwidthpx;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
     -arrow-border-radius: @roundnesspx;
     -arrow-border-width: @menu_bwidthpx;
     /*arrow_true
@@ -226,12 +226,12 @@ StScrollBar StButton#hhandle:active {
     padding: 1em 0em;
     border: @menu_bwidthpx solid @menu_border;
     border-radius: @roundnesspx;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
 }
 
 /* The remaining popup-menu sizing is all done in ems, so that if you
@@ -255,7 +255,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .popup-menu-item:active {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -375,12 +375,6 @@ StScrollBar StButton#hhandle:active {
     /*buttonbold_false
     font-weight: normal;
     buttonbold_false*/
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 0 1px 1px rgba(255,255,255,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
     transition-duration: @transitionms;
 }
 
@@ -401,11 +395,23 @@ StScrollBar StButton#hhandle:active {
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus,
 .app-view-control:focus {
-    color: @button_focusfg;
+    color: @buttonfocus_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @button_focusbg1;
-    background-gradient-end: @button_focusbg2;
-    border-color: @button_focusborder;
+    background-gradient-start: @buttonfocus_bg1;
+    background-gradient-end: @buttonfocus_bg2;
+    border-color: @buttonfocus_border;
+}
+
+.notification-button:focus:hover,
+.notification-icon-button:focus:hover,
+.hotplug-notification-item:focus:hover,
+.modal-dialog-button:focus:hover,
+.app-view-control:focus:hover {
+    color: @buttonfocus_hoverfg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @buttonfocus_hoverbg1;
+    background-gradient-end: @buttonfocus_hoverbg2;
+    border-color: @buttonfocus_hoverborder;
 }
 
 .notification-button:focus:active,
@@ -413,17 +419,11 @@ StScrollBar StButton#hhandle:active {
 .hotplug-notification-item:focus:active,
 .modal-dialog-button:focus:active,
 .app-view-control:focus:active {
-    color: @button_focusfg;
+    color: @buttonfocus_activefg;
     background-gradient-direction: vertical;
-    background-gradient-start: @button_focusbg1;
-    background-gradient-end: @button_focusbg2;
-    border-color: @button_focusborder;
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
+    background-gradient-start: @buttonfocus_activebg1;
+    background-gradient-end: @buttonfocus_activebg2;
+    border-color: @buttonfocus_activeborder;
 }
 
 .app-view-control:focus {
@@ -448,12 +448,6 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
 }
 
 .candidate-page-button:insensitive,
@@ -470,23 +464,17 @@ StScrollBar StButton#hhandle:active {
 }
 
 .hotplug-resident-eject-button:hover {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
 
 .hotplug-resident-eject-button:active {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
 }
 
 /* fix for media player extension buttons */
@@ -495,7 +483,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .hotplug-resident-eject-button:hover > .button-icon {
-    color: @selected_fg;
+    color: @textcolor;
 }
 
 /* Common radii */
@@ -528,7 +516,7 @@ StScrollBar StButton#hhandle:active {
     caret-color: #666;
     caret-size: 1px;
     selection-background-color: @selected_bg1;
-    selected-color: @selected_fg;
+    selected-color: @textcolor;
     padding: 4px 12px 5px;
 }
 
@@ -550,17 +538,17 @@ StScrollBar StButton#hhandle:active {
 
 .notification StEntry:focus,
 .modal-dialog StEntry {
-    color: @entry_focusfg;
+    color: @entry_fg;
     background-gradient-direction: vertical;
-    background-gradient-start: @entry_focusbg1;
-    background-gradient-end: @entry_focusbg2;
+    background-gradient-start: @entry_bg1;
+    background-gradient-end: @entry_bg2;
     border-width: 1px;
-    border-color: @entry_focusborder;
+    border-color: @entry_border;
 }
 
 .notification StEntry:focus,
 .modal-dialog StEntry:focus {
-    border: @entry_focusborder;
+    border: @entry_border;
 }
 
 #searchEntry {
@@ -616,12 +604,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @panel_bg2;
     border-color: @panel_border;
     border-bottom-width: @panel_bwidthpx;
-    /*panelshadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    panelshadow_true*/
-    /*panelshadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    panelshadow_false*/
+    dropshadow_false*/
     font-weight: bold;
     height: 2.1em;
     transition-duration: 500ms;
@@ -657,8 +645,8 @@ StScrollBar StButton#hhandle:active {
 }
 
 .panel-corner {
-    -panel-corner-radius: @panel_cornerpx;
-    -panel-corner-background-color: @panel_bg2;
+    -panel-corner-radius: 0;
+    -panel-corner-background-color: transparent;
     -panel-corner-border-width: 0;
     -panel-corner-border-color: transparent;
 }
@@ -666,7 +654,7 @@ StScrollBar StButton#hhandle:active {
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-background-color: @selected_bg1;
+    -panel-corner-background-color: transparent;
 }
 
 .panel-corner.lock-screen,
@@ -734,7 +722,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .panel-button:hover {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -744,7 +732,7 @@ StScrollBar StButton#hhandle:active {
 .panel-button:active,
 .panel-button:overview,
 .panel-button:focus {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -754,7 +742,7 @@ StScrollBar StButton#hhandle:active {
 .panel-status-button:active,
 .panel-status-button:checked,
 .panel-status-button:focus {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -857,12 +845,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     padding: 9px 7px 9px 9px;
-    /*dashshadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    dashshadow_true*/
-    /*dashshadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    dashshadow_false*/
+    dropshadow_false*/
 }
 
 .workspace-thumbnails-background:rtl {
@@ -988,12 +976,12 @@ StScrollBar StButton#hhandle:active {
     border: @dash_bwidthpx solid @dash_border;
     border-left: 0;
     border-radius: 0 @roundnesspx @roundnesspx 0;
-    /*dashshadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    dashshadow_true*/
-    /*dashshadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    dashshadow_false*/
+    dropshadow_false*/
 }
 
 #dash:rtl {
@@ -1159,12 +1147,12 @@ StScrollBar StButton#hhandle:active {
     color: @menu_fg;
     border-radius: @roundnesspx;
     border-width: @menu_bwidthpx;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
     -arrow-border-radius: @roundnesspx;
     -arrow-border-width: @menu_bwidthpx;
     /*arrow_true
@@ -1207,7 +1195,7 @@ StScrollBar StButton#hhandle:active {
 .search-provider-icon:hover,
 .list-search-result:hover,
 .grid-search-result:hover .overview-icon {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1232,14 +1220,14 @@ StScrollBar StButton#hhandle:active {
 }
 
 .show-apps:hover .show-apps-icon {
-    color: @selected_fg;
+    color: @textcolor;
 }
 
 .app-well-app:checked > .overview-icon,
 .app-well-app:active > .overview-icon,
 .show-apps:checked > .overview-icon,
 .show-apps:active > .overview-icon {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1248,7 +1236,7 @@ StScrollBar StButton#hhandle:active {
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
-    color: @selected_fg;
+    color: @textcolor;
     transition-duration: @transitionms;
 }
 
@@ -1261,7 +1249,7 @@ StScrollBar StButton#hhandle:active {
 .grid-search-result:selected .overview-icon,
 .search-provider-icon:selected,
 .list-search-result:selected {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1311,7 +1299,7 @@ StScrollBar StButton#hhandle:active {
 
 .lg-dialog StEntry {
     selection-background-color: @selected_bg1;
-    selected-color: @selected_fg;
+    selected-color: @textcolor;
 }
 
 .lg-completions-text {
@@ -1465,14 +1453,14 @@ StScrollBar StButton#hhandle:active {
 }
 
 .calendar-day-base:hover {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
 
 .calendar-day-base:active {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1518,7 +1506,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .calendar-today:hover {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1628,12 +1616,12 @@ StScrollBar StButton#hhandle:active {
     padding: 8px 8px 4px 8px;
     spacing-rows: 4px;
     spacing-columns: 10px;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
 }
 
 .notification, #notification-container {
@@ -1663,12 +1651,12 @@ StScrollBar StButton#hhandle:active {
     color: @menu_fg;
     border-radius: @roundnesspx;
     border-width: @menu_bwidthpx;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
     -arrow-border-radius: @roundnesspx;
     -arrow-border-width: @menu_bwidthpx;
     -boxpointer-gap: 6px;
@@ -1796,7 +1784,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .hotplug-resident-mount:hover {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1887,7 +1875,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .summary-source-button:hover .summary-source {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -1908,9 +1896,9 @@ StScrollBar StButton#hhandle:active {
 }
 
 .summary-source-counter {
-    color: @selected_fg;
+    color: @textcolor;
     background-color: @selected_bg2;
-    border: 2px solid @selected_fg;
+    border: 2px solid @textcolor;
     border-radius: 2.1em;
     font-size: @font_sizept;
     font-weight: bold;
@@ -1988,7 +1976,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .switcher-list .item-box:selected {
-    color: @selected_fg;
+    color: @textcolor;
     background-gradient-direction: vertical;
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
@@ -2098,12 +2086,12 @@ StScrollBar StButton#hhandle:active {
     padding-left: 20px;
     padding-bottom: 15px;
     padding-top: 20px;
-    /*dialogshadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    dialogshadow_true*/
-    /*dialogshadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    dialogshadow_false*/
+    dropshadow_false*/
 }
 
 .modal-dialog-button-box {
@@ -2411,12 +2399,12 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @panel_bg2;
     border-color: @panel_border;
     border-top-width: 1px;
-    /*panelshadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    panelshadow_true*/
-    /*panelshadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    panelshadow_false*/
+    dropshadow_false*/
 }
 
 .keyboard-layout {
@@ -2440,12 +2428,6 @@ StScrollBar StButton#hhandle:active {
     border-radius: @roundnesspx;
     font-size: 14pt;
     font-weight: bold;
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 0 1px 1px rgba(255,255,255,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
     transition-duration: @transitionms;
 }
 
@@ -2468,12 +2450,6 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
-    /*buttoninsetshadow_true
-    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
-    buttoninsetshadow_true*/
-    /*buttoninsetshadow_false
-    box-shadow: none;
-    buttoninsetshadow_false*/
 }
 
 .keyboard-subkeys {
@@ -2481,12 +2457,12 @@ StScrollBar StButton#hhandle:active {
     padding: 4px;
     border-radius: @roundnesspx;
     border-width: @menu_bwidthpx;
-    /*menushadow_true
+    /*dropshadow_true
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
-    menushadow_true*/
-    /*menushadow_false
+    dropshadow_true*/
+    /*dropshadow_false
     box-shadow: none;
-    menushadow_false*/
+    dropshadow_false*/
     -arrow-border-radius: @roundnesspx;
     -arrow-border-width: @menu_bwidthpx;
     -boxpointer-gap: 6px;
@@ -2527,13 +2503,13 @@ StScrollBar StButton#hhandle:active {
 
 .candidate-box:selected {
     border-radius: @roundnesspx;
-    color: @selected_fg;
+    color: @textcolor;
     background-color: @selected_bg1;
 }
 
 .candidate-box:hover {
     border-radius: @roundnesspx;
-    color: @selected_fg;
+    color: @textcolor;
     background-color: @selected_bg1;
 }
 

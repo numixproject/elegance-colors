@@ -1,7 +1,7 @@
 CC=valac
 CFLAGS=--pkg gtk+-3.0
-SRC=elegance-colors-gui.vala
-MAIN=elegance-colors-gui
+SRC=elegance-colors-prefs.vala
+MAIN=elegance-colors-prefs
 INSTALL=install
 INSTALL_PROGRAM=$(INSTALL) -Dpm 0755
 INSTALL_DATA=$(INSTALL) -Dpm 0644
@@ -18,12 +18,12 @@ clean:
 
 install: $(MAIN)
 	$(INSTALL_PROGRAM) elegance-colors $(DESTDIR)/usr/bin/elegance-colors
-	$(INSTALL_PROGRAM) elegance-colors-gui $(DESTDIR)/usr/bin/elegance-colors-gui
+	$(INSTALL_PROGRAM) elegance-colors-prefs $(DESTDIR)/usr/bin/elegance-colors-prefs
 	$(INSTALL_DATA) elegance-colors.svg $(DESTDIR)/usr/share/icons/hicolor/scalable/apps/elegance-colors.svg
-	$(INSTALL_DATA) elegance-colors.desktop $(DESTDIR)/usr/share/applications/elegance-colors.desktop
+	$(INSTALL_DATA) elegance-colors-prefs.desktop $(DESTDIR)/usr/share/applications/elegance-colors-prefs.desktop
 	$(INSTALL_DATA) README.md $(DESTDIR)/usr/share/elegance-colors/README.md
 	$(INSTALL_DATA) CREDITS $(DESTDIR)/usr/share/elegance-colors/CREDITS
-	$(INSTALL_DATA) elegance-colors-process.desktop $(DESTDIR)/etc/xdg/autostart/elegance-colors-process.desktop
+	$(INSTALL_DATA) elegance-colors.desktop $(DESTDIR)/etc/xdg/autostart/elegance-colors.desktop
 	$(INSTALL_DIRECTORY) $(DESTDIR)/usr/share/elegance-colors/presets
 	$(INSTALL_DATA) presets/* $(DESTDIR)/usr/share/elegance-colors/presets
 	for dir in templates/*; do \

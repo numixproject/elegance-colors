@@ -8,18 +8,22 @@ class EleganceColorsWindow : ApplicationWindow {
 	RadioButton match_wallpaper;
 	RadioButton match_theme;
 	RadioButton custom_color;
+	RadioButton text_auto;
+	RadioButton text_color;
 
 	ColorButton color_button;
-
-	Switch monitor_switch;
+	ColorButton text_button;
 
 	FontButton fontchooser;
+
+	Switch dropshadow_switch;
 
 	SpinButton selgradient_size;
 	SpinButton corner_roundness;
 	SpinButton transition_duration;
 
 	string color_value;
+	string text_value;
 
 	string[] presets = { "" };
 	string[] titles = { "None" };
@@ -30,12 +34,10 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton panel_fg_color;
 	ColorButton panel_border_color;
 
-	Switch panel_shadow_switch;
 	Switch panel_icon_switch;
 
 	SpinButton panel_tint_value;
 	SpinButton panel_bwidth_value;
-	SpinButton panel_corner_value;
 
 	string panel_bg1_value;
 	string panel_bg2_value;
@@ -75,8 +77,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton dash_fg_color;
 	ColorButton dash_border_color;
 
-	Switch dash_shadow_switch;
-
 	SpinButton dash_tint_value;
 	SpinButton dash_bwidth_value;
 
@@ -91,7 +91,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton menu_fg_color;
 	ColorButton menu_border_color;
 
-	Switch menu_shadow_switch;
 	Switch menu_arrow_switch;
 
 	SpinButton menu_tint_value;
@@ -109,8 +108,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton dialog_heading_color;
 	ColorButton dialog_border_color;
 
-	Switch dialog_shadow_switch;
-
 	SpinButton dialog_tint_value;
 	SpinButton dialog_bwidth_value;
 
@@ -127,19 +124,14 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton button_hoverbg2_color;
 	ColorButton button_activebg1_color;
 	ColorButton button_activebg2_color;
-	ColorButton button_focusbg1_color;
-	ColorButton button_focusbg2_color;
 	ColorButton button_fg_color;
 	ColorButton button_hoverfg_color;
 	ColorButton button_activefg_color;
-	ColorButton button_focusfg_color;
 	ColorButton button_border_color;
 	ColorButton button_hoverborder_color;
 	ColorButton button_activeborder_color;
-	ColorButton button_focusborder_color;
 
 	Switch button_bold_switch;
-	Switch button_insetshadow_switch;
 
 	string button_bg1_value;
 	string button_bg2_value;
@@ -147,52 +139,61 @@ class EleganceColorsWindow : ApplicationWindow {
 	string button_hoverbg2_value;
 	string button_activebg1_value;
 	string button_activebg2_value;
-	string button_focusbg1_value;
-	string button_focusbg2_value;
 	string button_fg_value;
 	string button_hoverfg_value;
 	string button_activefg_value;
-	string button_focusfg_value;
 	string button_border_value;
 	string button_hoverborder_value;
 	string button_activeborder_value;
-	string button_focusborder_value;
+
+	// Focused buttons
+	ColorButton buttonfocus_bg1_color;
+	ColorButton buttonfocus_bg2_color;
+	ColorButton buttonfocus_hoverbg1_color;
+	ColorButton buttonfocus_hoverbg2_color;
+	ColorButton buttonfocus_activebg1_color;
+	ColorButton buttonfocus_activebg2_color;
+	ColorButton buttonfocus_fg_color;
+	ColorButton buttonfocus_hoverfg_color;
+	ColorButton buttonfocus_activefg_color;
+	ColorButton buttonfocus_border_color;
+	ColorButton buttonfocus_hoverborder_color;
+	ColorButton buttonfocus_activeborder_color;
+
+	string buttonfocus_bg1_value;
+	string buttonfocus_bg2_value;
+	string buttonfocus_hoverbg1_value;
+	string buttonfocus_hoverbg2_value;
+	string buttonfocus_activebg1_value;
+	string buttonfocus_activebg2_value;
+	string buttonfocus_fg_value;
+	string buttonfocus_hoverfg_value;
+	string buttonfocus_activefg_value;
+	string buttonfocus_border_value;
+	string buttonfocus_hoverborder_value;
+	string buttonfocus_activeborder_value;
 
 	// Entry
 	ColorButton entry_bg1_color;
 	ColorButton entry_bg2_color;
-	ColorButton entry_focusbg1_color;
-	ColorButton entry_focusbg2_color;
 	ColorButton entry_fg_color;
-	ColorButton entry_focusfg_color;
 	ColorButton entry_border_color;
-	ColorButton entry_focusborder_color;
 
 	Switch entry_shadow_switch;
 
 	string entry_bg1_value;
 	string entry_bg2_value;
-	string entry_focusbg1_value;
-	string entry_focusbg2_value;
 	string entry_fg_value;
-	string entry_focusfg_value;
 	string entry_border_value;
-	string entry_focusborder_value;
 
 	// Misc
 	ColorButton misc_runningbg1_color;
 	ColorButton misc_runningbg2_color;
 	ColorButton misc_separator1_color;
 	ColorButton misc_separator2_color;
-	ColorButton misc_scrollbarbg1_color;
-	ColorButton misc_scrollbarbg2_color;
-	ColorButton misc_scrollbarhoverbg1_color;
-	ColorButton misc_scrollbarhoverbg2_color;
 	ColorButton misc_tooltipbg1_color;
 	ColorButton misc_tooltipbg2_color;
 	ColorButton misc_tooltipfg_color;
-	ColorButton misc_scrollbarborder_color;
-	ColorButton misc_scrollbarhoverborder_color;
 	ColorButton misc_tooltipborder_color;
 	ColorButton misc_insensitive_color;
 
@@ -200,15 +201,9 @@ class EleganceColorsWindow : ApplicationWindow {
 	string misc_runningbg2_value;
 	string misc_separator1_value;
 	string misc_separator2_value;
-	string misc_scrollbarbg1_value;
-	string misc_scrollbarbg2_value;
-	string misc_scrollbarhoverbg1_value;
-	string misc_scrollbarhoverbg2_value;
 	string misc_tooltipbg1_value;
 	string misc_tooltipbg2_value;
 	string misc_tooltipfg_value;
-	string misc_scrollbarborder_value;
-	string misc_scrollbarhoverborder_value;
 	string misc_tooltipborder_value;
 	string misc_insensitive_value;
 
@@ -288,14 +283,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void init_process () {
 
-		var home_dir = File.new_for_path (Environment.get_home_dir ());
+		try {
+			Process.spawn_command_line_async("elegance-colors");
+		} catch (Error e) {
+			stderr.printf ("Failed to run process: %s\n", e.message);
+		}
 
-		if (!home_dir.get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css").query_exists () || !config_file.query_exists ()) {
-			try {
-				Process.spawn_command_line_async("elegance-colors");
-			} catch (Error e) {
-				stderr.printf ("Failed to run process: %s\n", e.message);
-			}
+		if (!config_file.query_exists ()) {
 			try {
 				key_file.load_from_file (presets_dir_sys.get_child ("default.ini").get_path (), KeyFileFlags.NONE);
 			} catch (Error e) {
@@ -433,28 +427,46 @@ class EleganceColorsWindow : ApplicationWindow {
 				color_button.set_sensitive (true);
 			}
 
-			color_value = key_file.get_string ("Settings", "color");
+			color_value = key_file.get_string ("Settings", "highlight");
 
-			monitor_switch.set_active (key_file.get_boolean ("Settings", "monitor"));
+			var text = key_file.get_string ("Settings", "text");
+
+			if (text == "auto") {
+				text_auto.set_active (true);
+				text_button.set_sensitive (false);
+			} else {
+				text_color.set_active (true);
+				text_button.set_sensitive (true);
+			}
+
+			text_value = key_file.get_string ("Settings", "textcolor");
 
 			fontchooser.set_font_name (key_file.get_string ("Settings", "fontname"));
+
+			dropshadow_switch.set_active (key_file.get_boolean ("Settings", "dropshadow"));
 
 			selgradient_size.adjustment.value = key_file.get_double ("Settings", "selgradient");
 			corner_roundness.adjustment.value = key_file.get_double ("Settings", "roundness");
 			transition_duration.adjustment.value = key_file.get_double ("Settings", "transition");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			panel_bg1_value = key_file.get_string ("Panel", "panel_bg1");
 			panel_bg2_value = key_file.get_string ("Panel", "panel_bg2");
 			panel_fg_value = key_file.get_string ("Panel", "panel_fg");
 			panel_border_value = key_file.get_string ("Panel", "panel_border");
 
-			panel_shadow_switch.set_active (key_file.get_boolean ("Panel", "panel_shadow"));
 			panel_icon_switch.set_active (key_file.get_boolean ("Panel", "panel_icon"));
 
 			panel_tint_value.adjustment.value = key_file.get_double ("Panel", "panel_tint");
 			panel_bwidth_value.adjustment.value = key_file.get_double ("Panel", "panel_bwidth");
-			panel_corner_value.adjustment.value = key_file.get_double ("Panel", "panel_corner");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			overview_bg1_value = key_file.get_string ("Overview", "overview_bg1");
 			overview_bg2_value = key_file.get_string ("Overview", "overview_bg2");
 			overview_searchbg1_value = key_file.get_string ("Overview", "overview_searchbg1");
@@ -469,85 +481,106 @@ class EleganceColorsWindow : ApplicationWindow {
 			overview_tint_value.adjustment.value = key_file.get_double ("Overview", "overview_tint");
 			overview_iconsize_value.adjustment.value = key_file.get_double ("Overview", "overview_iconsize");
 			overview_iconspacing_value.adjustment.value = key_file.get_double ("Overview", "overview_iconspacing");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			dash_bg1_value = key_file.get_string ("Dash", "dash_bg1");
 			dash_bg2_value = key_file.get_string ("Dash", "dash_bg2");
 			dash_fg_value = key_file.get_string ("Dash", "dash_fg");
 			dash_border_value = key_file.get_string ("Dash", "dash_border");
 
-			dash_shadow_switch.set_active (key_file.get_boolean ("Dash", "dash_shadow"));
-
 			dash_tint_value.adjustment.value = key_file.get_double ("Dash", "dash_tint");
 			dash_bwidth_value.adjustment.value = key_file.get_double ("Dash", "dash_bwidth");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			menu_bg1_value = key_file.get_string ("Menu", "menu_bg1");
 			menu_bg2_value = key_file.get_string ("Menu", "menu_bg2");
 			menu_fg_value = key_file.get_string ("Menu", "menu_fg");
 			menu_border_value = key_file.get_string ("Menu", "menu_border");
 
-			menu_shadow_switch.set_active (key_file.get_boolean ("Menu", "menu_shadow"));
 			menu_arrow_switch.set_active (key_file.get_boolean ("Menu", "menu_arrow"));
 
 			menu_tint_value.adjustment.value = key_file.get_double ("Menu", "menu_tint");
 			menu_bwidth_value.adjustment.value = key_file.get_double ("Menu", "menu_bwidth");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			dialog_bg1_value = key_file.get_string ("Dialogs", "dialog_bg1");
 			dialog_bg2_value = key_file.get_string ("Dialogs", "dialog_bg2");
 			dialog_fg_value = key_file.get_string ("Dialogs", "dialog_fg");
 			dialog_border_value = key_file.get_string ("Dialogs", "dialog_border");
 			dialog_heading_value = key_file.get_string ("Dialogs", "dialog_heading");
 
-			dialog_shadow_switch.set_active (key_file.get_boolean ("Dialogs", "dialog_shadow"));
-
 			dialog_tint_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_tint");
 			dialog_bwidth_value.adjustment.value = key_file.get_double ("Dialogs", "dialog_bwidth");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			button_bg1_value = key_file.get_string ("Buttons", "button_bg1");
 			button_bg2_value = key_file.get_string ("Buttons", "button_bg2");
 			button_hoverbg1_value = key_file.get_string ("Buttons", "button_hoverbg1");
 			button_hoverbg2_value = key_file.get_string ("Buttons", "button_hoverbg2");
 			button_activebg1_value = key_file.get_string ("Buttons", "button_activebg1");
 			button_activebg2_value = key_file.get_string ("Buttons", "button_activebg2");
-			button_focusbg1_value = key_file.get_string ("Buttons", "button_focusbg1");
-			button_focusbg2_value = key_file.get_string ("Buttons", "button_focusbg2");
 			button_fg_value = key_file.get_string ("Buttons", "button_fg");
 			button_hoverfg_value = key_file.get_string ("Buttons", "button_hoverfg");
 			button_activefg_value = key_file.get_string ("Buttons", "button_activefg");
-			button_focusfg_value = key_file.get_string ("Buttons", "button_focusfg");
 			button_border_value = key_file.get_string ("Buttons", "button_border");
 			button_hoverborder_value = key_file.get_string ("Buttons", "button_hoverborder");
 			button_activeborder_value = key_file.get_string ("Buttons", "button_activeborder");
-			button_focusborder_value = key_file.get_string ("Buttons", "button_focusborder");
 
 			button_bold_switch.set_active (key_file.get_boolean ("Buttons", "button_bold"));
-			button_insetshadow_switch.set_active (key_file.get_boolean ("Buttons", "button_insetshadow"));
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
+			buttonfocus_bg1_value = key_file.get_string ("ButtonsFocus", "buttonfocus_bg1");
+			buttonfocus_bg2_value = key_file.get_string ("ButtonsFocus", "buttonfocus_bg2");
+			buttonfocus_hoverbg1_value = key_file.get_string ("ButtonsFocus", "buttonfocus_hoverbg1");
+			buttonfocus_hoverbg2_value = key_file.get_string ("ButtonsFocus", "buttonfocus_hoverbg2");
+			buttonfocus_activebg1_value = key_file.get_string ("ButtonsFocus", "buttonfocus_activebg1");
+			buttonfocus_activebg2_value = key_file.get_string ("ButtonsFocus", "buttonfocus_activebg2");
+			buttonfocus_fg_value = key_file.get_string ("ButtonsFocus", "buttonfocus_fg");
+			buttonfocus_hoverfg_value = key_file.get_string ("ButtonsFocus", "buttonfocus_hoverfg");
+			buttonfocus_activefg_value = key_file.get_string ("ButtonsFocus", "buttonfocus_activefg");
+			buttonfocus_border_value = key_file.get_string ("ButtonsFocus", "buttonfocus_border");
+			buttonfocus_hoverborder_value = key_file.get_string ("ButtonsFocus", "buttonfocus_hoverborder");
+			buttonfocus_activeborder_value = key_file.get_string ("ButtonsFocus", "buttonfocus_activeborder");
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
+
+		try {
 			entry_bg1_value = key_file.get_string ("Entry", "entry_bg1");
 			entry_bg2_value = key_file.get_string ("Entry", "entry_bg2");
-			entry_focusbg1_value = key_file.get_string ("Entry", "entry_focusbg1");
-			entry_focusbg2_value = key_file.get_string ("Entry", "entry_focusbg2");
 			entry_fg_value = key_file.get_string ("Entry", "entry_fg");
-			entry_focusfg_value = key_file.get_string ("Entry", "entry_focusfg");
 			entry_border_value = key_file.get_string ("Entry", "entry_border");
-			entry_focusborder_value = key_file.get_string ("Entry", "entry_focusborder");
 
 			entry_shadow_switch.set_active (key_file.get_boolean ("Entry", "entry_shadow"));
+		} catch (Error e) {
+			stderr.printf ("Failed to set properties: %s\n", e.message);
+		}
 
+		try {
 			misc_runningbg1_value = key_file.get_string ("Misc", "misc_runningbg1");
 			misc_runningbg2_value = key_file.get_string ("Misc", "misc_runningbg2");
 			misc_separator1_value = key_file.get_string ("Misc", "misc_separator1");
 			misc_separator2_value = key_file.get_string ("Misc", "misc_separator2");
-			misc_scrollbarbg1_value = key_file.get_string ("Misc", "misc_scrollbarbg1");
-			misc_scrollbarbg2_value = key_file.get_string ("Misc", "misc_scrollbarbg2");
-			misc_scrollbarhoverbg1_value = key_file.get_string ("Misc", "misc_scrollbarhoverbg1");
-			misc_scrollbarhoverbg2_value = key_file.get_string ("Misc", "misc_scrollbarhoverbg2");
 			misc_tooltipbg1_value = key_file.get_string ("Misc", "misc_tooltipbg1");
 			misc_tooltipbg2_value = key_file.get_string ("Misc", "misc_tooltipbg2");
 			misc_tooltipfg_value = key_file.get_string ("Misc", "misc_tooltipfg");
-			misc_scrollbarhoverborder_value = key_file.get_string ("Misc", "misc_scrollbarhoverborder");
 			misc_tooltipborder_value = key_file.get_string ("Misc", "misc_tooltipborder");
 			misc_insensitive_value = key_file.get_string ("Misc", "misc_insensitive");
-
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
 		}
@@ -557,6 +590,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (color_value));
 		color_button.set_rgba (color);
+
+		color.parse ("%s".printf (text_value));
+		text_button.set_rgba (color);
 
 		color.parse ("%s".printf (panel_bg1_value));
 		panel_bg1_color.set_rgba (color);
@@ -651,12 +687,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (button_activebg2_value));
 		button_activebg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_focusbg1_value));
-		button_focusbg1_color.set_rgba (color);
-
-		color.parse ("%s".printf (button_focusbg2_value));
-		button_focusbg2_color.set_rgba (color);
-
 		color.parse ("%s".printf (button_fg_value));
 		button_fg_color.set_rgba (color);
 
@@ -665,9 +695,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (button_activefg_value));
 		button_activefg_color.set_rgba (color);
-
-		color.parse ("%s".printf (button_focusfg_value));
-		button_focusfg_color.set_rgba (color);
 
 		color.parse ("%s".printf (button_border_value));
 		button_border_color.set_rgba (color);
@@ -678,8 +705,41 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (button_activeborder_value));
 		button_activeborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_focusborder_value));
-		button_focusborder_color.set_rgba (color);
+		color.parse ("%s".printf (buttonfocus_bg1_value));
+		buttonfocus_bg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_bg2_value));
+		buttonfocus_bg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_hoverbg1_value));
+		buttonfocus_hoverbg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_hoverbg2_value));
+		buttonfocus_hoverbg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_activebg1_value));
+		buttonfocus_activebg1_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_activebg2_value));
+		buttonfocus_activebg2_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_fg_value));
+		buttonfocus_fg_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_hoverfg_value));
+		buttonfocus_hoverfg_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_activefg_value));
+		buttonfocus_activefg_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_border_value));
+		buttonfocus_border_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_hoverborder_value));
+		buttonfocus_hoverborder_color.set_rgba (color);
+
+		color.parse ("%s".printf (buttonfocus_activeborder_value));
+		buttonfocus_activeborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (entry_bg1_value));
 		entry_bg1_color.set_rgba (color);
@@ -687,23 +747,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (entry_bg2_value));
 		entry_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_focusbg1_value));
-		entry_focusbg1_color.set_rgba (color);
-
-		color.parse ("%s".printf (entry_focusbg2_value));
-		entry_focusbg2_color.set_rgba (color);
-
 		color.parse ("%s".printf (entry_fg_value));
 		entry_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_focusfg_value));
-		entry_focusfg_color.set_rgba (color);
-
 		color.parse ("%s".printf (entry_border_value));
 		entry_border_color.set_rgba (color);
-
-		color.parse ("%s".printf (entry_focusborder_value));
-		entry_focusborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (misc_runningbg1_value));
 		misc_runningbg1_color.set_rgba (color);
@@ -717,18 +765,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		color.parse ("%s".printf (misc_separator2_value));
 		misc_separator2_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_scrollbarbg1_value));
-		misc_scrollbarbg1_color.set_rgba (color);
-
-		color.parse ("%s".printf (misc_scrollbarbg2_value));
-		misc_scrollbarbg2_color.set_rgba (color);
-
-		color.parse ("%s".printf (misc_scrollbarhoverbg1_value));
-		misc_scrollbarhoverbg1_color.set_rgba (color);
-
-		color.parse ("%s".printf (misc_scrollbarhoverbg2_value));
-		misc_scrollbarhoverbg2_color.set_rgba (color);
-
 		color.parse ("%s".printf (misc_tooltipbg1_value));
 		misc_tooltipbg1_color.set_rgba (color);
 
@@ -737,12 +773,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse ("%s".printf (misc_tooltipfg_value));
 		misc_tooltipfg_color.set_rgba (color);
-
-		color.parse ("%s".printf (misc_scrollbarborder_value));
-		misc_scrollbarborder_color.set_rgba (color);
-
-		color.parse ("%s".printf (misc_scrollbarhoverborder_value));
-		misc_scrollbarhoverborder_color.set_rgba (color);
 
 		color.parse ("%s".printf (misc_tooltipborder_value));
 		misc_tooltipborder_color.set_rgba (color);
@@ -861,11 +891,18 @@ class EleganceColorsWindow : ApplicationWindow {
 		color_button = new ColorButton ();
 		color_button.set_use_alpha (true);
 		color_button.set_tooltip_text ("Set a custom highlight color");
-		var monitor_label = new Label.with_mnemonic ("Monitor changes");
-		monitor_label.set_halign (Align.START);
-		monitor_switch = new Switch ();
-		monitor_switch.set_tooltip_text ("Run in background and reload the theme when changes are detected");
-		monitor_switch.set_halign (Align.END);
+		var text_label = new Label.with_mnemonic ("Highlight text color");
+		text_label.set_halign (Align.START);
+		text_auto = new RadioButton (null);
+		text_auto.set_label ("Automatic");
+		text_auto.set_mode (false);
+		text_auto.set_tooltip_text ("Automatically determine the highlight text color");
+		text_color = new RadioButton.with_label (text_auto.get_group(),"Custom");
+		text_color.set_mode (false);
+		text_color.set_tooltip_text ("Manually set a custom highlight text color");
+		text_button = new ColorButton ();
+		text_button.set_use_alpha (true);
+		text_button.set_tooltip_text ("Set a custom highlight text color");
 		var font_label = new Label.with_mnemonic ("Display font");
 		font_label.set_halign (Align.START);
 		fontchooser = new FontButton ();
@@ -874,10 +911,15 @@ class EleganceColorsWindow : ApplicationWindow {
 		fontchooser.set_use_size (true);
 		fontchooser.set_tooltip_text ("Choose the shell font and its size");
 		fontchooser.set_halign (Align.END);
-		var selgradient_label = new Label.with_mnemonic ("Selection gradient size");
+		var dropshadow_label = new Label.with_mnemonic ("Drop shadows");
+		dropshadow_label.set_halign (Align.START);
+		dropshadow_switch = new Switch ();
+		dropshadow_switch.set_tooltip_text ("Enable/disable drop shadows");
+		dropshadow_switch.set_halign (Align.END);
+		var selgradient_label = new Label.with_mnemonic ("Highlight gradient size");
 		selgradient_label.set_halign (Align.START);
 		selgradient_size = new SpinButton.with_range (0, 255, 1);
-		selgradient_size.set_tooltip_text ("Set the gradient size for highlight color");
+		selgradient_size.set_tooltip_text ("Set the gradient size for hl color");
 		selgradient_size.set_halign (Align.END);
 		var roundness_label = new Label.with_mnemonic ("Roundness");
 		roundness_label.set_halign (Align.START);
@@ -891,12 +933,21 @@ class EleganceColorsWindow : ApplicationWindow {
 		transition_duration.set_halign (Align.END);
 
 		var colorbox = new Box (Orientation.HORIZONTAL, 0);
+		colorbox.set_halign (Align.END);
 		colorbox.set_homogeneous (true);
 		colorbox.get_style_context().add_class("linked");
 		colorbox.add (match_wallpaper);
 		colorbox.add (match_theme);
 		colorbox.add (custom_color);
 		colorbox.add (color_button);
+
+		var textbox = new Box (Orientation.HORIZONTAL, 0);
+		textbox.set_halign (Align.END);
+		textbox.set_homogeneous (true);
+		textbox.get_style_context().add_class("linked");
+		textbox.add (text_auto);
+		textbox.add (text_color);
+		textbox.add (text_button);
 
 		var general_grid = new Grid ();
 		general_grid.set_column_homogeneous (true);
@@ -906,15 +957,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		general_grid.attach_next_to (combobox, presets_label, PositionType.RIGHT, 2, 1);
 		general_grid.attach (mode_label, 0, 1, 1, 1);
 		general_grid.attach_next_to (colorbox, mode_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (monitor_label, 0, 2, 2, 1);
-		general_grid.attach_next_to (monitor_switch, monitor_label, PositionType.RIGHT, 1, 1);
+		general_grid.attach (text_label, 0, 2, 1, 1);
+		general_grid.attach_next_to (textbox, text_label, PositionType.RIGHT, 2, 1);
 		general_grid.attach (font_label, 0, 3, 1, 1);
 		general_grid.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
-		general_grid.attach (selgradient_label, 0, 4, 2, 1);
+		general_grid.attach (dropshadow_label, 0, 4, 2, 1);
+		general_grid.attach_next_to (dropshadow_switch, dropshadow_label, PositionType.RIGHT, 1, 1);
+		general_grid.attach (selgradient_label, 0, 5, 2, 1);
 		general_grid.attach_next_to (selgradient_size, selgradient_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (roundness_label, 0, 5, 2, 1);
+		general_grid.attach (roundness_label, 0, 6, 2, 1);
 		general_grid.attach_next_to (corner_roundness, roundness_label, PositionType.RIGHT, 1, 1);
-		general_grid.attach (transition_label, 0, 6, 2, 1);
+		general_grid.attach (transition_label, 0, 7, 2, 1);
 		general_grid.attach_next_to (transition_duration, transition_label, PositionType.RIGHT, 1, 1);
 
 		combobox.changed.connect (on_preset_selected);
@@ -941,28 +994,34 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		color_button.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Settings", "color", color_button.rgba.to_string());
+			key_file.set_string ("Settings", "highlight", color_button.rgba.to_string());
 		});
-		monitor_switch.notify["active"].connect (() => {
+		text_auto.toggled .connect (() => {
 			on_value_changed ();
-			if (monitor_switch.get_active ()) {
-				try {
-					Process.spawn_command_line_async("elegance-colors");
-				} catch (Error e) {
-					stderr.printf ("Failed to start background process: %s\n", e.message);
-				}
-			} else {
-				try {
-					Process.spawn_command_line_async("elegance-colors stop");
-				} catch (Error e) {
-					stderr.printf ("Failed to stop background process: %s\n", e.message);
-				}
+			if (text_auto.get_active ()) {
+				key_file.set_string ("Settings", "text", "auto");
 			}
-			key_file.set_boolean ("Settings", "monitor", monitor_switch.get_active());
+		});
+		text_color.toggled .connect (() => {
+			on_value_changed ();
+			if (text_color.get_active ()) {
+				key_file.set_string ("Settings", "text", "custom");
+				text_button.set_sensitive (true);
+			} else {
+				text_button.set_sensitive (false);
+			}
+		});
+		text_button.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Settings", "textcolor", text_button.rgba.to_string());
 		});
 		fontchooser.font_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Settings", "fontname", fontchooser.get_font_name());
+		});
+		dropshadow_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Settings", "dropshadow", dropshadow_switch.get_active());
 		});
 		selgradient_size.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -996,11 +1055,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_border_color = new ColorButton ();
 		panel_border_color.set_use_alpha (true);
 		panel_border_color.set_tooltip_text ("Set the border color of the top panel");
-		var panel_shadow_label = new Label.with_mnemonic ("Drop shadow");
-		panel_shadow_label.set_halign (Align.START);
-		panel_shadow_switch = new Switch ();
-		panel_shadow_switch.set_tooltip_text ("Enable/disable shadow under the top panel");
-		panel_shadow_switch.set_halign (Align.END);
 		var panel_icon_label = new Label.with_mnemonic ("App icon");
 		panel_icon_label.set_halign (Align.START);
 		panel_icon_switch = new Switch ();
@@ -1009,18 +1063,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		var panel_tint_label = new Label.with_mnemonic ("Background tint level");
 		panel_tint_label.set_halign (Align.START);
 		panel_tint_value = new SpinButton.with_range (0, 100, 1);
-		panel_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the top panel");
+		panel_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the top panel");
 		panel_tint_value.set_halign (Align.END);
 		var panel_bwidth_label = new Label.with_mnemonic ("Border width");
 		panel_bwidth_label.set_halign (Align.START);
 		panel_bwidth_value = new SpinButton.with_range (0, 100, 1);
 		panel_bwidth_value.set_tooltip_text ("Set the width of the border of the top panel");
 		panel_bwidth_value.set_halign (Align.END);
-		var panel_corner_label = new Label.with_mnemonic ("Corner radius");
-		panel_corner_label.set_halign (Align.START);
-		panel_corner_value = new SpinButton.with_range (0, 100, 1);
-		panel_corner_value.set_tooltip_text ("Set the roundness the top panel corners");
-		panel_corner_value.set_halign (Align.END);
 
 		var panel_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		panel_bg_box.set_homogeneous (true);
@@ -1038,16 +1087,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_grid.attach_next_to (panel_fg_color, panel_fg_label, PositionType.RIGHT, 1, 1);
 		panel_grid.attach (panel_border_label, 0, 2, 2, 1);
 		panel_grid.attach_next_to (panel_border_color, panel_border_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_shadow_label, 0, 3, 2, 1);
-		panel_grid.attach_next_to (panel_shadow_switch, panel_shadow_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_icon_label, 0, 4, 2, 1);
+		panel_grid.attach (panel_icon_label, 0, 3, 2, 1);
 		panel_grid.attach_next_to (panel_icon_switch, panel_icon_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_tint_label, 0, 5, 2, 1);
+		panel_grid.attach (panel_tint_label, 0, 4, 2, 1);
 		panel_grid.attach_next_to (panel_tint_value, panel_tint_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_bwidth_label, 0, 6, 2, 1);
+		panel_grid.attach (panel_bwidth_label, 0, 5, 2, 1);
 		panel_grid.attach_next_to (panel_bwidth_value, panel_bwidth_label, PositionType.RIGHT, 1, 1);
-		panel_grid.attach (panel_corner_label, 0, 7, 2, 1);
-		panel_grid.attach_next_to (panel_corner_value, panel_corner_label, PositionType.RIGHT, 1, 1);
 
 		panel_bg1_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1065,10 +1110,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string());
 		});
-		panel_shadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Panel", "panel_shadow", panel_shadow_switch.get_active());
-		});
 		panel_icon_switch.notify["active"].connect (() => {
 			on_value_changed ();
 			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
@@ -1080,10 +1121,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_bwidth_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
 			key_file.set_double ("Panel", "panel_bwidth", panel_bwidth_value.adjustment.value);
-		});
-		panel_corner_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Panel", "panel_corner", panel_corner_value.adjustment.value);
 		});
 
 		// Overview
@@ -1134,7 +1171,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var overview_tint_label = new Label.with_mnemonic ("Background tint level");
 		overview_tint_label.set_halign (Align.START);
 		overview_tint_value = new SpinButton.with_range (0, 100, 1);
-		overview_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the overview");
+		overview_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the overview");
 		overview_tint_value.set_halign (Align.END);
 		var overview_iconsize_label = new Label.with_mnemonic ("App icon size");
 		overview_iconsize_label.set_halign (Align.START);
@@ -1262,15 +1299,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_border_color = new ColorButton ();
 		dash_border_color.set_use_alpha (true);
 		dash_border_color.set_tooltip_text ("Set the border color of the dash and workspace panel");
-		var dash_shadow_label = new Label.with_mnemonic ("Drop shadow");
-		dash_shadow_label.set_halign (Align.START);
-		dash_shadow_switch = new Switch ();
-		dash_shadow_switch.set_tooltip_text ("Enable/disable shadow under the dash and workspace panel");
-		dash_shadow_switch.set_halign (Align.END);
 		var dash_tint_label = new Label.with_mnemonic ("Background tint level");
 		dash_tint_label.set_halign (Align.START);
 		dash_tint_value = new SpinButton.with_range (0, 100, 1);
-		dash_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the dash and workspace panel");
+		dash_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the dash and workspace panel");
 		dash_tint_value.set_halign (Align.END);
 		var dash_bwidth_label = new Label.with_mnemonic ("Border width");
 		dash_bwidth_label.set_halign (Align.START);
@@ -1294,11 +1326,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_grid.attach_next_to (dash_fg_color, dash_fg_label, PositionType.RIGHT, 1, 1);
 		dash_grid.attach (dash_border_label, 0, 2, 2, 1);
 		dash_grid.attach_next_to (dash_border_color, dash_border_label, PositionType.RIGHT, 1, 1);
-		dash_grid.attach (dash_shadow_label, 0, 3, 2, 1);
-		dash_grid.attach_next_to (dash_shadow_switch, dash_shadow_label, PositionType.RIGHT, 1, 1);
-		dash_grid.attach (dash_tint_label, 0, 4, 2, 1);
+		dash_grid.attach (dash_tint_label, 0, 3, 2, 1);
 		dash_grid.attach_next_to (dash_tint_value, dash_tint_label, PositionType.RIGHT, 1, 1);
-		dash_grid.attach (dash_bwidth_label, 0, 5, 2, 1);
+		dash_grid.attach (dash_bwidth_label, 0, 4, 2, 1);
 		dash_grid.attach_next_to (dash_bwidth_value, dash_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		dash_bg1_color.color_set.connect (() => {
@@ -1316,10 +1346,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_border_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string());
-		});
-		dash_shadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Dash", "dash_shadow", dash_shadow_switch.get_active());
 		});
 		dash_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1349,11 +1375,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_border_color = new ColorButton ();
 		menu_border_color.set_use_alpha (true);
 		menu_border_color.set_tooltip_text ("Set the border color of the popup menu");
-		var menu_shadow_label = new Label.with_mnemonic ("Drop shadow");
-		menu_shadow_label.set_halign (Align.START);
-		menu_shadow_switch = new Switch ();
-		menu_shadow_switch.set_tooltip_text ("Enable/disable shadow under the popup menu");
-		menu_shadow_switch.set_halign (Align.END);
 		var menu_arrow_label = new Label.with_mnemonic ("Arrow pointer");
 		menu_arrow_label.set_halign (Align.START);
 		menu_arrow_switch = new Switch ();
@@ -1362,7 +1383,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var menu_tint_label = new Label.with_mnemonic ("Background tint level");
 		menu_tint_label.set_halign (Align.START);
 		menu_tint_value = new SpinButton.with_range (0, 100, 1);
-		menu_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the popup menu");
+		menu_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the popup menu");
 		menu_tint_value.set_halign (Align.END);
 		var menu_bwidth_label = new Label.with_mnemonic ("Border width");
 		menu_bwidth_label.set_halign (Align.START);
@@ -1386,13 +1407,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_grid.attach_next_to (menu_fg_color, menu_fg_label, PositionType.RIGHT, 1, 1);
 		menu_grid.attach (menu_border_label, 0, 2, 2, 1);
 		menu_grid.attach_next_to (menu_border_color, menu_border_label, PositionType.RIGHT, 1, 1);
-		menu_grid.attach (menu_shadow_label, 0, 3, 2, 1);
-		menu_grid.attach_next_to (menu_shadow_switch, menu_shadow_label, PositionType.RIGHT, 1, 1);
-		menu_grid.attach (menu_arrow_label, 0, 4, 2, 1);
+		menu_grid.attach (menu_arrow_label, 0, 3, 2, 1);
 		menu_grid.attach_next_to (menu_arrow_switch, menu_arrow_label, PositionType.RIGHT, 1, 1);
-		menu_grid.attach (menu_tint_label, 0, 5, 2, 1);
+		menu_grid.attach (menu_tint_label, 0, 4, 2, 1);
 		menu_grid.attach_next_to (menu_tint_value, menu_tint_label, PositionType.RIGHT, 1, 1);
-		menu_grid.attach (menu_bwidth_label, 0, 6, 2, 1);
+		menu_grid.attach (menu_bwidth_label, 0, 5, 2, 1);
 		menu_grid.attach_next_to (menu_bwidth_value, menu_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		menu_bg1_color.color_set.connect (() => {
@@ -1410,10 +1429,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_border_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string());
-		});
-		menu_shadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Menu", "menu_shadow", menu_shadow_switch.get_active());
 		});
 		menu_arrow_switch.notify["active"].connect (() => {
 			on_value_changed ();
@@ -1452,15 +1467,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_border_color = new ColorButton ();
 		dialog_border_color.set_use_alpha (true);
 		dialog_border_color.set_tooltip_text ("Set the border color of the modal dialogs");
-		var dialog_shadow_label = new Label.with_mnemonic ("Drop shadow");
-		dialog_shadow_label.set_halign (Align.START);
-		dialog_shadow_switch = new Switch ();
-		dialog_shadow_switch.set_tooltip_text ("Enable/disable shadow under the modal dialogs");
-		dialog_shadow_switch.set_halign (Align.END);
 		var dialog_tint_label = new Label.with_mnemonic ("Background tint level");
 		dialog_tint_label.set_halign (Align.START);
 		dialog_tint_value = new SpinButton.with_range (0, 100, 1);
-		dialog_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the modal dialogs");
+		dialog_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the modal dialogs");
 		dialog_tint_value.set_halign (Align.END);
 		var dialog_bwidth_label = new Label.with_mnemonic ("Border width");
 		dialog_bwidth_label.set_halign (Align.START);
@@ -1486,11 +1496,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_grid.attach_next_to (dialog_heading_color, dialog_heading_label, PositionType.RIGHT, 1, 1);
 		dialog_grid.attach (dialog_border_label, 0, 3, 2, 1);
 		dialog_grid.attach_next_to (dialog_border_color, dialog_border_label, PositionType.RIGHT, 1, 1);
-		dialog_grid.attach (dialog_shadow_label, 0, 4, 2, 1);
-		dialog_grid.attach_next_to (dialog_shadow_switch, dialog_shadow_label, PositionType.RIGHT, 1, 1);
-		dialog_grid.attach (dialog_tint_label, 0, 5, 2, 1);
+		dialog_grid.attach (dialog_tint_label, 0, 4, 2, 1);
 		dialog_grid.attach_next_to (dialog_tint_value, dialog_tint_label, PositionType.RIGHT, 1, 1);
-		dialog_grid.attach (dialog_bwidth_label, 0, 6, 2, 1);
+		dialog_grid.attach (dialog_bwidth_label, 0, 5, 2, 1);
 		dialog_grid.attach_next_to (dialog_bwidth_value, dialog_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		dialog_bg1_color.color_set.connect (() => {
@@ -1512,10 +1520,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_border_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string());
-		});
-		dialog_shadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Dialogs", "dialog_shadow", dialog_shadow_switch.get_active());
 		});
 		dialog_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1551,14 +1555,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activebg2_color = new ColorButton ();
 		button_activebg2_color.set_use_alpha (true);
 		button_activebg2_color.set_tooltip_text ("Set the background gradient end of the buttons in active state");
-		var button_focusbg_label = new Label.with_mnemonic ("Focus background gradient");
-		button_focusbg_label.set_halign (Align.START);
-		button_focusbg1_color = new ColorButton ();
-		button_focusbg1_color.set_use_alpha (true);
-		button_focusbg1_color.set_tooltip_text ("Set the background gradient start of the buttons in focus state");
-		button_focusbg2_color = new ColorButton ();
-		button_focusbg2_color.set_use_alpha (true);
-		button_focusbg2_color.set_tooltip_text ("Set the background gradient end of the buttons in focus state");
 		var button_fg_label = new Label.with_mnemonic ("Text color");
 		button_fg_label.set_halign (Align.START);
 		button_fg_color = new ColorButton ();
@@ -1574,11 +1570,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activefg_color = new ColorButton ();
 		button_activefg_color.set_use_alpha (true);
 		button_activefg_color.set_tooltip_text ("Set the text color of the buttons in active state");
-		var button_focusfg_label = new Label.with_mnemonic ("Focus text color");
-		button_focusfg_label.set_halign (Align.START);
-		button_focusfg_color = new ColorButton ();
-		button_focusfg_color.set_use_alpha (true);
-		button_focusfg_color.set_tooltip_text ("Set the text color of the buttons in focus state");
 		var button_border_label = new Label.with_mnemonic ("Border color");
 		button_border_label.set_halign (Align.START);
 		button_border_color = new ColorButton ();
@@ -1594,16 +1585,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activeborder_color = new ColorButton ();
 		button_activeborder_color.set_use_alpha (true);
 		button_activeborder_color.set_tooltip_text ("Set the border color of the buttons in active state");
-		var button_focusborder_label = new Label.with_mnemonic ("Focus border color");
-		button_focusborder_label.set_halign (Align.START);
-		button_focusborder_color = new ColorButton ();
-		button_focusborder_color.set_use_alpha (true);
-		button_focusborder_color.set_tooltip_text ("Set the border color of the buttons in focus state");
-		var button_insetshadow_label = new Label.with_mnemonic ("Inset shadows");
-		button_insetshadow_label.set_halign (Align.START);
-		button_insetshadow_switch = new Switch ();
-		button_insetshadow_switch.set_tooltip_text ("Enable/disable inset shadow effect in the buttons");
-		button_insetshadow_switch.set_halign (Align.END);
 		var button_bold_label = new Label.with_mnemonic ("Bold label");
 		button_bold_label.set_halign (Align.START);
 		button_bold_switch = new Switch ();
@@ -1628,12 +1609,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activebg_box.add (button_activebg1_color);
 		button_activebg_box.add (button_activebg2_color);
 
-		var button_focusbg_box = new Box (Orientation.HORIZONTAL, 0);
-		button_focusbg_box.set_homogeneous (true);
-		button_focusbg_box.get_style_context().add_class("linked");
-		button_focusbg_box.add (button_focusbg1_color);
-		button_focusbg_box.add (button_focusbg2_color);
-
 		var button_grid = new Grid ();
 		button_grid.set_column_homogeneous (true);
 		button_grid.set_column_spacing (10);
@@ -1644,27 +1619,19 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_grid.attach_next_to (button_hoverbg_box, button_hoverbg_label, PositionType.RIGHT, 1, 1);
 		button_grid.attach (button_activebg_label, 0, 2, 2, 1);
 		button_grid.attach_next_to (button_activebg_box, button_activebg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_focusbg_label, 0, 3, 2, 1);
-		button_grid.attach_next_to (button_focusbg_box, button_focusbg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_fg_label, 0, 4, 2, 1);
+		button_grid.attach (button_fg_label, 0, 3, 2, 1);
 		button_grid.attach_next_to (button_fg_color, button_fg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_hoverfg_label, 0, 5, 2, 1);
+		button_grid.attach (button_hoverfg_label, 0, 4, 2, 1);
 		button_grid.attach_next_to (button_hoverfg_color, button_hoverfg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_activefg_label, 0, 6, 2, 1);
+		button_grid.attach (button_activefg_label, 0, 5, 2, 1);
 		button_grid.attach_next_to (button_activefg_color, button_activefg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_focusfg_label, 0, 7, 2, 1);
-		button_grid.attach_next_to (button_focusfg_color, button_focusfg_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_border_label, 0, 8, 2, 1);
+		button_grid.attach (button_border_label, 0, 6, 2, 1);
 		button_grid.attach_next_to (button_border_color, button_border_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_hoverborder_label, 0, 9, 2, 1);
+		button_grid.attach (button_hoverborder_label, 0, 7, 2, 1);
 		button_grid.attach_next_to (button_hoverborder_color, button_hoverborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_activeborder_label, 0, 10, 2, 1);
+		button_grid.attach (button_activeborder_label, 0, 8, 2, 1);
 		button_grid.attach_next_to (button_activeborder_color, button_activeborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_focusborder_label, 0, 11, 2, 1);
-		button_grid.attach_next_to (button_focusborder_color, button_focusborder_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_insetshadow_label, 0, 12, 2, 1);
-		button_grid.attach_next_to (button_insetshadow_switch, button_insetshadow_label, PositionType.RIGHT, 1, 1);
-		button_grid.attach (button_bold_label, 0, 13, 2, 1);
+		button_grid.attach (button_bold_label, 0, 9, 2, 1);
 		button_grid.attach_next_to (button_bold_switch, button_bold_label, PositionType.RIGHT, 1, 1);
 
 		button_bg1_color.color_set.connect (() => {
@@ -1691,14 +1658,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string());
 		});
-		button_focusbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_focusbg1", button_focusbg1_color.rgba.to_string());
-		});
-		button_focusbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_focusbg2", button_focusbg2_color.rgba.to_string());
-		});
 		button_fg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string());
@@ -1710,10 +1669,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_activefg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string());
-		});
-		button_focusfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_focusfg", button_focusfg_color.rgba.to_string());
 		});
 		button_border_color.color_set.connect (() => {
 			on_value_changed ();
@@ -1727,17 +1682,155 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string());
 		});
-		button_focusborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_focusborder", button_focusborder_color.rgba.to_string());
-		});
-		button_insetshadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Buttons", "button_insetshadow", button_insetshadow_switch.get_active());
-		});
 		button_bold_switch.notify["active"].connect (() => {
 			on_value_changed ();
 			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active());
+		});
+
+		// Focused buttons
+		var buttonfocus_bg_label = new Label.with_mnemonic ("Background gradient");
+		buttonfocus_bg_label.set_halign (Align.START);
+		buttonfocus_bg1_color = new ColorButton ();
+		buttonfocus_bg1_color.set_use_alpha (true);
+		buttonfocus_bg1_color.set_tooltip_text ("Set the background gradient start of the focused buttons");
+		buttonfocus_bg2_color = new ColorButton ();
+		buttonfocus_bg2_color.set_use_alpha (true);
+		buttonfocus_bg2_color.set_tooltip_text ("Set the background gradient end of the focused buttons");
+		var buttonfocus_hoverbg_label = new Label.with_mnemonic ("Hover background gradient");
+		buttonfocus_hoverbg_label.set_halign (Align.START);
+		buttonfocus_hoverbg1_color = new ColorButton ();
+		buttonfocus_hoverbg1_color.set_use_alpha (true);
+		buttonfocus_hoverbg1_color.set_tooltip_text ("Set the background gradient start of the focused buttons in hover state");
+		buttonfocus_hoverbg2_color = new ColorButton ();
+		buttonfocus_hoverbg2_color.set_use_alpha (true);
+		buttonfocus_hoverbg2_color.set_tooltip_text ("Set the background gradient end of the focused buttons in hover state");
+		var buttonfocus_activebg_label = new Label.with_mnemonic ("Active background gradient");
+		buttonfocus_activebg_label.set_halign (Align.START);
+		buttonfocus_activebg1_color = new ColorButton ();
+		buttonfocus_activebg1_color.set_use_alpha (true);
+		buttonfocus_activebg1_color.set_tooltip_text ("Set the background gradient start of the focused buttons in active state");
+		buttonfocus_activebg2_color = new ColorButton ();
+		buttonfocus_activebg2_color.set_use_alpha (true);
+		buttonfocus_activebg2_color.set_tooltip_text ("Set the background gradient end of the focused buttons in active state");
+		var buttonfocus_fg_label = new Label.with_mnemonic ("Text color");
+		buttonfocus_fg_label.set_halign (Align.START);
+		buttonfocus_fg_color = new ColorButton ();
+		buttonfocus_fg_color.set_use_alpha (true);
+		buttonfocus_fg_color.set_tooltip_text ("Set the text color of the focused buttons");
+		var buttonfocus_hoverfg_label = new Label.with_mnemonic ("Hover text color");
+		buttonfocus_hoverfg_label.set_halign (Align.START);
+		buttonfocus_hoverfg_color = new ColorButton ();
+		buttonfocus_hoverfg_color.set_use_alpha (true);
+		buttonfocus_hoverfg_color.set_tooltip_text ("Set the text color of the focused buttons in hover state");
+		var buttonfocus_activefg_label = new Label.with_mnemonic ("Active text color");
+		buttonfocus_activefg_label.set_halign (Align.START);
+		buttonfocus_activefg_color = new ColorButton ();
+		buttonfocus_activefg_color.set_use_alpha (true);
+		buttonfocus_activefg_color.set_tooltip_text ("Set the text color of the focused buttons in active state");
+		var buttonfocus_border_label = new Label.with_mnemonic ("Border color");
+		buttonfocus_border_label.set_halign (Align.START);
+		buttonfocus_border_color = new ColorButton ();
+		buttonfocus_border_color.set_use_alpha (true);
+		buttonfocus_border_color.set_tooltip_text ("Set the border color of the focused buttons");
+		var buttonfocus_hoverborder_label = new Label.with_mnemonic ("Hover border color");
+		buttonfocus_hoverborder_label.set_halign (Align.START);
+		buttonfocus_hoverborder_color = new ColorButton ();
+		buttonfocus_hoverborder_color.set_use_alpha (true);
+		buttonfocus_hoverborder_color.set_tooltip_text ("Set the border color of the focused buttons in hover state");
+		var buttonfocus_activeborder_label = new Label.with_mnemonic ("Active border color");
+		buttonfocus_activeborder_label.set_halign (Align.START);
+		buttonfocus_activeborder_color = new ColorButton ();
+		buttonfocus_activeborder_color.set_use_alpha (true);
+		buttonfocus_activeborder_color.set_tooltip_text ("Set the border color of the focused buttons in active state");
+
+		var buttonfocus_bg_box = new Box (Orientation.HORIZONTAL, 0);
+		buttonfocus_bg_box.set_homogeneous (true);
+		buttonfocus_bg_box.get_style_context().add_class("linked");
+		buttonfocus_bg_box.add (buttonfocus_bg1_color);
+		buttonfocus_bg_box.add (buttonfocus_bg2_color);
+
+		var buttonfocus_hoverbg_box = new Box (Orientation.HORIZONTAL, 0);
+		buttonfocus_hoverbg_box.set_homogeneous (true);
+		buttonfocus_hoverbg_box.get_style_context().add_class("linked");
+		buttonfocus_hoverbg_box.add (buttonfocus_hoverbg1_color);
+		buttonfocus_hoverbg_box.add (buttonfocus_hoverbg2_color);
+
+		var buttonfocus_activebg_box = new Box (Orientation.HORIZONTAL, 0);
+		buttonfocus_activebg_box.set_homogeneous (true);
+		buttonfocus_activebg_box.get_style_context().add_class("linked");
+		buttonfocus_activebg_box.add (buttonfocus_activebg1_color);
+		buttonfocus_activebg_box.add (buttonfocus_activebg2_color);
+
+		var buttonfocus_grid = new Grid ();
+		buttonfocus_grid.set_column_homogeneous (true);
+		buttonfocus_grid.set_column_spacing (10);
+		buttonfocus_grid.set_row_spacing (10);
+		buttonfocus_grid.attach (buttonfocus_bg_label, 0, 0, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_bg_box, buttonfocus_bg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_hoverbg_label, 0, 1, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_hoverbg_box, buttonfocus_hoverbg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_activebg_label, 0, 2, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_activebg_box, buttonfocus_activebg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_fg_label, 0, 3, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_fg_color, buttonfocus_fg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_hoverfg_label, 0, 4, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_hoverfg_color, buttonfocus_hoverfg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_activefg_label, 0, 5, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_activefg_color, buttonfocus_activefg_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_border_label, 0, 6, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_border_color, buttonfocus_border_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_hoverborder_label, 0, 7, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_hoverborder_color, buttonfocus_hoverborder_label, PositionType.RIGHT, 1, 1);
+		buttonfocus_grid.attach (buttonfocus_activeborder_label, 0, 8, 2, 1);
+		buttonfocus_grid.attach_next_to (buttonfocus_activeborder_color, buttonfocus_activeborder_label, PositionType.RIGHT, 1, 1);
+
+		buttonfocus_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg1", buttonfocus_bg1_color.rgba.to_string());
+		});
+		buttonfocus_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg2", buttonfocus_bg2_color.rgba.to_string());
+		});
+		buttonfocus_hoverbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg1", buttonfocus_hoverbg1_color.rgba.to_string());
+		});
+		buttonfocus_hoverbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg2", buttonfocus_hoverbg2_color.rgba.to_string());
+		});
+		buttonfocus_activebg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg1", buttonfocus_activebg1_color.rgba.to_string());
+		});
+		buttonfocus_activebg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg2", buttonfocus_activebg2_color.rgba.to_string());
+		});
+		buttonfocus_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_fg", buttonfocus_fg_color.rgba.to_string());
+		});
+		buttonfocus_hoverfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverfg", buttonfocus_hoverfg_color.rgba.to_string());
+		});
+		buttonfocus_activefg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activefg", buttonfocus_activefg_color.rgba.to_string());
+		});
+		buttonfocus_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_border", buttonfocus_border_color.rgba.to_string());
+		});
+		buttonfocus_hoverborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverborder", buttonfocus_hoverborder_color.rgba.to_string());
+		});
+		buttonfocus_activeborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activeborder", buttonfocus_activeborder_color.rgba.to_string());
 		});
 
 		// Entry
@@ -1749,34 +1842,16 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_bg2_color = new ColorButton ();
 		entry_bg2_color.set_use_alpha (true);
 		entry_bg2_color.set_tooltip_text ("Set the background gradient end of the entry widget");
-		var entry_focusbg_label = new Label.with_mnemonic ("Focus background gradient");
-		entry_focusbg_label.set_halign (Align.START);
-		entry_focusbg1_color = new ColorButton ();
-		entry_focusbg1_color.set_use_alpha (true);
-		entry_focusbg1_color.set_tooltip_text ("Set the background gradient start of the entry widget in focus state");
-		entry_focusbg2_color = new ColorButton ();
-		entry_focusbg2_color.set_use_alpha (true);
-		entry_focusbg2_color.set_tooltip_text ("Set the background gradient end of the entry widget in focus state");
 		var entry_fg_label = new Label.with_mnemonic ("Text color");
 		entry_fg_label.set_halign (Align.START);
 		entry_fg_color = new ColorButton ();
 		entry_fg_color.set_use_alpha (true);
 		entry_fg_color.set_tooltip_text ("Set the text color of the entry widget in focus state");
-		var entry_focusfg_label = new Label.with_mnemonic ("Focus text color");
-		entry_focusfg_label.set_halign (Align.START);
-		entry_focusfg_color = new ColorButton ();
-		entry_focusfg_color.set_use_alpha (true);
-		entry_focusfg_color.set_tooltip_text ("Set the text color of the entry widget");
 		var entry_border_label = new Label.with_mnemonic ("Border color");
 		entry_border_label.set_halign (Align.START);
 		entry_border_color = new ColorButton ();
 		entry_border_color.set_use_alpha (true);
 		entry_border_color.set_tooltip_text ("Set the border color of the entry widget in focus state");
-		var entry_focusborder_label = new Label.with_mnemonic ("Focus border color");
-		entry_focusborder_label.set_halign (Align.START);
-		entry_focusborder_color = new ColorButton ();
-		entry_focusborder_color.set_use_alpha (true);
-		entry_focusborder_color.set_tooltip_text ("Set the border color of the entry widget in focus state");
 		var entry_shadow_label = new Label.with_mnemonic ("Inset shadow");
 		entry_shadow_label.set_halign (Align.START);
 		entry_shadow_switch = new Switch ();
@@ -1789,29 +1864,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_bg_box.add (entry_bg1_color);
 		entry_bg_box.add (entry_bg2_color);
 
-		var entry_focusbg_box = new Box (Orientation.HORIZONTAL, 0);
-		entry_focusbg_box.set_homogeneous (true);
-		entry_focusbg_box.get_style_context().add_class("linked");
-		entry_focusbg_box.add (entry_focusbg1_color);
-		entry_focusbg_box.add (entry_focusbg2_color);
-
 		var entry_grid = new Grid ();
 		entry_grid.set_column_homogeneous (true);
 		entry_grid.set_column_spacing (10);
 		entry_grid.set_row_spacing (10);
 		entry_grid.attach (entry_bg_label, 0, 0, 2, 1);
 		entry_grid.attach_next_to (entry_bg_box, entry_bg_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_focusbg_label, 0, 1, 2, 1);
-		entry_grid.attach_next_to (entry_focusbg_box, entry_focusbg_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_fg_label, 0, 2, 2, 1);
+		entry_grid.attach (entry_fg_label, 0, 1, 2, 1);
 		entry_grid.attach_next_to (entry_fg_color, entry_fg_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_focusfg_label, 0, 3, 2, 1);
-		entry_grid.attach_next_to (entry_focusfg_color, entry_focusfg_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_border_label, 0, 4, 2, 1);
+		entry_grid.attach (entry_border_label, 0, 2, 2, 1);
 		entry_grid.attach_next_to (entry_border_color, entry_border_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_focusborder_label, 0, 5, 2, 1);
-		entry_grid.attach_next_to (entry_focusborder_color, entry_focusborder_label, PositionType.RIGHT, 1, 1);
-		entry_grid.attach (entry_shadow_label, 0, 6, 2, 1);
+		entry_grid.attach (entry_shadow_label, 0, 3, 2, 1);
 		entry_grid.attach_next_to (entry_shadow_switch, entry_shadow_label, PositionType.RIGHT, 1, 1);
 
 		entry_bg1_color.color_set.connect (() => {
@@ -1822,29 +1885,13 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Entry", "entry_bg2", entry_bg2_color.rgba.to_string());
 		});
-		entry_focusbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_focusbg1", entry_focusbg1_color.rgba.to_string());
-		});
-		entry_focusbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_focusbg2", entry_focusbg2_color.rgba.to_string());
-		});
 		entry_fg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string());
 		});
-		entry_focusfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_focusfg", entry_focusfg_color.rgba.to_string());
-		});
 		entry_border_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string());
-		});
-		entry_focusborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_focusborder", entry_focusborder_color.rgba.to_string());
 		});
 		entry_shadow_switch.notify["active"].connect (() => {
 			on_value_changed ();
@@ -1868,22 +1915,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator2_color = new ColorButton ();
 		misc_separator2_color.set_use_alpha (true);
 		misc_separator2_color.set_tooltip_text ("Set the ending gradient color of separators");
-		var misc_scrollbarbg_label = new Label.with_mnemonic ("Scrollbar background gradient");
-		misc_scrollbarbg_label.set_halign (Align.START);
-		misc_scrollbarbg1_color = new ColorButton ();
-		misc_scrollbarbg1_color.set_use_alpha (true);
-		misc_scrollbarbg1_color.set_tooltip_text ("Set the starting gradient color of scrollbars");
-		misc_scrollbarbg2_color = new ColorButton ();
-		misc_scrollbarbg2_color.set_use_alpha (true);
-		misc_scrollbarbg2_color.set_tooltip_text ("Set the ending gradient color of scrollbars");
-		var misc_scrollbarhoverbg_label = new Label.with_mnemonic ("Hovered scrollbar background gradient");
-		misc_scrollbarhoverbg_label.set_halign (Align.START);
-		misc_scrollbarhoverbg1_color = new ColorButton ();
-		misc_scrollbarhoverbg1_color.set_use_alpha (true);
-		misc_scrollbarhoverbg1_color.set_tooltip_text ("Set the starting gradient color of scrollbars in hover state");
-		misc_scrollbarhoverbg2_color = new ColorButton ();
-		misc_scrollbarhoverbg2_color.set_use_alpha (true);
-		misc_scrollbarhoverbg2_color.set_tooltip_text ("Set the ending gradient color of scrollbars hover state");
 		var misc_tooltipbg_label = new Label.with_mnemonic ("Tooltip background gradient");
 		misc_tooltipbg_label.set_halign (Align.START);
 		misc_tooltipbg1_color = new ColorButton ();
@@ -1897,16 +1928,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipfg_color = new ColorButton ();
 		misc_tooltipfg_color.set_use_alpha (true);
 		misc_tooltipfg_color.set_tooltip_text ("Set the text color of tooltips");
-		var misc_scrollbarborder_label = new Label.with_mnemonic ("Scrollbar border color");
-		misc_scrollbarborder_label.set_halign (Align.START);
-		misc_scrollbarborder_color = new ColorButton ();
-		misc_scrollbarborder_color.set_use_alpha (true);
-		misc_scrollbarborder_color.set_tooltip_text ("Set the border color of scrollbars");
-		var misc_scrollbarhoverborder_label = new Label.with_mnemonic ("Hovered scrollbar border color");
-		misc_scrollbarhoverborder_label.set_halign (Align.START);
-		misc_scrollbarhoverborder_color = new ColorButton ();
-		misc_scrollbarhoverborder_color.set_use_alpha (true);
-		misc_scrollbarhoverborder_color.set_tooltip_text ("Set the border color of scrollbars in hover state");
 		var misc_tooltipborder_label = new Label.with_mnemonic ("Tooltip border color");
 		misc_tooltipborder_label.set_halign (Align.START);
 		misc_tooltipborder_color = new ColorButton ();
@@ -1930,18 +1951,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator_box.add (misc_separator1_color);
 		misc_separator_box.add (misc_separator2_color);
 
-		var misc_scrollbarbg_box = new Box (Orientation.HORIZONTAL, 0);
-		misc_scrollbarbg_box.set_homogeneous (true);
-		misc_scrollbarbg_box.get_style_context().add_class("linked");
-		misc_scrollbarbg_box.add (misc_scrollbarbg1_color);
-		misc_scrollbarbg_box.add (misc_scrollbarbg2_color);
-
-		var misc_scrollbarhoverbg_box = new Box (Orientation.HORIZONTAL, 0);
-		misc_scrollbarhoverbg_box.set_homogeneous (true);
-		misc_scrollbarhoverbg_box.get_style_context().add_class("linked");
-		misc_scrollbarhoverbg_box.add (misc_scrollbarhoverbg1_color);
-		misc_scrollbarhoverbg_box.add (misc_scrollbarhoverbg2_color);
-
 		var misc_tooltipbg_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_tooltipbg_box.set_homogeneous (true);
 		misc_tooltipbg_box.get_style_context().add_class("linked");
@@ -1956,21 +1965,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach_next_to (misc_runningbg_box, misc_runningbg_label, PositionType.RIGHT, 1, 1);
 		misc_grid.attach (misc_separator_label, 0, 1, 2, 1);
 		misc_grid.attach_next_to (misc_separator_box, misc_separator_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_scrollbarbg_label, 0, 2, 2, 1);
-		misc_grid.attach_next_to (misc_scrollbarbg_box, misc_scrollbarbg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_scrollbarhoverbg_label, 0, 3, 2, 1);
-		misc_grid.attach_next_to (misc_scrollbarhoverbg_box, misc_scrollbarhoverbg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipbg_label, 0, 4, 2, 1);
+		misc_grid.attach (misc_tooltipbg_label, 0, 2, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipbg_box, misc_tooltipbg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_scrollbarborder_label, 0, 5, 2, 1);
-		misc_grid.attach_next_to (misc_scrollbarborder_color, misc_scrollbarborder_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_scrollbarhoverborder_label, 0, 6, 2, 1);
-		misc_grid.attach_next_to (misc_scrollbarhoverborder_color, misc_scrollbarhoverborder_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipfg_label, 0, 7, 2, 1);
+		misc_grid.attach (misc_tooltipfg_label, 0, 3, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipfg_color, misc_tooltipfg_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_tooltipborder_label, 0, 8, 2, 1);
+		misc_grid.attach (misc_tooltipborder_label, 0, 4, 2, 1);
 		misc_grid.attach_next_to (misc_tooltipborder_color, misc_tooltipborder_label, PositionType.RIGHT, 1, 1);
-		misc_grid.attach (misc_insensitive_label, 0, 9, 2, 1);
+		misc_grid.attach (misc_insensitive_label, 0, 5, 2, 1);
 		misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, PositionType.RIGHT, 1, 1);
 
 		misc_runningbg1_color.color_set.connect (() => {
@@ -1989,14 +1990,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string());
 		});
-		misc_scrollbarbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_scrollbarbg1", misc_scrollbarbg1_color.rgba.to_string());
-		});
-		misc_scrollbarbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_scrollbarbg2", misc_scrollbarbg2_color.rgba.to_string());
-		});
 		misc_tooltipbg1_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string());
@@ -2008,10 +2001,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_tooltipfg_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string());
-		});
-		misc_scrollbarborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_scrollbarborder", misc_scrollbarborder_color.rgba.to_string());
 		});
 		misc_tooltipborder_color.color_set.connect (() => {
 			on_value_changed ();
@@ -2058,6 +2047,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		notebook.append_page (menu_grid, null);
 		notebook.append_page (dialog_grid, null);
 		notebook.append_page (button_grid, null);
+		notebook.append_page (buttonfocus_grid, null);
 		notebook.append_page (entry_grid, null);
 		notebook.append_page (misc_grid, null);
 
@@ -2084,9 +2074,11 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Buttons", 1, 6);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Entry", 1, 7);
+		list_store.set (iter, 0, "Focused buttons", 1, 7);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Misc", 1, 8);
+		list_store.set (iter, 0, "Entry", 1, 8);
+		list_store.append (out iter);
+		list_store.set (iter, 0, "Misc", 1, 9);
 
 		var treeview = new TreeView.with_model (list_store);
 		var treepath = new TreePath.from_string ("0");

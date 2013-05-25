@@ -81,7 +81,7 @@ fi
 
 get_rgba() {
 basecolor="$1"
-[[ "$basecolor" = "$mode" ]] && basecolor="$color"
+[[ "$basecolor" = "$mode" ]] && basecolor="$highlight"
 if [[ "$basecolor" =~ ^rgba ]]; then
 	c="${basecolor//[a-z() ]/}"
 	red=$(printf ${c//[a-z() ]/} | awk -F, '{print $1}')
@@ -162,35 +162,47 @@ printf "rgba($red3,$green3,$blue3,$opacity)"
 
 get_color() {
 if [[ "$mode" = "gtk" ]]; then
-	# Get the color values from the gtk.css file
+	# Get color value from the gtk.css file
 	show_info "Getting color from GTK theme $gtkpath"
 	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
-		color=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
+		highlight=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
 	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
-		color=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
-	fi
-	if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
-		selected_fg=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
-	elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
-		selected_fg=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
+		highlight=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Getting color from wallpaper $img"
 	# Scale background image to 3x3 and take the color from top-left
-	color=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
-	if [[ $(get_luma "$color") -gt 150 ]]; then
-		selected_fg="#000"
-	else
-		selected_fg="#fff"
-	fi
+	highlight=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
 else
 	show_info "Using custom color"
-	color="$1"
-	selected_fg="#fff"
+	highlight="$1"
 fi
 }
 
-set_theme() {
+get_textcolor() {
+if [[ "$text" = "auto" ]]; then
+	show_info "Determining highlight text color"
+	if [[ "$mode" = "gtk" ]]; then
+		# Get color value from the gtk.css file
+		if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
+			textcolor=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
+		elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
+			textcolor=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
+		fi
+	else
+		if [[ $(get_luma "$highlight") -gt 150 ]]; then
+			textcolor="#000"
+		else
+			textcolor="#fff"
+		fi
+	fi
+else
+	show_info "Using custom highlight text color"
+	textcolor="$1"
+fi
+}
+
+make_theme() {
 # Initialize variables
 SAVEIFS="$IFS"
 IFS=''
@@ -198,33 +210,37 @@ unset vars vals
 # Read configuration
 process_config
 # General settings
-selected_bg1=$(shade "$color" "$selgradient")
-selected_bg2="$color"
+selected_bg1=$(shade "$highlight" "$selgradient")
+selected_bg2="$highlight"
 font_family=$(echo "$fontname" | sed 's/\ \w*$//')
 font_size=$(echo "$fontname" | sed 's/.* //')
 vars=(
 	"${vars[@]}"
 	"@selected_bg1"
 	"@selected_bg2"
-	"@selected_fg"
+	"@textcolor"
 	"@font_family"
 	"@font_size"
 	"@roundness"
 	"@transition"
+	"\/\*dropshadow_$dropshadow"
+	"dropshadow_$dropshadow\*\/"
 )
 vals=(
 	"${vals[@]}"
 	"$selected_bg1"
 	"$selected_bg2"
-	"$selected_fg"
+	"$textcolor"
 	"$font_family"
 	"$font_size"
 	"$roundness"
 	"$transition"
+	"\/\*\*\/"
+	"\/\*\*\/"
 )
 # Panel
-panel_bg1=$(tint "$panel_bg1" "$color" "$panel_tint")
-panel_bg2=$(tint "$panel_bg2" "$color" "$panel_tint")
+panel_bg1=$(tint "$panel_bg1" "$highlight" "$panel_tint")
+panel_bg2=$(tint "$panel_bg2" "$highlight" "$panel_tint")
 vars=(
 	"${vars[@]}"
 	"@panel_bg1"
@@ -232,9 +248,6 @@ vars=(
 	"@panel_fg"
 	"@panel_border"
 	"@panel_bwidth"
-	"@panel_corner"
-	"\/\*panelshadow_$panel_shadow"
-	"panelshadow_$panel_shadow\*\/"
 	"\/\*panelicon_$panel_icon"
 	"panelicon_$panel_icon\*\/"
 )
@@ -245,15 +258,12 @@ vals=(
 	"$panel_fg"
 	"$panel_border"
 	"$panel_bwidth"
-	"$panel_corner"
-	"\/\*\*\/"
-	"\/\*\*\/"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
 # Overview
-overview_bg1=$(tint "$overview_bg1" "$color" "$overview_tint")
-overview_bg2=$(tint "$overview_bg2" "$color" "$overview_tint")
+overview_bg1=$(tint "$overview_bg1" "$highlight" "$overview_tint")
+overview_bg2=$(tint "$overview_bg2" "$highlight" "$overview_tint")
 # Icon size dash
 overview_itemsize=$(( overview_iconsize + overview_iconspacing - 2 ))
 vars=(
@@ -289,8 +299,8 @@ vals=(
 	"$overview_iconspacing"
 )
 # Dash
-dash_bg1=$(tint "$dash_bg1" "$color" "$dash_tint")
-dash_bg2=$(tint "$dash_bg2" "$color" "$dash_tint")
+dash_bg1=$(tint "$dash_bg1" "$highlight" "$dash_tint")
+dash_bg2=$(tint "$dash_bg2" "$highlight" "$dash_tint")
 vars=(
 	"${vars[@]}"
 	"@dash_fg"
@@ -298,8 +308,6 @@ vars=(
 	"@dash_bg2"
 	"@dash_border"
 	"@dash_bwidth"
-	"\/\*dashshadow_$dash_shadow"
-	"dashshadow_$dash_shadow\*\/"
 )
 vals=(
 	"${vals[@]}"
@@ -308,12 +316,10 @@ vals=(
 	"$dash_bg2"
 	"$dash_border"
 	"$dash_bwidth"
-	"\/\*\*\/"
-	"\/\*\*\/"
 )
 # Menu
-menu_bg1=$(tint "$menu_bg1" "$color" "$menu_tint")
-menu_bg2=$(tint "$menu_bg2" "$color" "$menu_tint")
+menu_bg1=$(tint "$menu_bg1" "$highlight" "$menu_tint")
+menu_bg2=$(tint "$menu_bg2" "$highlight" "$menu_tint")
 vars=(
 	"${vars[@]}"
 	"@menu_bg1"
@@ -321,8 +327,6 @@ vars=(
 	"@menu_fg"
 	"@menu_border"
 	"@menu_bwidth"
-	"\/\*menushadow_$menu_shadow"
-	"menushadow_$menu_shadow\*\/"
 	"\/\*arrow_$menu_arrow"
 	"arrow_$menu_arrow\*\/"
 )
@@ -335,12 +339,10 @@ vals=(
 	"$menu_bwidth"
 	"\/\*\*\/"
 	"\/\*\*\/"
-	"\/\*\*\/"
-	"\/\*\*\/"
 )
 # Dialogs
-dialog_bg1=$(tint "$dialog_bg1" "$color" "$dialog_tint")
-dialog_bg2=$(tint "$dialog_bg2" "$color" "$dialog_tint")
+dialog_bg1=$(tint "$dialog_bg1" "$highlight" "$dialog_tint")
+dialog_bg2=$(tint "$dialog_bg2" "$highlight" "$dialog_tint")
 vars=(
 	"${vars[@]}"
 	"@dialog_bg1"
@@ -349,8 +351,6 @@ vars=(
 	"@dialog_heading"
 	"@dialog_border"
 	"@dialog_bwidth"
-	"\/\*dialogshadow_$dialog_shadow"
-	"dialogshadow_$dialog_shadow\*\/"
 )
 vals=(
 	"${vals[@]}"
@@ -360,8 +360,6 @@ vals=(
 	"$dialog_heading"
 	"$dialog_border"
 	"$dialog_bwidth"
-	"\/\*\*\/"
-	"\/\*\*\/"
 )
 # Buttons
 vars=(
@@ -372,18 +370,12 @@ vars=(
 	"@button_hoverbg2"
 	"@button_activebg1"
 	"@button_activebg2"
-	"@button_focusbg1"
-	"@button_focusbg2"
 	"@button_fg"
 	"@button_hoverfg"
 	"@button_activefg"
-	"@button_focusfg"
 	"@button_border"
 	"@button_hoverborder"
 	"@button_activeborder"
-	"@button_focusborder"
-	"\/\*buttoninsetshadow_$button_insetshadow"
-	"buttoninsetshadow_$button_insetshadow\*\/"
 	"\/\*buttonbold_$button_bold"
 	"buttonbold_$button_bold\*\/"
 )
@@ -395,32 +387,53 @@ vals=(
 	"$button_hoverbg2"
 	"$button_activebg1"
 	"$button_activebg2"
-	"$button_focusbg1"
-	"$button_focusbg2"
 	"$button_fg"
 	"$button_hoverfg"
 	"$button_activefg"
-	"$button_focusfg"
 	"$button_border"
 	"$button_hoverborder"
 	"$button_activeborder"
-	"$button_focusborder"
 	"\/\*\*\/"
 	"\/\*\*\/"
-	"\/\*\*\/"
-	"\/\*\*\/"
+)
+# Focused buttons
+vars=(
+	"${vars[@]}"
+	"@buttonfocus_bg1"
+	"@buttonfocus_bg2"
+	"@buttonfocus_hoverbg1"
+	"@buttonfocus_hoverbg2"
+	"@buttonfocus_activebg1"
+	"@buttonfocus_activebg2"
+	"@buttonfocus_fg"
+	"@buttonfocus_hoverfg"
+	"@buttonfocus_activefg"
+	"@buttonfocus_border"
+	"@buttonfocus_hoverborder"
+	"@buttonfocus_activeborder"
+)
+vals=(
+	"${vals[@]}"
+	"$buttonfocus_bg1"
+	"$buttonfocus_bg2"
+	"$buttonfocus_hoverbg1"
+	"$buttonfocus_hoverbg2"
+	"$buttonfocus_activebg1"
+	"$buttonfocus_activebg2"
+	"$buttonfocus_fg"
+	"$buttonfocus_hoverfg"
+	"$buttonfocus_activefg"
+	"$buttonfocus_border"
+	"$buttonfocus_hoverborder"
+	"$buttonfocus_activeborder"
 )
 # Entry
 vars=(
 	"${vars[@]}"
 	"@entry_bg1"
 	"@entry_bg2"
-	"@entry_focusbg1"
-	"@entry_focusbg2"
 	"@entry_fg"
-	"@entry_focusfg"
 	"@entry_border"
-	"@entry_focusborder"
 	"\/\*entryshadow_$entry_shadow"
 	"entryshadow_$entry_shadow\*\/"
 )
@@ -428,12 +441,8 @@ vals=(
 	"${vals[@]}"
 	"$entry_bg1"
 	"$entry_bg2"
-	"$entry_focusbg1"
-	"$entry_focusbg2"
 	"$entry_fg"
-	"$entry_focusfg"
 	"$entry_border"
-	"$entry_focusborder"
 	"\/\*\*\/"
 	"\/\*\*\/"
 )
@@ -444,15 +453,9 @@ vars=(
 	"@misc_separator2"
 	"@misc_runningbg1"
 	"@misc_runningbg2"
-	"@misc_scrollbarbg1"
-	"@misc_scrollbarbg2"
-	"@misc_scrollbarhoverbg1"
-	"@misc_scrollbarhoverbg2"
 	"@misc_tooltipbg1"
 	"@misc_tooltipbg2"
 	"@misc_tooltipfg"
-	"@misc_scrollbarborder"
-	"@misc_scrollbarhoverborder"
 	"@misc_tooltipborder"
 	"@misc_insensitive"
 )
@@ -462,15 +465,9 @@ vals=(
 	"$misc_separator2"
 	"$misc_runningbg1"
 	"$misc_runningbg2"
-	"$misc_scrollbarbg1"
-	"$misc_scrollbarbg2"
-	"$misc_scrollbarhoverbg1"
-	"$misc_scrollbarhoverbg2"
 	"$misc_tooltipbg1"
 	"$misc_tooltipbg2"
 	"$misc_tooltipfg"
-	"$misc_scrollbarborder"
-	"$misc_scrollbarhoverborder"
 	"$misc_tooltipborder"
 	"$misc_insensitive"
 )
@@ -518,7 +515,8 @@ do
 	elif [[ "${vals[i]}" = "" ]]; then
 		show_warn "The value of ${vars[i]} variable is not set"
 	else
-		[[ "${vals[i]}" = "$mode" ]] && vals[i]="$color"
+		[[ "${vals[i]}" = "$mode" ]] && vals[i]="$highlight"
+		[[ "${vals[i]}" = "$text" ]] && vals[i]="$textcolor"
 		show_info "Replacing ${vars[i]} with ${vals[i]}"
 		sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/gnome-shell.css"
 	fi
@@ -544,15 +542,6 @@ else
 fi
 # Remove the temporary directory
 rm -rf $(dirname "$makedir")
-# Enable or disable autostart
-if [[ "$monitor" = "false" && ! -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Disabling autostart"
-	cp -f "/etc/xdg/autostart/elegance-colors-process.desktop" "$HOME/.config/autostart/elegance-colors-process.desktop"
-	echo "X-GNOME-Autostart-enabled=false" >> "$HOME/.config/autostart/elegance-colors-process.desktop"
-elif [[ "$monitor" = "true" && -f "$HOME/.config/autostart/elegance-colors-process.desktop" ]]; then
-	show_info "Enabling autostart"
-	rm -f "$HOME/.config/autostart/elegance-colors-process.desktop"
-fi
 # Restore previous IFS
 IFS="$SAVEIFS"
 }
@@ -565,7 +554,7 @@ if [[ -f "$md5conf" ]]; then
 	oldmd5c=`cat "$md5conf"`
 	if [[ ! "$oldmd5c" = "$md5c" ]]; then
 		show_info "Configuration change detected"
-		set_theme
+		make_theme
 	fi
 fi
 echo "$md5c" > "$md5conf"
@@ -577,7 +566,7 @@ if [[ "$mode" = "gtk" ]]; then
 		oldmd5g=`cat "$md5gtk"`
 		if [[ ! "$oldmd5g" = "$md5g" ]]; then
 			show_info "GTK theme change detected"
-			set_theme
+			make_theme
 		fi
 	fi
 	echo "$md5g" > "$md5gtk"
@@ -589,7 +578,7 @@ elif [[ "$mode" = "wallpaper" ]]; then
 		oldmd5b=`cat "$md5bg"`
 		if [[ ! "$oldmd5b" = "$md5b" ]]; then
 			show_info "Wallpaper change detected"
-			set_theme
+			make_theme
 		fi
 	fi
 	echo "$md5b" > "$md5bg"
@@ -626,8 +615,10 @@ while IFS='= ' read var val; do
 	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
 	# Workaround for locales which use "," instead of "."
 	[[ "$val" =~ ^[0-9]+.[0-9]+$ ]] && val="${val//,/.}"
-	# Detect color
-	[[ "$var" = "color" ]] && get_color "$val" && val="$color"
+	# Detect highlight color
+	[[ "$var" = "highlight" ]] && get_color "$val" && val="$highlight"
+	# Detect highlight text color
+	[[ "$var" = "textcolor" ]] && get_textcolor "$val" && val="$textcolor"
 	# Symbolic values
 	[[ "$val" =~ ^@ ]] && val="${val//@/}" && val="${!val}"
 	delim=$(echo "$val" | awk -F';' '{ print NF }')
@@ -693,7 +684,7 @@ if [[ "$img" =~ .xml$ ]]; then
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 if [[ ! -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
-	set_theme
+	make_theme
 fi
 }
 
@@ -750,14 +741,13 @@ do
 	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		monitor_changes
 	fi
-	sleep 3
 done
 }
 
 apply_changes() {
 initialize
 read_config
-set_theme
+make_theme
 }
 
 case "$1" in
