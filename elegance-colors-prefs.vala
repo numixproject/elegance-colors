@@ -14,7 +14,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton color_button;
 	ColorButton text_button;
 
-	FontButton fontchooser;
+	FontButton font_button;
 
 	Switch dropshadow_switch;
 
@@ -26,7 +26,7 @@ class EleganceColorsWindow : ApplicationWindow {
 	string text_value;
 
 	string[] presets = { "" };
-	string[] titles = { "None" };
+	string[] titles = { "…" };
 
 	// Panel
 	ColorButton panel_bg1_color;
@@ -283,13 +283,14 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void init_process () {
 
-		try {
-			Process.spawn_command_line_async("elegance-colors");
-		} catch (Error e) {
-			stderr.printf ("Failed to run process: %s\n", e.message);
-		}
+		var home_dir = File.new_for_path (Environment.get_home_dir ());
 
-		if (!config_file.query_exists ()) {
+		if (!home_dir.get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css").query_exists () || !config_file.query_exists ()) {
+			try {
+				Process.spawn_command_line_async ("elegance-colors");
+			} catch (Error e) {
+				stderr.printf ("Failed to run process: %s\n", e.message);
+			}
 			try {
 				key_file.load_from_file (presets_dir_sys.get_child ("default.ini").get_path (), KeyFileFlags.NONE);
 			} catch (Error e) {
@@ -310,13 +311,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		exportdialog.set_filter (filter);
 		exportdialog.set_current_name ("Elegance Colors Custom.zip");
-		exportdialog.set_do_overwrite_confirmation(true);
+		exportdialog.set_do_overwrite_confirmation (true);
 
 		if (exportdialog.run () == ResponseType.ACCEPT) {
 			string theme_path = exportdialog.get_file ().get_path ();
 
 			try {
-				Process.spawn_command_line_sync("elegance-colors export \"%s\"".printf (theme_path));
+				Process.spawn_command_line_sync ("elegance-colors export \"%s\"".printf (theme_path));
 			} catch (Error e) {
 				stderr.printf ("Failed to export theme: %s\n", e.message);
 			}
@@ -337,7 +338,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		exportsettings.set_filter (filter);
 		exportsettings.set_current_name ("elegance-colors-exported.ini");
-		exportsettings.set_do_overwrite_confirmation(true);
+		exportsettings.set_do_overwrite_confirmation (true);
 
 		if (exportsettings.run () == ResponseType.ACCEPT) {
 			try {
@@ -389,7 +390,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			"program-name", "Elegance Colors",
 			"logo_icon_name", "elegance-colors",
 			"copyright", "Copyright \xc2\xa9 Satyajit Sahoo",
-			"comments", "A customizable chameleon theme for Gnome Shell",
+			"comments", "Highly customizable chameleon theme for Gnome Shell",
 			"license", license,
 			"wrap-license", true,
 			"website", "https://github.com/satya164/elegance-colors",
@@ -405,7 +406,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Read the config file
 		try {
-			key_file.load_from_file (config_file.get_path(), KeyFileFlags.NONE);
+			key_file.load_from_file (config_file.get_path (), KeyFileFlags.NONE);
 		} catch (Error e) {
 			stderr.printf ("Failed to read configuration: %s\n", e.message);
 		}
@@ -441,7 +442,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 			text_value = key_file.get_string ("Settings", "textcolor");
 
-			fontchooser.set_font_name (key_file.get_string ("Settings", "fontname"));
+			font_button.set_font_name (key_file.get_string ("Settings", "fontname"));
 
 			dropshadow_switch.set_active (key_file.get_boolean ("Settings", "dropshadow"));
 
@@ -873,7 +874,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		combobox.pack_start (cell, false);
 		combobox.set_attributes (cell, "text", 0);
 		combobox.set_active (0);
-		combobox.set_tooltip_text ("Load settings from a installed preset");
+		combobox.set_tooltip_text ("Load settings from an installed preset");
 		combobox.set_halign (Align.END);
 
 		var mode_label = new Label.with_mnemonic ("Derive color from");
@@ -882,10 +883,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		match_wallpaper.set_label ("Wallpaper");
 		match_wallpaper.set_mode (false);
 		match_wallpaper.set_tooltip_text ("Derive the highlight color from the current wallpaper");
-		match_theme = new RadioButton.with_label (match_wallpaper.get_group(),"GTK theme");
+		match_theme = new RadioButton.with_label (match_wallpaper.get_group (), "GTK theme");
 		match_theme.set_mode (false);
 		match_theme.set_tooltip_text ("Derive the highlight color from the current GTK theme");
-		custom_color = new RadioButton.with_label (match_theme.get_group(),"Custom");
+		custom_color = new RadioButton.with_label (match_theme.get_group (), "Custom");
 		custom_color.set_mode (false);
 		custom_color.set_tooltip_text ("Manually set a custom highlight color");
 		color_button = new ColorButton ();
@@ -897,7 +898,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		text_auto.set_label ("Automatic");
 		text_auto.set_mode (false);
 		text_auto.set_tooltip_text ("Automatically determine the highlight text color");
-		text_color = new RadioButton.with_label (text_auto.get_group(),"Custom");
+		text_color = new RadioButton.with_label (text_auto.get_group (), "Custom");
 		text_color.set_mode (false);
 		text_color.set_tooltip_text ("Manually set a custom highlight text color");
 		text_button = new ColorButton ();
@@ -905,12 +906,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		text_button.set_tooltip_text ("Set a custom highlight text color");
 		var font_label = new Label.with_mnemonic ("Display font");
 		font_label.set_halign (Align.START);
-		fontchooser = new FontButton ();
-		fontchooser.set_title ("Choose a font");
-		fontchooser.set_use_font (true);
-		fontchooser.set_use_size (true);
-		fontchooser.set_tooltip_text ("Choose the shell font and its size");
-		fontchooser.set_halign (Align.END);
+		font_button = new FontButton ();
+		font_button.set_title ("Choose a font");
+		font_button.set_use_font (true);
+		font_button.set_use_size (true);
+		font_button.set_tooltip_text ("Choose the shell font family and font size");
+		font_button.set_halign (Align.END);
 		var dropshadow_label = new Label.with_mnemonic ("Drop shadows");
 		dropshadow_label.set_halign (Align.START);
 		dropshadow_switch = new Switch ();
@@ -919,12 +920,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		var selgradient_label = new Label.with_mnemonic ("Highlight gradient size");
 		selgradient_label.set_halign (Align.START);
 		selgradient_size = new SpinButton.with_range (0, 255, 1);
-		selgradient_size.set_tooltip_text ("Set the gradient size for hl color");
+		selgradient_size.set_tooltip_text ("Set the gradient size for highlight color");
 		selgradient_size.set_halign (Align.END);
 		var roundness_label = new Label.with_mnemonic ("Roundness");
 		roundness_label.set_halign (Align.START);
 		corner_roundness = new SpinButton.with_range (0, 100, 1);
-		corner_roundness.set_tooltip_text ("Set the border radius of different elements");
+		corner_roundness.set_tooltip_text ("Set the border radius of various elements");
 		corner_roundness.set_halign (Align.END);
 		var transition_label = new Label.with_mnemonic ("Transition duration");
 		transition_label.set_halign (Align.START);
@@ -935,7 +936,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var colorbox = new Box (Orientation.HORIZONTAL, 0);
 		colorbox.set_halign (Align.END);
 		colorbox.set_homogeneous (true);
-		colorbox.get_style_context().add_class("linked");
+		colorbox.get_style_context ().add_class ("linked");
 		colorbox.add (match_wallpaper);
 		colorbox.add (match_theme);
 		colorbox.add (custom_color);
@@ -944,7 +945,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var textbox = new Box (Orientation.HORIZONTAL, 0);
 		textbox.set_halign (Align.END);
 		textbox.set_homogeneous (true);
-		textbox.get_style_context().add_class("linked");
+		textbox.get_style_context ().add_class ("linked");
 		textbox.add (text_auto);
 		textbox.add (text_color);
 		textbox.add (text_button);
@@ -960,7 +961,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		general_grid.attach (text_label, 0, 2, 1, 1);
 		general_grid.attach_next_to (textbox, text_label, PositionType.RIGHT, 2, 1);
 		general_grid.attach (font_label, 0, 3, 1, 1);
-		general_grid.attach_next_to (fontchooser, font_label, PositionType.RIGHT, 2, 1);
+		general_grid.attach_next_to (font_button, font_label, PositionType.RIGHT, 2, 1);
 		general_grid.attach (dropshadow_label, 0, 4, 2, 1);
 		general_grid.attach_next_to (dropshadow_switch, dropshadow_label, PositionType.RIGHT, 1, 1);
 		general_grid.attach (selgradient_label, 0, 5, 2, 1);
@@ -973,13 +974,13 @@ class EleganceColorsWindow : ApplicationWindow {
 		combobox.changed.connect (on_preset_selected);
 		match_wallpaper.toggled.connect (() => {
 			on_value_changed ();
-			if (match_wallpaper.get_active()) {
+			if (match_wallpaper.get_active ()) {
 				key_file.set_string ("Settings", "mode", "wallpaper");
 			}
 		});
 		match_theme.toggled.connect (() => {
 			on_value_changed ();
-			if (match_theme.get_active()) {
+			if (match_theme.get_active ()) {
 				key_file.set_string ("Settings", "mode", "gtk");
 			}
 		});
@@ -994,7 +995,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		color_button.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Settings", "highlight", color_button.rgba.to_string());
+			key_file.set_string ("Settings", "highlight", color_button.rgba.to_string ());
 		});
 		text_auto.toggled .connect (() => {
 			on_value_changed ();
@@ -1013,15 +1014,15 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		text_button.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Settings", "textcolor", text_button.rgba.to_string());
+			key_file.set_string ("Settings", "textcolor", text_button.rgba.to_string ());
 		});
-		fontchooser.font_set.connect (() => {
+		font_button.font_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Settings", "fontname", fontchooser.get_font_name());
+			key_file.set_string ("Settings", "fontname", font_button.get_font_name());
 		});
 		dropshadow_switch.notify["active"].connect (() => {
 			on_value_changed ();
-			key_file.set_boolean ("Settings", "dropshadow", dropshadow_switch.get_active());
+			key_file.set_boolean ("Settings", "dropshadow", dropshadow_switch.get_active ());
 		});
 		selgradient_size.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1063,7 +1064,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var panel_tint_label = new Label.with_mnemonic ("Background tint level");
 		panel_tint_label.set_halign (Align.START);
 		panel_tint_value = new SpinButton.with_range (0, 100, 1);
-		panel_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the top panel");
+		panel_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the top panel");
 		panel_tint_value.set_halign (Align.END);
 		var panel_bwidth_label = new Label.with_mnemonic ("Border width");
 		panel_bwidth_label.set_halign (Align.START);
@@ -1073,7 +1074,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var panel_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		panel_bg_box.set_homogeneous (true);
-		panel_bg_box.get_style_context().add_class("linked");
+		panel_bg_box.get_style_context ().add_class ("linked");
 		panel_bg_box.add (panel_bg1_color);
 		panel_bg_box.add (panel_bg2_color);
 
@@ -1096,23 +1097,23 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		panel_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Panel", "panel_bg1", panel_bg1_color.rgba.to_string());
+			key_file.set_string ("Panel", "panel_bg1", panel_bg1_color.rgba.to_string ());
 		});
 		panel_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Panel", "panel_bg2", panel_bg2_color.rgba.to_string());
+			key_file.set_string ("Panel", "panel_bg2", panel_bg2_color.rgba.to_string ());
 		});
 		panel_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string());
+			key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string ());
 		});
 		panel_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string());
+			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string ());
 		});
 		panel_icon_switch.notify["active"].connect (() => {
 			on_value_changed ();
-			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active());
+			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active ());
 		});
 		panel_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1171,7 +1172,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var overview_tint_label = new Label.with_mnemonic ("Background tint level");
 		overview_tint_label.set_halign (Align.START);
 		overview_tint_value = new SpinButton.with_range (0, 100, 1);
-		overview_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the overview");
+		overview_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the overview");
 		overview_tint_value.set_halign (Align.END);
 		var overview_iconsize_label = new Label.with_mnemonic ("App icon size");
 		overview_iconsize_label.set_halign (Align.START);
@@ -1186,19 +1187,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var overview_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		overview_bg_box.set_homogeneous (true);
-		overview_bg_box.get_style_context().add_class("linked");
+		overview_bg_box.get_style_context ().add_class ("linked");
 		overview_bg_box.add (overview_bg1_color);
 		overview_bg_box.add (overview_bg2_color);
 
 		var overview_searchbg_box = new Box (Orientation.HORIZONTAL, 0);
 		overview_searchbg_box.set_homogeneous (true);
-		overview_searchbg_box.get_style_context().add_class("linked");
+		overview_searchbg_box.get_style_context ().add_class ("linked");
 		overview_searchbg_box.add (overview_searchbg1_color);
 		overview_searchbg_box.add (overview_searchbg2_color);
 
 		var overview_searchfocusbg_box = new Box (Orientation.HORIZONTAL, 0);
 		overview_searchfocusbg_box.set_homogeneous (true);
-		overview_searchfocusbg_box.get_style_context().add_class("linked");
+		overview_searchfocusbg_box.get_style_context ().add_class ("linked");
 		overview_searchfocusbg_box.add (overview_searchfocusbg1_color);
 		overview_searchfocusbg_box.add (overview_searchfocusbg2_color);
 
@@ -1229,43 +1230,43 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		overview_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg1", overview_bg1_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_bg1", overview_bg1_color.rgba.to_string ());
 		});
 		overview_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.rgba.to_string ());
 		});
 		overview_searchbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.rgba.to_string ());
 		});
 		overview_searchbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchbg2", overview_searchbg2_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchbg2", overview_searchbg2_color.rgba.to_string ());
 		});
 		overview_searchfocusbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusbg1", overview_searchfocusbg1_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchfocusbg1", overview_searchfocusbg1_color.rgba.to_string ());
 		});
 		overview_searchfocusbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusbg2", overview_searchfocusbg2_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchfocusbg2", overview_searchfocusbg2_color.rgba.to_string ());
 		});
 		overview_searchfg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfg", overview_searchfg_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchfg", overview_searchfg_color.rgba.to_string ());
 		});
 		overview_searchfocusfg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusfg", overview_searchfocusfg_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchfocusfg", overview_searchfocusfg_color.rgba.to_string ());
 		});
 		overview_searchborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchborder", overview_searchborder_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchborder", overview_searchborder_color.rgba.to_string ());
 		});
 		overview_searchfocusborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.rgba.to_string());
+			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.rgba.to_string ());
 		});
 		overview_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1302,7 +1303,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var dash_tint_label = new Label.with_mnemonic ("Background tint level");
 		dash_tint_label.set_halign (Align.START);
 		dash_tint_value = new SpinButton.with_range (0, 100, 1);
-		dash_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the dash and workspace panel");
+		dash_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the dash and workspace panel");
 		dash_tint_value.set_halign (Align.END);
 		var dash_bwidth_label = new Label.with_mnemonic ("Border width");
 		dash_bwidth_label.set_halign (Align.START);
@@ -1312,7 +1313,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var dash_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		dash_bg_box.set_homogeneous (true);
-		dash_bg_box.get_style_context().add_class("linked");
+		dash_bg_box.get_style_context ().add_class ("linked");
 		dash_bg_box.add (dash_bg1_color);
 		dash_bg_box.add (dash_bg2_color);
 
@@ -1333,19 +1334,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		dash_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dash", "dash_bg1", dash_bg1_color.rgba.to_string());
+			key_file.set_string ("Dash", "dash_bg1", dash_bg1_color.rgba.to_string ());
 		});
 		dash_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dash", "dash_bg2", dash_bg2_color.rgba.to_string());
+			key_file.set_string ("Dash", "dash_bg2", dash_bg2_color.rgba.to_string ());
 		});
 		dash_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string());
+			key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string ());
 		});
 		dash_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string());
+			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string ());
 		});
 		dash_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1383,7 +1384,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var menu_tint_label = new Label.with_mnemonic ("Background tint level");
 		menu_tint_label.set_halign (Align.START);
 		menu_tint_value = new SpinButton.with_range (0, 100, 1);
-		menu_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the popup menu");
+		menu_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the popup menu");
 		menu_tint_value.set_halign (Align.END);
 		var menu_bwidth_label = new Label.with_mnemonic ("Border width");
 		menu_bwidth_label.set_halign (Align.START);
@@ -1393,7 +1394,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var menu_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		menu_bg_box.set_homogeneous (true);
-		menu_bg_box.get_style_context().add_class("linked");
+		menu_bg_box.get_style_context ().add_class ("linked");
 		menu_bg_box.add (menu_bg1_color);
 		menu_bg_box.add (menu_bg2_color);
 
@@ -1416,23 +1417,23 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		menu_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Menu", "menu_bg1", menu_bg1_color.rgba.to_string());
+			key_file.set_string ("Menu", "menu_bg1", menu_bg1_color.rgba.to_string ());
 		});
 		menu_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Menu", "menu_bg2", menu_bg2_color.rgba.to_string());
+			key_file.set_string ("Menu", "menu_bg2", menu_bg2_color.rgba.to_string ());
 		});
 		menu_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string());
+			key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string ());
 		});
 		menu_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string());
+			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string ());
 		});
 		menu_arrow_switch.notify["active"].connect (() => {
 			on_value_changed ();
-			key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active());
+			key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active ());
 		});
 		menu_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1470,7 +1471,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var dialog_tint_label = new Label.with_mnemonic ("Background tint level");
 		dialog_tint_label.set_halign (Align.START);
 		dialog_tint_value = new SpinButton.with_range (0, 100, 1);
-		dialog_tint_value.set_tooltip_text ("Set the amount of hl color to mix with the chosen background color of the modal dialogs");
+		dialog_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the modal dialogs");
 		dialog_tint_value.set_halign (Align.END);
 		var dialog_bwidth_label = new Label.with_mnemonic ("Border width");
 		dialog_bwidth_label.set_halign (Align.START);
@@ -1480,7 +1481,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var dialog_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		dialog_bg_box.set_homogeneous (true);
-		dialog_bg_box.get_style_context().add_class("linked");
+		dialog_bg_box.get_style_context ().add_class ("linked");
 		dialog_bg_box.add (dialog_bg1_color);
 		dialog_bg_box.add (dialog_bg2_color);
 
@@ -1503,23 +1504,23 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		dialog_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_bg1", dialog_bg1_color.rgba.to_string());
+			key_file.set_string ("Dialogs", "dialog_bg1", dialog_bg1_color.rgba.to_string ());
 		});
 		dialog_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_bg2", dialog_bg2_color.rgba.to_string());
+			key_file.set_string ("Dialogs", "dialog_bg2", dialog_bg2_color.rgba.to_string ());
 		});
 		dialog_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string());
+			key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string ());
 		});
 		dialog_heading_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string());
+			key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string ());
 		});
 		dialog_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string());
+			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string ());
 		});
 		dialog_tint_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();
@@ -1593,19 +1594,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var button_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		button_bg_box.set_homogeneous (true);
-		button_bg_box.get_style_context().add_class("linked");
+		button_bg_box.get_style_context ().add_class ("linked");
 		button_bg_box.add (button_bg1_color);
 		button_bg_box.add (button_bg2_color);
 
 		var button_hoverbg_box = new Box (Orientation.HORIZONTAL, 0);
 		button_hoverbg_box.set_homogeneous (true);
-		button_hoverbg_box.get_style_context().add_class("linked");
+		button_hoverbg_box.get_style_context ().add_class ("linked");
 		button_hoverbg_box.add (button_hoverbg1_color);
 		button_hoverbg_box.add (button_hoverbg2_color);
 
 		var button_activebg_box = new Box (Orientation.HORIZONTAL, 0);
 		button_activebg_box.set_homogeneous (true);
-		button_activebg_box.get_style_context().add_class("linked");
+		button_activebg_box.get_style_context ().add_class ("linked");
 		button_activebg_box.add (button_activebg1_color);
 		button_activebg_box.add (button_activebg2_color);
 
@@ -1636,55 +1637,55 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		button_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_bg1", button_bg1_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_bg1", button_bg1_color.rgba.to_string ());
 		});
 		button_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_bg2", button_bg2_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_bg2", button_bg2_color.rgba.to_string ());
 		});
 		button_hoverbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverbg1", button_hoverbg1_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_hoverbg1", button_hoverbg1_color.rgba.to_string ());
 		});
 		button_hoverbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverbg2", button_hoverbg2_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_hoverbg2", button_hoverbg2_color.rgba.to_string ());
 		});
 		button_activebg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activebg1", button_activebg1_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_activebg1", button_activebg1_color.rgba.to_string ());
 		});
 		button_activebg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string ());
 		});
 		button_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string ());
 		});
 		button_hoverfg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string ());
 		});
 		button_activefg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string ());
 		});
 		button_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string ());
 		});
 		button_hoverborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string ());
 		});
 		button_activeborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string());
+			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string ());
 		});
 		button_bold_switch.notify["active"].connect (() => {
 			on_value_changed ();
-			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active());
+			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active ());
 		});
 
 		// Focused buttons
@@ -1745,19 +1746,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var buttonfocus_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		buttonfocus_bg_box.set_homogeneous (true);
-		buttonfocus_bg_box.get_style_context().add_class("linked");
+		buttonfocus_bg_box.get_style_context ().add_class ("linked");
 		buttonfocus_bg_box.add (buttonfocus_bg1_color);
 		buttonfocus_bg_box.add (buttonfocus_bg2_color);
 
 		var buttonfocus_hoverbg_box = new Box (Orientation.HORIZONTAL, 0);
 		buttonfocus_hoverbg_box.set_homogeneous (true);
-		buttonfocus_hoverbg_box.get_style_context().add_class("linked");
+		buttonfocus_hoverbg_box.get_style_context ().add_class ("linked");
 		buttonfocus_hoverbg_box.add (buttonfocus_hoverbg1_color);
 		buttonfocus_hoverbg_box.add (buttonfocus_hoverbg2_color);
 
 		var buttonfocus_activebg_box = new Box (Orientation.HORIZONTAL, 0);
 		buttonfocus_activebg_box.set_homogeneous (true);
-		buttonfocus_activebg_box.get_style_context().add_class("linked");
+		buttonfocus_activebg_box.get_style_context ().add_class ("linked");
 		buttonfocus_activebg_box.add (buttonfocus_activebg1_color);
 		buttonfocus_activebg_box.add (buttonfocus_activebg2_color);
 
@@ -1786,51 +1787,51 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		buttonfocus_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_bg1", buttonfocus_bg1_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg1", buttonfocus_bg1_color.rgba.to_string ());
 		});
 		buttonfocus_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_bg2", buttonfocus_bg2_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg2", buttonfocus_bg2_color.rgba.to_string ());
 		});
 		buttonfocus_hoverbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg1", buttonfocus_hoverbg1_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg1", buttonfocus_hoverbg1_color.rgba.to_string ());
 		});
 		buttonfocus_hoverbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg2", buttonfocus_hoverbg2_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg2", buttonfocus_hoverbg2_color.rgba.to_string ());
 		});
 		buttonfocus_activebg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg1", buttonfocus_activebg1_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg1", buttonfocus_activebg1_color.rgba.to_string ());
 		});
 		buttonfocus_activebg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg2", buttonfocus_activebg2_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg2", buttonfocus_activebg2_color.rgba.to_string ());
 		});
 		buttonfocus_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_fg", buttonfocus_fg_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_fg", buttonfocus_fg_color.rgba.to_string ());
 		});
 		buttonfocus_hoverfg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverfg", buttonfocus_hoverfg_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverfg", buttonfocus_hoverfg_color.rgba.to_string ());
 		});
 		buttonfocus_activefg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activefg", buttonfocus_activefg_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activefg", buttonfocus_activefg_color.rgba.to_string ());
 		});
 		buttonfocus_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_border", buttonfocus_border_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_border", buttonfocus_border_color.rgba.to_string ());
 		});
 		buttonfocus_hoverborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverborder", buttonfocus_hoverborder_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverborder", buttonfocus_hoverborder_color.rgba.to_string ());
 		});
 		buttonfocus_activeborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activeborder", buttonfocus_activeborder_color.rgba.to_string());
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activeborder", buttonfocus_activeborder_color.rgba.to_string ());
 		});
 
 		// Entry
@@ -1846,12 +1847,12 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_fg_label.set_halign (Align.START);
 		entry_fg_color = new ColorButton ();
 		entry_fg_color.set_use_alpha (true);
-		entry_fg_color.set_tooltip_text ("Set the text color of the entry widget in focus state");
+		entry_fg_color.set_tooltip_text ("Set the text color of the entry widget");
 		var entry_border_label = new Label.with_mnemonic ("Border color");
 		entry_border_label.set_halign (Align.START);
 		entry_border_color = new ColorButton ();
 		entry_border_color.set_use_alpha (true);
-		entry_border_color.set_tooltip_text ("Set the border color of the entry widget in focus state");
+		entry_border_color.set_tooltip_text ("Set the border color of the entry widget");
 		var entry_shadow_label = new Label.with_mnemonic ("Inset shadow");
 		entry_shadow_label.set_halign (Align.START);
 		entry_shadow_switch = new Switch ();
@@ -1860,7 +1861,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var entry_bg_box = new Box (Orientation.HORIZONTAL, 0);
 		entry_bg_box.set_homogeneous (true);
-		entry_bg_box.get_style_context().add_class("linked");
+		entry_bg_box.get_style_context ().add_class ("linked");
 		entry_bg_box.add (entry_bg1_color);
 		entry_bg_box.add (entry_bg2_color);
 
@@ -1879,23 +1880,23 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		entry_bg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Entry", "entry_bg1", entry_bg1_color.rgba.to_string());
+			key_file.set_string ("Entry", "entry_bg1", entry_bg1_color.rgba.to_string ());
 		});
 		entry_bg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Entry", "entry_bg2", entry_bg2_color.rgba.to_string());
+			key_file.set_string ("Entry", "entry_bg2", entry_bg2_color.rgba.to_string ());
 		});
 		entry_fg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string());
+			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string ());
 		});
 		entry_border_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string());
+			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string ());
 		});
 		entry_shadow_switch.notify["active"].connect (() => {
 			on_value_changed ();
-			key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active());
+			key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active ());
 		});
 
 		// Misc
@@ -1911,18 +1912,18 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_separator_label.set_halign (Align.START);
 		misc_separator1_color = new ColorButton ();
 		misc_separator1_color.set_use_alpha (true);
-		misc_separator1_color.set_tooltip_text ("Set the starting gradient color of separators");
+		misc_separator1_color.set_tooltip_text ("Set the gradient color start of separators");
 		misc_separator2_color = new ColorButton ();
 		misc_separator2_color.set_use_alpha (true);
-		misc_separator2_color.set_tooltip_text ("Set the ending gradient color of separators");
+		misc_separator2_color.set_tooltip_text ("Set the gradient color end of separators");
 		var misc_tooltipbg_label = new Label.with_mnemonic ("Tooltip background gradient");
 		misc_tooltipbg_label.set_halign (Align.START);
 		misc_tooltipbg1_color = new ColorButton ();
 		misc_tooltipbg1_color.set_use_alpha (true);
-		misc_tooltipbg1_color.set_tooltip_text ("Set the starting gradient color of tooltips");
+		misc_tooltipbg1_color.set_tooltip_text ("Set the gradient color start of tooltips");
 		misc_tooltipbg2_color = new ColorButton ();
 		misc_tooltipbg2_color.set_use_alpha (true);
-		misc_tooltipbg2_color.set_tooltip_text ("Set the ending gradient color of tooltips");
+		misc_tooltipbg2_color.set_tooltip_text ("Set the gradient color end of tooltips");
 		var misc_tooltipfg_label = new Label.with_mnemonic ("Tooltip text color");
 		misc_tooltipfg_label.set_halign (Align.START);
 		misc_tooltipfg_color = new ColorButton ();
@@ -1941,19 +1942,19 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var misc_runningbg_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_runningbg_box.set_homogeneous (true);
-		misc_runningbg_box.get_style_context().add_class("linked");
+		misc_runningbg_box.get_style_context ().add_class ("linked");
 		misc_runningbg_box.add (misc_runningbg1_color);
 		misc_runningbg_box.add (misc_runningbg2_color);
 
 		var misc_separator_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_separator_box.set_homogeneous (true);
-		misc_separator_box.get_style_context().add_class("linked");
+		misc_separator_box.get_style_context ().add_class ("linked");
 		misc_separator_box.add (misc_separator1_color);
 		misc_separator_box.add (misc_separator2_color);
 
 		var misc_tooltipbg_box = new Box (Orientation.HORIZONTAL, 0);
 		misc_tooltipbg_box.set_homogeneous (true);
-		misc_tooltipbg_box.get_style_context().add_class("linked");
+		misc_tooltipbg_box.get_style_context ().add_class ("linked");
 		misc_tooltipbg_box.add (misc_tooltipbg1_color);
 		misc_tooltipbg_box.add (misc_tooltipbg2_color);
 
@@ -1976,39 +1977,39 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		misc_runningbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_runningbg1", misc_runningbg1_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_runningbg1", misc_runningbg1_color.rgba.to_string ());
 		});
 		misc_runningbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_runningbg2", misc_runningbg2_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_runningbg2", misc_runningbg2_color.rgba.to_string ());
 		});
 		misc_separator1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_separator1", misc_separator1_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_separator1", misc_separator1_color.rgba.to_string ());
 		});
 		misc_separator2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string ());
 		});
 		misc_tooltipbg1_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string ());
 		});
 		misc_tooltipbg2_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipbg2", misc_tooltipbg2_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_tooltipbg2", misc_tooltipbg2_color.rgba.to_string ());
 		});
 		misc_tooltipfg_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string ());
 		});
 		misc_tooltipborder_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string ());
 		});
 		misc_insensitive_color.color_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.rgba.to_string());
+			key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.rgba.to_string ());
 		});
 
 		// Toolbar
@@ -2024,7 +2025,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		clear_button.clicked.connect (on_clear_clicked);
 
 		var toolbar = new Toolbar ();
-		toolbar.get_style_context().add_class("primary-toolbar");
+		toolbar.get_style_context ().add_class ("primary-toolbar");
 		toolbar.add (undo_button);
 		toolbar.add (redo_button);
 		toolbar.add (clear_button);
@@ -2060,17 +2061,17 @@ class EleganceColorsWindow : ApplicationWindow {
 		TreeIter iter;
 
 		list_store.append (out iter);
-		list_store.set (iter, 0, "General", 1, 0);
+		list_store.set (iter, 0, "General settings", 1, 0);
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Panel", 1, 1);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Overview", 1, 2);
+		list_store.set (iter, 0, "Activities overview", 1, 2);
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Dash", 1, 3);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Menu", 1, 4);
+		list_store.set (iter, 0, "Popup menu", 1, 4);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Dialogs", 1, 5);
+		list_store.set (iter, 0, "Modal dialogs", 1, 5);
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Buttons", 1, 6);
 		list_store.append (out iter);
@@ -2078,11 +2079,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		list_store.append (out iter);
 		list_store.set (iter, 0, "Entry", 1, 8);
 		list_store.append (out iter);
-		list_store.set (iter, 0, "Misc", 1, 9);
+		list_store.set (iter, 0, "Miscellaneous", 1, 9);
 
 		var treeview = new TreeView.with_model (list_store);
 		var treepath = new TreePath.from_string ("0");
-		treeview.set_size_request(100,-1);
 		treeview.set_headers_visible (false);
 		treeview.set_cursor (treepath, null, false);
 
