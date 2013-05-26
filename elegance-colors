@@ -190,10 +190,10 @@ if [[ "$text" = "auto" ]]; then
 			textcolor=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
 		fi
 	else
-		if [[ $(get_luma "$highlight") -gt 150 ]]; then
-			textcolor="#000"
+		if [[ $(get_luma "$highlight") -gt 180 ]]; then
+			textcolor="rgba(0,0,0,0.9)"
 		else
-			textcolor="#fff"
+			textcolor="rgba(255,255,255,0.9)"
 		fi
 	fi
 else
@@ -523,12 +523,12 @@ do
 done
 # Copy the newly created theme
 if [[ ! -f "$makedir/gnome-shell.css" ]]; then
-	show_err "Failed to make the theme, files were lost"
+	notify_err "Failed to make the theme, files were lost"
 elif [[ `grep "@" "$makedir/gnome-shell.css"` ]]; then
-	show_err "Failed to make the theme, could not replace variables"
+	notify_err "Failed to make the theme, could not replace variables"
 	grep "@" "$makedir/gnome-shell.css" | sort -u
 elif [[ `grep ",," "$makedir/gnome-shell.css"` ]]; then
-	show_err "Failed to make the theme, invalid color expression"
+	notify_err "Failed to make the theme, invalid color expression"
 	grep ",," "$makedir/gnome-shell.css" | sort -u
 else
 	rm -rf "$HOME/.themes/elegance-colors"
@@ -587,16 +587,16 @@ fi
 
 read_config() {
 # Update the old config file to support new options
-while IFS='= ' read var val; do
-	# Escape comments
-	[[ "$var" =~ ^# ]] && continue
-	# Escape custom values
-	[[ "$var" =~ \[custom\]$ ]] && continue
-	# Read the section header
-	[[ "$var" =~ ^\[ ]] && section="$var"
-	# Write the non-existent value into the config file
-	[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
-done < "$defaultconfig"
+if [[ -f "$configfile" ]]; then
+	while IFS='= ' read var val; do
+		# Escape comments
+		[[ "$var" =~ ^# ]] && continue
+		# Read the section header
+		[[ "$var" =~ ^\[ ]] && section="$var"
+		# Write the non-existent value into the config file
+		[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
+	done < "$defaultconfig"
+fi
 # Load the config file
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
@@ -741,6 +741,7 @@ do
 	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		monitor_changes
 	fi
+	sleep 3
 done
 }
 
