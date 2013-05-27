@@ -486,10 +486,10 @@ if [[ ! -z "$include_dir" ]]; then
 	IFS='; ' read -a css_files <<< "$include_css"
 	for css_file in "${css_files[@]}"; do
 		show_info "Including CSS file $css_file in theme"
-		if [[ -f "$configdir/assets/$include_dir/$css_file" ]]; then
-			cat "$configdir/assets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
-		elif [[ -f "$installdir/assets/$include_dir/$css_file" ]]; then
-			cat "$installdir/assets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
+		if [[ -f "$configdir/presets/$include_dir/$css_file" ]]; then
+			cat "$configdir/presets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
+		elif [[ -f "$installdir/presets/$include_dir/$css_file" ]]; then
+			cat "$installdir/presets/$include_dir/$css_file" >> "$makedir/gnome-shell.css"
 		else
 			show_err "CSS file $css_file not found"
 		fi
@@ -497,10 +497,10 @@ if [[ ! -z "$include_dir" ]]; then
 	IFS='; ' read -a asset_files <<< "$include_files"
 	for asset_file in "${asset_files[@]}"; do
 		show_info "Copying file $asset_file to theme directory"
-		if [[ -f "$configdir/assets/$include_dir/$asset_file" ]]; then
-			cp -f "$configdir/assets/$include_dir/$asset_file" "$makedir/"
-		elif [[ -f "$installdir/assets/$include_dir/$asset_file" ]]; then
-			cp -f "$installdir/assets/$include_dir/$asset_file" "$makedir/"
+		if [[ -f "$configdir/presets/$include_dir/$asset_file" ]]; then
+			cp -f "$configdir/presets/$include_dir/$asset_file" "$makedir/"
+		elif [[ -f "$installdir/presets/$include_dir/$asset_file" ]]; then
+			cp -f "$installdir/presets/$include_dir/$asset_file" "$makedir/"
 		else
 			show_err "File $asset_file not found"
 		fi
