@@ -1006,7 +1006,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		text_color.toggled .connect (() => {
 			on_value_changed ();
 			if (text_color.get_active ()) {
-				key_file.set_string ("Settings", "text", "custom");
+				key_file.set_string ("Settings", "text", "user");
 				text_button.set_sensitive (true);
 			} else {
 				text_button.set_sensitive (false);
