@@ -971,72 +971,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		general_grid.attach (transition_label, 0, 7, 2, 1);
 		general_grid.attach_next_to (transition_duration, transition_label, PositionType.RIGHT, 1, 1);
 
-		combobox.changed.connect (on_preset_selected);
-		match_wallpaper.toggled.connect (() => {
-			on_value_changed ();
-			if (match_wallpaper.get_active ()) {
-				key_file.set_string ("Settings", "mode", "wallpaper");
-			}
-		});
-		match_theme.toggled.connect (() => {
-			on_value_changed ();
-			if (match_theme.get_active ()) {
-				key_file.set_string ("Settings", "mode", "gtk");
-			}
-		});
-		custom_color.toggled .connect (() => {
-			on_value_changed ();
-			if (custom_color.get_active ()) {
-				key_file.set_string ("Settings", "mode", "custom");
-				color_button.set_sensitive (true);
-			} else {
-				color_button.set_sensitive (false);
-			}
-		});
-		color_button.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Settings", "highlight", color_button.rgba.to_string ());
-		});
-		text_auto.toggled .connect (() => {
-			on_value_changed ();
-			if (text_auto.get_active ()) {
-				key_file.set_string ("Settings", "text", "auto");
-			}
-		});
-		text_color.toggled .connect (() => {
-			on_value_changed ();
-			if (text_color.get_active ()) {
-				key_file.set_string ("Settings", "text", "user");
-				text_button.set_sensitive (true);
-			} else {
-				text_button.set_sensitive (false);
-			}
-		});
-		text_button.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Settings", "textcolor", text_button.rgba.to_string ());
-		});
-		font_button.font_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Settings", "fontname", font_button.get_font_name());
-		});
-		dropshadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Settings", "dropshadow", dropshadow_switch.get_active ());
-		});
-		selgradient_size.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Settings", "selgradient", selgradient_size.adjustment.value);
-		});
-		corner_roundness.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);
-		});
-		transition_duration.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
-		});
-
 		// Panel
 		var panel_bg_label = new Label.with_mnemonic ("Background gradient");
 		panel_bg_label.set_halign (Align.START);
@@ -1094,35 +1028,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_grid.attach_next_to (panel_tint_value, panel_tint_label, PositionType.RIGHT, 1, 1);
 		panel_grid.attach (panel_bwidth_label, 0, 5, 2, 1);
 		panel_grid.attach_next_to (panel_bwidth_value, panel_bwidth_label, PositionType.RIGHT, 1, 1);
-
-		panel_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Panel", "panel_bg1", panel_bg1_color.rgba.to_string ());
-		});
-		panel_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Panel", "panel_bg2", panel_bg2_color.rgba.to_string ());
-		});
-		panel_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string ());
-		});
-		panel_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string ());
-		});
-		panel_icon_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active ());
-		});
-		panel_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Panel", "panel_tint", panel_tint_value.adjustment.value);
-		});
-		panel_bwidth_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Panel", "panel_bwidth", panel_bwidth_value.adjustment.value);
-		});
 
 		// Overview
 		var overview_bg_label = new Label.with_mnemonic ("Background gradient");
@@ -1228,59 +1133,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_grid.attach (overview_iconspacing_label, 0, 9, 2, 1);
 		overview_grid.attach_next_to (overview_iconspacing_value, overview_iconspacing_label, PositionType.RIGHT, 1, 1);
 
-		overview_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg1", overview_bg1_color.rgba.to_string ());
-		});
-		overview_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.rgba.to_string ());
-		});
-		overview_searchbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.rgba.to_string ());
-		});
-		overview_searchbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchbg2", overview_searchbg2_color.rgba.to_string ());
-		});
-		overview_searchfocusbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusbg1", overview_searchfocusbg1_color.rgba.to_string ());
-		});
-		overview_searchfocusbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusbg2", overview_searchfocusbg2_color.rgba.to_string ());
-		});
-		overview_searchfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfg", overview_searchfg_color.rgba.to_string ());
-		});
-		overview_searchfocusfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusfg", overview_searchfocusfg_color.rgba.to_string ());
-		});
-		overview_searchborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchborder", overview_searchborder_color.rgba.to_string ());
-		});
-		overview_searchfocusborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.rgba.to_string ());
-		});
-		overview_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
-		});
-		overview_iconsize_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_iconsize", overview_iconsize_value.adjustment.value);
-		});
-		overview_iconspacing_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_iconspacing", overview_iconspacing_value.adjustment.value);
-		});
-
 		// Dash
 		var dash_bg_label = new Label.with_mnemonic ("Background gradient");
 		dash_bg_label.set_halign (Align.START);
@@ -1331,31 +1183,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dash_grid.attach_next_to (dash_tint_value, dash_tint_label, PositionType.RIGHT, 1, 1);
 		dash_grid.attach (dash_bwidth_label, 0, 4, 2, 1);
 		dash_grid.attach_next_to (dash_bwidth_value, dash_bwidth_label, PositionType.RIGHT, 1, 1);
-
-		dash_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dash", "dash_bg1", dash_bg1_color.rgba.to_string ());
-		});
-		dash_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dash", "dash_bg2", dash_bg2_color.rgba.to_string ());
-		});
-		dash_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string ());
-		});
-		dash_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string ());
-		});
-		dash_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Dash", "dash_tint", dash_tint_value.adjustment.value);
-		});
-		dash_bwidth_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Dash", "dash_bwidth", dash_bwidth_value.adjustment.value);
-		});
 
 		// Menu
 		var menu_bg_label = new Label.with_mnemonic ("Background gradient");
@@ -1415,35 +1242,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		menu_grid.attach (menu_bwidth_label, 0, 5, 2, 1);
 		menu_grid.attach_next_to (menu_bwidth_value, menu_bwidth_label, PositionType.RIGHT, 1, 1);
 
-		menu_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Menu", "menu_bg1", menu_bg1_color.rgba.to_string ());
-		});
-		menu_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Menu", "menu_bg2", menu_bg2_color.rgba.to_string ());
-		});
-		menu_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string ());
-		});
-		menu_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string ());
-		});
-		menu_arrow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active ());
-		});
-		menu_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Menu", "menu_tint", menu_tint_value.adjustment.value);
-		});
-		menu_bwidth_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Menu", "menu_bwidth", menu_bwidth_value.adjustment.value);
-		});
-
 		// Dialogs
 		var dialog_bg_label = new Label.with_mnemonic ("Background gradient");
 		dialog_bg_label.set_halign (Align.START);
@@ -1501,35 +1299,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		dialog_grid.attach_next_to (dialog_tint_value, dialog_tint_label, PositionType.RIGHT, 1, 1);
 		dialog_grid.attach (dialog_bwidth_label, 0, 5, 2, 1);
 		dialog_grid.attach_next_to (dialog_bwidth_value, dialog_bwidth_label, PositionType.RIGHT, 1, 1);
-
-		dialog_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_bg1", dialog_bg1_color.rgba.to_string ());
-		});
-		dialog_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_bg2", dialog_bg2_color.rgba.to_string ());
-		});
-		dialog_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string ());
-		});
-		dialog_heading_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string ());
-		});
-		dialog_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string ());
-		});
-		dialog_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Dialogs", "dialog_tint", dialog_tint_value.adjustment.value);
-		});
-		dialog_bwidth_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Dialogs", "dialog_bwidth", dialog_bwidth_value.adjustment.value);
-		});
 
 		// Buttons
 		var button_bg_label = new Label.with_mnemonic ("Background gradient");
@@ -1635,59 +1404,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		button_grid.attach (button_bold_label, 0, 9, 2, 1);
 		button_grid.attach_next_to (button_bold_switch, button_bold_label, PositionType.RIGHT, 1, 1);
 
-		button_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_bg1", button_bg1_color.rgba.to_string ());
-		});
-		button_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_bg2", button_bg2_color.rgba.to_string ());
-		});
-		button_hoverbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverbg1", button_hoverbg1_color.rgba.to_string ());
-		});
-		button_hoverbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverbg2", button_hoverbg2_color.rgba.to_string ());
-		});
-		button_activebg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activebg1", button_activebg1_color.rgba.to_string ());
-		});
-		button_activebg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string ());
-		});
-		button_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string ());
-		});
-		button_hoverfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string ());
-		});
-		button_activefg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string ());
-		});
-		button_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string ());
-		});
-		button_hoverborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string ());
-		});
-		button_activeborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string ());
-		});
-		button_bold_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active ());
-		});
-
 		// Focused buttons
 		var buttonfocus_bg_label = new Label.with_mnemonic ("Background gradient");
 		buttonfocus_bg_label.set_halign (Align.START);
@@ -1785,55 +1501,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		buttonfocus_grid.attach (buttonfocus_activeborder_label, 0, 8, 2, 1);
 		buttonfocus_grid.attach_next_to (buttonfocus_activeborder_color, buttonfocus_activeborder_label, PositionType.RIGHT, 1, 1);
 
-		buttonfocus_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_bg1", buttonfocus_bg1_color.rgba.to_string ());
-		});
-		buttonfocus_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_bg2", buttonfocus_bg2_color.rgba.to_string ());
-		});
-		buttonfocus_hoverbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg1", buttonfocus_hoverbg1_color.rgba.to_string ());
-		});
-		buttonfocus_hoverbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg2", buttonfocus_hoverbg2_color.rgba.to_string ());
-		});
-		buttonfocus_activebg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg1", buttonfocus_activebg1_color.rgba.to_string ());
-		});
-		buttonfocus_activebg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg2", buttonfocus_activebg2_color.rgba.to_string ());
-		});
-		buttonfocus_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_fg", buttonfocus_fg_color.rgba.to_string ());
-		});
-		buttonfocus_hoverfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverfg", buttonfocus_hoverfg_color.rgba.to_string ());
-		});
-		buttonfocus_activefg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activefg", buttonfocus_activefg_color.rgba.to_string ());
-		});
-		buttonfocus_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_border", buttonfocus_border_color.rgba.to_string ());
-		});
-		buttonfocus_hoverborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverborder", buttonfocus_hoverborder_color.rgba.to_string ());
-		});
-		buttonfocus_activeborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("ButtonsFocus", "buttonfocus_activeborder", buttonfocus_activeborder_color.rgba.to_string ());
-		});
-
 		// Entry
 		var entry_bg_label = new Label.with_mnemonic ("Background gradient");
 		entry_bg_label.set_halign (Align.START);
@@ -1878,28 +1545,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		entry_grid.attach (entry_shadow_label, 0, 3, 2, 1);
 		entry_grid.attach_next_to (entry_shadow_switch, entry_shadow_label, PositionType.RIGHT, 1, 1);
 
-		entry_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_bg1", entry_bg1_color.rgba.to_string ());
-		});
-		entry_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_bg2", entry_bg2_color.rgba.to_string ());
-		});
-		entry_fg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string ());
-		});
-		entry_border_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string ());
-		});
-		entry_shadow_switch.notify["active"].connect (() => {
-			on_value_changed ();
-			key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active ());
-		});
-
-		// Misc
+		// Miscellaneous
 		var misc_runningbg_label = new Label.with_mnemonic ("Background gradient for running apps");
 		misc_runningbg_label.set_halign (Align.START);
 		misc_runningbg1_color = new ColorButton ();
@@ -1975,43 +1621,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach (misc_insensitive_label, 0, 5, 2, 1);
 		misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, PositionType.RIGHT, 1, 1);
 
-		misc_runningbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_runningbg1", misc_runningbg1_color.rgba.to_string ());
-		});
-		misc_runningbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_runningbg2", misc_runningbg2_color.rgba.to_string ());
-		});
-		misc_separator1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_separator1", misc_separator1_color.rgba.to_string ());
-		});
-		misc_separator2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string ());
-		});
-		misc_tooltipbg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string ());
-		});
-		misc_tooltipbg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipbg2", misc_tooltipbg2_color.rgba.to_string ());
-		});
-		misc_tooltipfg_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string ());
-		});
-		misc_tooltipborder_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string ());
-		});
-		misc_insensitive_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.rgba.to_string ());
-		});
-
 		// Toolbar
 		undo_button = new ToolButton.from_stock (Stock.UNDO);
 		undo_button.set_tooltip_text ("Undo the last change");
@@ -2019,10 +1628,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		redo_button.set_tooltip_text ("Redo the last undone change");
 		clear_button = new ToolButton.from_stock (Stock.CLEAR);
 		clear_button.set_tooltip_text ("Clear all changes");
-
-		undo_button.clicked.connect (on_undo_clicked);
-		redo_button.clicked.connect (on_redo_clicked);
-		clear_button.clicked.connect (on_clear_clicked);
 
 		var toolbar = new Toolbar ();
 		toolbar.get_style_context ().add_class ("primary-toolbar");
@@ -2032,8 +1637,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Apply button
 		apply_button = new Button.from_stock (Stock.APPLY);
-
-		apply_button.clicked.connect (on_config_applied);
 
 		var buttons = new ButtonBox (Orientation.HORIZONTAL);
 		buttons.set_layout (ButtonBoxStyle.END);
@@ -2106,6 +1709,9 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Setup widgets
 		set_states ();
 
+		// Connect signals
+		connect_signals ();
+
 		notebook.set_current_page (0);
 		apply_button.set_sensitive (false);
 
@@ -2117,6 +1723,417 @@ class EleganceColorsWindow : ApplicationWindow {
 		redo_button.set_sensitive (false);
 		undo_button.set_sensitive (false);
 		clear_button.set_sensitive (false);
+	}
+
+	void connect_signals () {
+		// General
+		combobox.changed.connect (on_preset_selected);
+		match_wallpaper.toggled.connect (() => {
+			on_value_changed ();
+			if (match_wallpaper.get_active ()) {
+				key_file.set_string ("Settings", "mode", "wallpaper");
+			}
+		});
+		match_theme.toggled.connect (() => {
+			on_value_changed ();
+			if (match_theme.get_active ()) {
+				key_file.set_string ("Settings", "mode", "gtk");
+			}
+		});
+		custom_color.toggled .connect (() => {
+			on_value_changed ();
+			if (custom_color.get_active ()) {
+				key_file.set_string ("Settings", "mode", "custom");
+				color_button.set_sensitive (true);
+			} else {
+				color_button.set_sensitive (false);
+			}
+		});
+		color_button.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Settings", "highlight", color_button.rgba.to_string ());
+		});
+		text_auto.toggled .connect (() => {
+			on_value_changed ();
+			if (text_auto.get_active ()) {
+				key_file.set_string ("Settings", "text", "auto");
+			}
+		});
+		text_color.toggled .connect (() => {
+			on_value_changed ();
+			if (text_color.get_active ()) {
+				key_file.set_string ("Settings", "text", "user");
+				text_button.set_sensitive (true);
+			} else {
+				text_button.set_sensitive (false);
+			}
+		});
+		text_button.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Settings", "textcolor", text_button.rgba.to_string ());
+		});
+		font_button.font_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Settings", "fontname", font_button.get_font_name());
+		});
+		dropshadow_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Settings", "dropshadow", dropshadow_switch.get_active ());
+		});
+		selgradient_size.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Settings", "selgradient", selgradient_size.adjustment.value);
+		});
+		corner_roundness.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Settings", "roundness", corner_roundness.adjustment.value);
+		});
+		transition_duration.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Settings", "transition", transition_duration.adjustment.value);
+		});
+
+		// Panel
+		panel_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Panel", "panel_bg1", panel_bg1_color.rgba.to_string ());
+		});
+		panel_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Panel", "panel_bg2", panel_bg2_color.rgba.to_string ());
+		});
+		panel_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Panel", "panel_fg", panel_fg_color.rgba.to_string ());
+		});
+		panel_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Panel", "panel_border", panel_border_color.rgba.to_string ());
+		});
+		panel_icon_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Panel", "panel_icon", panel_icon_switch.get_active ());
+		});
+		panel_tint_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Panel", "panel_tint", panel_tint_value.adjustment.value);
+		});
+		panel_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Panel", "panel_bwidth", panel_bwidth_value.adjustment.value);
+		});
+
+		// Overview
+		overview_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_bg1", overview_bg1_color.rgba.to_string ());
+		});
+		overview_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.rgba.to_string ());
+		});
+		overview_searchbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.rgba.to_string ());
+		});
+		overview_searchbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchbg2", overview_searchbg2_color.rgba.to_string ());
+		});
+		overview_searchfocusbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusbg1", overview_searchfocusbg1_color.rgba.to_string ());
+		});
+		overview_searchfocusbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusbg2", overview_searchfocusbg2_color.rgba.to_string ());
+		});
+		overview_searchfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfg", overview_searchfg_color.rgba.to_string ());
+		});
+		overview_searchfocusfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusfg", overview_searchfocusfg_color.rgba.to_string ());
+		});
+		overview_searchborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchborder", overview_searchborder_color.rgba.to_string ());
+		});
+		overview_searchfocusborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.rgba.to_string ());
+		});
+		overview_tint_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
+		});
+		overview_iconsize_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Overview", "overview_iconsize", overview_iconsize_value.adjustment.value);
+		});
+		overview_iconspacing_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Overview", "overview_iconspacing", overview_iconspacing_value.adjustment.value);
+		});
+
+		// Dash
+		dash_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dash", "dash_bg1", dash_bg1_color.rgba.to_string ());
+		});
+		dash_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dash", "dash_bg2", dash_bg2_color.rgba.to_string ());
+		});
+		dash_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dash", "dash_fg", dash_fg_color.rgba.to_string ());
+		});
+		dash_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dash", "dash_border", dash_border_color.rgba.to_string ());
+		});
+		dash_tint_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dash", "dash_tint", dash_tint_value.adjustment.value);
+		});
+		dash_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dash", "dash_bwidth", dash_bwidth_value.adjustment.value);
+		});
+
+		// Menu
+		menu_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Menu", "menu_bg1", menu_bg1_color.rgba.to_string ());
+		});
+		menu_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Menu", "menu_bg2", menu_bg2_color.rgba.to_string ());
+		});
+		menu_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Menu", "menu_fg", menu_fg_color.rgba.to_string ());
+		});
+		menu_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Menu", "menu_border", menu_border_color.rgba.to_string ());
+		});
+		menu_arrow_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Menu", "menu_arrow", menu_arrow_switch.get_active ());
+		});
+		menu_tint_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Menu", "menu_tint", menu_tint_value.adjustment.value);
+		});
+		menu_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Menu", "menu_bwidth", menu_bwidth_value.adjustment.value);
+		});
+
+		// Dialogs
+		dialog_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dialogs", "dialog_bg1", dialog_bg1_color.rgba.to_string ());
+		});
+		dialog_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dialogs", "dialog_bg2", dialog_bg2_color.rgba.to_string ());
+		});
+		dialog_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dialogs", "dialog_fg", dialog_fg_color.rgba.to_string ());
+		});
+		dialog_heading_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dialogs", "dialog_heading", dialog_heading_color.rgba.to_string ());
+		});
+		dialog_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Dialogs", "dialog_border", dialog_border_color.rgba.to_string ());
+		});
+		dialog_tint_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dialogs", "dialog_tint", dialog_tint_value.adjustment.value);
+		});
+		dialog_bwidth_value.adjustment.value_changed.connect (() => {
+			on_value_changed ();
+			key_file.set_double ("Dialogs", "dialog_bwidth", dialog_bwidth_value.adjustment.value);
+		});
+
+		// Buttons
+		button_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_bg1", button_bg1_color.rgba.to_string ());
+		});
+		button_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_bg2", button_bg2_color.rgba.to_string ());
+		});
+		button_hoverbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_hoverbg1", button_hoverbg1_color.rgba.to_string ());
+		});
+		button_hoverbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_hoverbg2", button_hoverbg2_color.rgba.to_string ());
+		});
+		button_activebg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_activebg1", button_activebg1_color.rgba.to_string ());
+		});
+		button_activebg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_activebg2", button_activebg2_color.rgba.to_string ());
+		});
+		button_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_fg", button_fg_color.rgba.to_string ());
+		});
+		button_hoverfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_hoverfg", button_hoverfg_color.rgba.to_string ());
+		});
+		button_activefg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_activefg", button_activefg_color.rgba.to_string ());
+		});
+		button_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_border", button_border_color.rgba.to_string ());
+		});
+		button_hoverborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_hoverborder", button_hoverborder_color.rgba.to_string ());
+		});
+		button_activeborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Buttons", "button_activeborder", button_activeborder_color.rgba.to_string ());
+		});
+		button_bold_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Buttons", "button_bold", button_bold_switch.get_active ());
+		});
+
+		// Focused buttons
+		buttonfocus_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg1", buttonfocus_bg1_color.rgba.to_string ());
+		});
+		buttonfocus_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_bg2", buttonfocus_bg2_color.rgba.to_string ());
+		});
+		buttonfocus_hoverbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg1", buttonfocus_hoverbg1_color.rgba.to_string ());
+		});
+		buttonfocus_hoverbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverbg2", buttonfocus_hoverbg2_color.rgba.to_string ());
+		});
+		buttonfocus_activebg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg1", buttonfocus_activebg1_color.rgba.to_string ());
+		});
+		buttonfocus_activebg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activebg2", buttonfocus_activebg2_color.rgba.to_string ());
+		});
+		buttonfocus_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_fg", buttonfocus_fg_color.rgba.to_string ());
+		});
+		buttonfocus_hoverfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverfg", buttonfocus_hoverfg_color.rgba.to_string ());
+		});
+		buttonfocus_activefg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activefg", buttonfocus_activefg_color.rgba.to_string ());
+		});
+		buttonfocus_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_border", buttonfocus_border_color.rgba.to_string ());
+		});
+		buttonfocus_hoverborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_hoverborder", buttonfocus_hoverborder_color.rgba.to_string ());
+		});
+		buttonfocus_activeborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("ButtonsFocus", "buttonfocus_activeborder", buttonfocus_activeborder_color.rgba.to_string ());
+		});
+
+		// Entry
+		entry_bg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Entry", "entry_bg1", entry_bg1_color.rgba.to_string ());
+		});
+		entry_bg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Entry", "entry_bg2", entry_bg2_color.rgba.to_string ());
+		});
+		entry_fg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Entry", "entry_fg", entry_fg_color.rgba.to_string ());
+		});
+		entry_border_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Entry", "entry_border", entry_border_color.rgba.to_string ());
+		});
+		entry_shadow_switch.notify["active"].connect (() => {
+			on_value_changed ();
+			key_file.set_boolean ("Entry", "entry_shadow", entry_shadow_switch.get_active ());
+		});
+
+		// Miscellaneous
+		misc_runningbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_runningbg1", misc_runningbg1_color.rgba.to_string ());
+		});
+		misc_runningbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_runningbg2", misc_runningbg2_color.rgba.to_string ());
+		});
+		misc_separator1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_separator1", misc_separator1_color.rgba.to_string ());
+		});
+		misc_separator2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_separator2", misc_separator2_color.rgba.to_string ());
+		});
+		misc_tooltipbg1_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipbg1", misc_tooltipbg1_color.rgba.to_string ());
+		});
+		misc_tooltipbg2_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipbg2", misc_tooltipbg2_color.rgba.to_string ());
+		});
+		misc_tooltipfg_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipfg", misc_tooltipfg_color.rgba.to_string ());
+		});
+		misc_tooltipborder_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_tooltipborder", misc_tooltipborder_color.rgba.to_string ());
+		});
+		misc_insensitive_color.color_set.connect (() => {
+			on_value_changed ();
+			key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.rgba.to_string ());
+		});
+
+		// Toolbar
+		undo_button.clicked.connect (on_undo_clicked);
+		redo_button.clicked.connect (on_redo_clicked);
+		clear_button.clicked.connect (on_clear_clicked);
+
+		// Apply button
+		apply_button.clicked.connect (on_config_applied);
 	}
 
 	void on_selection_changed (TreeSelection selection) {
