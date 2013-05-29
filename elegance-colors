@@ -174,7 +174,7 @@ elif [[ "$mode" = "wallpaper" ]]; then
 	# Scale background image to 3x3 and take the color from top-left
 	highlight=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
 else
-	show_info "Using custom color"
+	show_info "Using custom highlight color"
 	highlight="$1"
 fi
 }
@@ -208,7 +208,7 @@ SAVEIFS="$IFS"
 IFS=''
 unset vars vals
 # Read configuration
-process_config
+read_config
 # General settings
 selected_bg1=$(shade "$highlight" "$selgradient")
 selected_bg2="$highlight"
@@ -586,30 +586,6 @@ fi
 }
 
 read_config() {
-# Update the old config file to support new options
-if [[ -f "$configfile" ]]; then
-	while IFS='= ' read var val; do
-		# Escape comments
-		[[ "$var" =~ ^# ]] && continue
-		# Read the section header
-		[[ "$var" =~ ^\[ ]] && section="$var"
-		# Write the non-existent value into the config file
-		[[ `grep "$var" "$configfile"` ]] || echo -e "\n$section\n$var=$val" >> "$configfile"
-	done < "$defaultconfig"
-fi
-# Load the config file
-while IFS='= ' read var val; do
-	# Escape comments, section headers and empty values
-	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
-	# Escape ";", "(", ")" and " " for safe use in eval
-	val="${val//\;/\\;}" && val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
-	# Define variables
-	eval "$var"="$val"
-done < "$configfile"
-}
-
-process_config() {
-# Process the config file
 while IFS='= ' read var val; do
 	# Escape comments, section headers and empty values
 	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
@@ -660,10 +636,29 @@ if [[ ! $? -eq 0 ]]; then
 fi
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
-# If config file doesn't exist, copy the default one
-[[ -f "$configfile" ]] || cp -f "$defaultconfig" "$configfile"
-# Create the temporary directory
-[[ -d "$tempdir" ]] || mkdir -p "$tempdir"
+# Update the config file
+if [[ -f "$configfile" ]]; then
+	while IFS='= ' read var val; do
+		# Escape comments
+		[[ "$var" =~ ^# ]] && continue
+		# Read the section header
+		[[ "$var" =~ ^\[.*\]$ ]] && section="$var" && sectionsafe="${section//\[/\\[}"
+		# Write the non-existent value into the config file
+		[[ `grep "$sectionsafe" "$configfile"` ]] || echo -e "\n$section" >> "$configfile"
+		[[ `grep "$var" "$configfile"` ]] || sed -i "s/$sectionsafe/$sectionsafe\n$var=$val/g" "$configfile"
+	done < "$defaultconfig"
+else
+	cp -f "$defaultconfig" "$configfile"
+fi
+# Load the config file
+while IFS='= ' read var val; do
+	# Escape comments, section headers and empty values
+	[[ "$var" =~ ^# || "$var" =~ ^\[ || ! "$val" ]] && continue
+	# Escape ";", "(", ")" and " " for safe use in eval
+	val="${val//\;/\\;}" && val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
+	# Define variables
+	eval "$var"="$val"
+done < "$configfile"
 # Get the gtk theme name
 theme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
 # Get the gtk theme path
@@ -679,13 +674,11 @@ fi
 # Get the background image path
 img=$(gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'//g" -e "s/file:\/\///g" -e 's/\%20/\ /g')
 # See if the returned image is a xml file
-if [[ "$img" =~ .xml$ ]]; then
-	img=$(grep "<file>" "$img" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
-fi
+[[ "$img" =~ .xml$ ]] && img=$(grep "<file>" "$img" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
+# Create the temporary directory
+[[ -d "$tempdir" ]] || mkdir -p "$tempdir"
 # If elegance-colors doesn't exist in ~./themes, create it
-if [[ ! -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]]; then
-	make_theme
-fi
+[[ -f "$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css" ]] || make_theme
 }
 
 stop_process() {
@@ -736,7 +729,6 @@ do
 		exit 1
 	fi
 	initialize
-	read_config
 	# Check if the current theme name matches elegance-colors
 	if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -i "elegance-colors"` ]]; then
 		monitor_changes
@@ -747,7 +739,6 @@ done
 
 apply_changes() {
 initialize
-read_config
 make_theme
 }
 
