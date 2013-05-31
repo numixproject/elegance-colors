@@ -553,7 +553,7 @@ StScrollBar StButton#hhandle:active {
 .prompt-dialog-password-entry .capslock-warning,
 .login-dialog-prompt-entry .capslock-warning {
     icon-size: 16px;
-    warning-color: #999;
+    warning-color: @misc_insensitive;
     padding: 0 4px;
 }
 
@@ -1822,7 +1822,7 @@ StScrollBar StButton#hhandle:active {
 
 .switcher-arrow {
     border-color: transparent;
-    color: #999;
+    color: @misc_insensitive;
 }
 
 .switcher-arrow:highlighted {
@@ -1986,7 +1986,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .end-session-dialog-shutdown-icon {
-    color: #aaa;
+    color: @misc_insensitive;
     width: 32px;
     height: 32px;
 }
@@ -2183,7 +2183,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .polkit-dialog-user-icon {
-    border: 1px solid #666;
+    border: 1px solid rgba(0,0,0,0.2);
     border-radius: @roundnesspx;
     background-size: contain;
     width: 48px;
