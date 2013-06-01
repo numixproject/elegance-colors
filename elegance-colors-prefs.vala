@@ -598,196 +598,196 @@ class EleganceColorsWindow : ApplicationWindow {
 		// Set colors
 		var color = Gdk.RGBA ();
 
-		color.parse ("%s".printf (color_value));
+		color.parse (color_value);
 		color_button.set_rgba (color);
 
-		color.parse ("%s".printf (text_value));
+		color.parse (text_value);
 		text_button.set_rgba (color);
 
-		color.parse ("%s".printf (panel_bg1_value));
+		color.parse (panel_bg1_value);
 		panel_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (panel_bg2_value));
+		color.parse (panel_bg2_value);
 		panel_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (panel_fg_value));
+		color.parse (panel_fg_value);
 		panel_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (panel_border_value));
+		color.parse (panel_border_value);
 		panel_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_bg1_value));
+		color.parse (overview_bg1_value);
 		overview_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_bg2_value));
+		color.parse (overview_bg2_value);
 		overview_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchbg1_value));
+		color.parse (overview_searchbg1_value);
 		overview_searchbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchbg2_value));
+		color.parse (overview_searchbg2_value);
 		overview_searchbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchfocusbg1_value));
+		color.parse (overview_searchfocusbg1_value);
 		overview_searchfocusbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchfocusbg2_value));
+		color.parse (overview_searchfocusbg2_value);
 		overview_searchfocusbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchfg_value));
+		color.parse (overview_searchfg_value);
 		overview_searchfg_color.set_rgba (color);
 
-		color.parse ("%s".printf (overview_searchborder_value));
+		color.parse (overview_searchborder_value);
 		overview_searchborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (dash_bg1_value));
+		color.parse (dash_bg1_value);
 		dash_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (dash_bg2_value));
+		color.parse (dash_bg2_value);
 		dash_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (dash_fg_value));
+		color.parse (dash_fg_value);
 		dash_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (dash_border_value));
+		color.parse (dash_border_value);
 		dash_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (menu_bg1_value));
+		color.parse (menu_bg1_value);
 		menu_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (menu_bg2_value));
+		color.parse (menu_bg2_value);
 		menu_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (menu_fg_value));
+		color.parse (menu_fg_value);
 		menu_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (menu_border_value));
+		color.parse (menu_border_value);
 		menu_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (dialog_bg1_value));
+		color.parse (dialog_bg1_value);
 		dialog_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (dialog_bg2_value));
+		color.parse (dialog_bg2_value);
 		dialog_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (dialog_fg_value));
+		color.parse (dialog_fg_value);
 		dialog_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (dialog_heading_value));
+		color.parse (dialog_heading_value);
 		dialog_heading_color.set_rgba (color);
 
-		color.parse ("%s".printf (dialog_border_value));
+		color.parse (dialog_border_value);
 		dialog_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_bg1_value));
+		color.parse (button_bg1_value);
 		button_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_bg2_value));
+		color.parse (button_bg2_value);
 		button_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_hoverbg1_value));
+		color.parse (button_hoverbg1_value);
 		button_hoverbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_hoverbg2_value));
+		color.parse (button_hoverbg2_value);
 		button_hoverbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_activebg1_value));
+		color.parse (button_activebg1_value);
 		button_activebg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_activebg2_value));
+		color.parse (button_activebg2_value);
 		button_activebg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_fg_value));
+		color.parse (button_fg_value);
 		button_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_hoverfg_value));
+		color.parse (button_hoverfg_value);
 		button_hoverfg_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_activefg_value));
+		color.parse (button_activefg_value);
 		button_activefg_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_border_value));
+		color.parse (button_border_value);
 		button_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_hoverborder_value));
+		color.parse (button_hoverborder_value);
 		button_hoverborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (button_activeborder_value));
+		color.parse (button_activeborder_value);
 		button_activeborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_bg1_value));
+		color.parse (buttonfocus_bg1_value);
 		buttonfocus_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_bg2_value));
+		color.parse (buttonfocus_bg2_value);
 		buttonfocus_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_hoverbg1_value));
+		color.parse (buttonfocus_hoverbg1_value);
 		buttonfocus_hoverbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_hoverbg2_value));
+		color.parse (buttonfocus_hoverbg2_value);
 		buttonfocus_hoverbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_activebg1_value));
+		color.parse (buttonfocus_activebg1_value);
 		buttonfocus_activebg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_activebg2_value));
+		color.parse (buttonfocus_activebg2_value);
 		buttonfocus_activebg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_fg_value));
+		color.parse (buttonfocus_fg_value);
 		buttonfocus_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_hoverfg_value));
+		color.parse (buttonfocus_hoverfg_value);
 		buttonfocus_hoverfg_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_activefg_value));
+		color.parse (buttonfocus_activefg_value);
 		buttonfocus_activefg_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_border_value));
+		color.parse (buttonfocus_border_value);
 		buttonfocus_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_hoverborder_value));
+		color.parse (buttonfocus_hoverborder_value);
 		buttonfocus_hoverborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (buttonfocus_activeborder_value));
+		color.parse (buttonfocus_activeborder_value);
 		buttonfocus_activeborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_bg1_value));
+		color.parse (entry_bg1_value);
 		entry_bg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_bg2_value));
+		color.parse (entry_bg2_value);
 		entry_bg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_fg_value));
+		color.parse (entry_fg_value);
 		entry_fg_color.set_rgba (color);
 
-		color.parse ("%s".printf (entry_border_value));
+		color.parse (entry_border_value);
 		entry_border_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_runningbg1_value));
+		color.parse (misc_runningbg1_value);
 		misc_runningbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_runningbg2_value));
+		color.parse (misc_runningbg2_value);
 		misc_runningbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_separator1_value));
+		color.parse (misc_separator1_value);
 		misc_separator1_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_separator2_value));
+		color.parse (misc_separator2_value);
 		misc_separator2_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_tooltipbg1_value));
+		color.parse (misc_tooltipbg1_value);
 		misc_tooltipbg1_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_tooltipbg2_value));
+		color.parse (misc_tooltipbg2_value);
 		misc_tooltipbg2_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_tooltipfg_value));
+		color.parse (misc_tooltipfg_value);
 		misc_tooltipfg_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_tooltipborder_value));
+		color.parse (misc_tooltipborder_value);
 		misc_tooltipborder_color.set_rgba (color);
 
-		color.parse ("%s".printf (misc_insensitive_value));
+		color.parse (misc_insensitive_value);
 		misc_insensitive_color.set_rgba (color);
 	}
 
