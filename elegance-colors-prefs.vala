@@ -273,7 +273,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		var script = File.new_for_path ("elegance-colors");
 		var presets = File.new_for_path ("presets");
 
-		if (script.query_exists () && presets.query_exists ()) {
+		if (script.query_exists () && script.query_file_type (0) == FileType.REGULAR && presets.query_exists () && presets.query_file_type (0) == FileType.DIRECTORY) {
 			presets_dir_sys = presets;
 			elegance_colors = "./elegance-colors";
 		} else {
@@ -295,9 +295,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void init_process () {
 
-		var home_dir = File.new_for_path (Environment.get_home_dir ());
+		var theme_file = File.new_for_path (Environment.get_home_dir ()).get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css");
 
-		if (!home_dir.get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css").query_exists () || !config_file.query_exists ()) {
+		if (!theme_file.query_exists () || !config_file.query_exists ()) {
 			try {
 				Process.spawn_command_line_async ("%s".printf (elegance_colors));
 			} catch (Error e) {
@@ -306,7 +306,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			try {
 				key_file.load_from_file (presets_dir_sys.get_child ("default.ini").get_path (), KeyFileFlags.NONE);
 			} catch (Error e) {
-				stderr.printf ("Failed to load preset: %s\n", e.message);
+				stderr.printf ("Failed to load default preset: %s\n", e.message);
 			}
 		}
 	}
@@ -381,10 +381,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		if (importsettings.run () == ResponseType.ACCEPT) {
 			try {
 				var importpath = File.new_for_path (importsettings.get_file ().get_path ());
-
-				if (importpath.query_exists ()) {
-					key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
-				}
+				key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
 			} catch (Error e) {
 				stderr.printf ("Failed to import settings: %s\n", e.message);
 			}
@@ -2253,15 +2250,18 @@ class EleganceColorsWindow : ApplicationWindow {
 	void on_preset_selected () {
 
 		if (combobox.get_active () !=0) {
-			if (presets_dir_usr.get_child (presets [combobox.get_active ()]).query_exists ()) {
+			var preset_file_usr = presets_dir_usr.get_child (presets [combobox.get_active ()]);
+			var preset_file_sys = presets_dir_sys.get_child (presets [combobox.get_active ()]);
+
+			if (preset_file_usr.query_exists () && preset_file_usr.query_file_type (0) == FileType.REGULAR) {
 				try {
-					key_file.load_from_file (presets_dir_usr.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
+					key_file.load_from_file (preset_file_usr.get_path (), KeyFileFlags.NONE);
 				} catch (Error e) {
 					stderr.printf ("Failed to load preset from user directory: %s\n", e.message);
 				}
-			} else if (presets_dir_sys.get_child (presets [combobox.get_active ()]).query_exists ()) {
+			} else if (preset_file_sys.query_exists () && preset_file_sys.query_file_type (0) == FileType.REGULAR) {
 				try {
-					key_file.load_from_file (presets_dir_sys.get_child (presets [combobox.get_active ()]).get_path (), KeyFileFlags.NONE);
+					key_file.load_from_file (preset_file_sys.get_path (), KeyFileFlags.NONE);
 				} catch (Error e) {
 					stderr.printf ("Failed to load preset from system directory: %s\n", e.message);
 				}
