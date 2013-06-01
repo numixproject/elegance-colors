@@ -801,34 +801,38 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Read presets from user dir
 		try {
-			var dir = Dir.open(presets_dir_usr.get_path());
+			var dir = Dir.open (presets_dir_usr.get_path ());
 
 			var titlechanged = false;
 
 			string preset = "";
 			string title = "";
-			while ((preset = dir.read_name()) != null) {
-				presets += preset;
+			while ((preset = dir.read_name ()) != null) {
+				var path = Path.build_filename (presets_dir_usr.get_path (), preset);
 
-				try {
-					var dis = new DataInputStream (presets_dir_usr.get_child (preset).read ());
-					string line;
-					while ((line = dis.read_line (null)) != null) {
-						if ("# Name:" in line) {
-							title = line.substring (8, line.length-8);
-							titlechanged = true;
+				if (FileUtils.test (path, FileTest.IS_REGULAR)) {
+					presets += preset;
+
+					try {
+						var dis = new DataInputStream (presets_dir_usr.get_child (preset).read ());
+						string line;
+						while ((line = dis.read_line (null)) != null) {
+							if ("# Name:" in line) {
+								title = line.substring (8, line.length-8);
+								titlechanged = true;
+							}
 						}
+					} catch (Error e) {
+						stderr.printf ("Could not read preset title: %s\n", e.message);
 					}
-				} catch (Error e) {
-					stderr.printf ("Could not read preset title: %s\n", e.message);
-				}
 				
-				if (!titlechanged == true) {
-					title = preset;
-				}
+					if (!titlechanged == true) {
+						title = preset;
+					}
 
-				titles += title;
-				titlechanged = false;
+					titles += title;
+					titlechanged = false;
+				}
 			}
 		} catch (Error e) {
 			stderr.printf ("Failed to open user presets directory: %s\n", e.message);
@@ -836,34 +840,38 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Read presets from system dir
 		try {
-			var dir = Dir.open(presets_dir_sys.get_path());
+			var dir = Dir.open (presets_dir_sys.get_path ());
 
 			var titlechanged = false;
 
 			string preset = "";
 			string title = "";
-			while ((preset = dir.read_name()) != null) {
-				presets += preset;
+			while ((preset = dir.read_name ()) != null) {
+				var path = Path.build_filename (presets_dir_sys.get_path (), preset);
 
-				try {
-					var dis = new DataInputStream (presets_dir_sys.get_child (preset).read ());
-					string line;
-					while ((line = dis.read_line (null)) != null) {
-						if ("# Name:" in line) {
-							title = line.substring (8, line.length-8);
-							titlechanged = true;
+				if (FileUtils.test (path, FileTest.IS_REGULAR)) {
+					presets += preset;
+
+					try {
+						var dis = new DataInputStream (presets_dir_sys.get_child (preset).read ());
+						string line;
+						while ((line = dis.read_line (null)) != null) {
+							if ("# Name:" in line) {
+								title = line.substring (8, line.length-8);
+								titlechanged = true;
+							}
 						}
+					} catch (Error e) {
+						stderr.printf ("Could not read preset title: %s\n", e.message);
 					}
-				} catch (Error e) {
-					stderr.printf ("Could not read preset title: %s\n", e.message);
-				}
 				
-				if (!titlechanged == true) {
-					title = preset;
-				}
+					if (!titlechanged == true) {
+						title = preset;
+					}
 
-				titles += title;
-				titlechanged = false;
+					titles += title;
+					titlechanged = false;
+				}
 			}
 		} catch (Error e) {
 			stderr.printf ("Failed to open systemwide presets directory: %s\n", e.message);
