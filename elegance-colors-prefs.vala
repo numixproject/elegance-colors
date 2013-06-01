@@ -226,6 +226,8 @@ class EleganceColorsWindow : ApplicationWindow {
 	File presets_dir_usr;
 	File presets_dir_sys;
 
+	string elegance_colors;
+
 	KeyFile key_file;
 
 	internal EleganceColorsWindow (EleganceColorsPref app) {
@@ -268,10 +270,20 @@ class EleganceColorsWindow : ApplicationWindow {
 		this.add_action (quit_action);
 
 		// Set variables
+		var script = File.new_for_path ("elegance-colors");
+		var presets = File.new_for_path ("presets");
+
+		if (script.query_exists () && presets.query_exists ()) {
+			presets_dir_sys = presets;
+			elegance_colors = "./elegance-colors";
+		} else {
+			presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
+			elegance_colors = "elegance-colors";
+		}
+
 		var config_dir = File.new_for_path (Environment.get_user_config_dir ()).get_child ("elegance-colors");
 		config_file = config_dir.get_child ("elegance-colors.ini");
 		presets_dir_usr = config_dir.get_child ("presets");
-		presets_dir_sys = File.parse_name ("/usr/share/elegance-colors/presets");
 
 		key_file = new KeyFile ();
 
@@ -287,7 +299,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		if (!home_dir.get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css").query_exists () || !config_file.query_exists ()) {
 			try {
-				Process.spawn_command_line_async ("elegance-colors");
+				Process.spawn_command_line_async ("%s".printf (elegance_colors));
 			} catch (Error e) {
 				stderr.printf ("Failed to run process: %s\n", e.message);
 			}
@@ -317,7 +329,7 @@ class EleganceColorsWindow : ApplicationWindow {
 			string theme_path = exportdialog.get_file ().get_path ();
 
 			try {
-				Process.spawn_command_line_sync ("elegance-colors export \"%s\"".printf (theme_path));
+				Process.spawn_command_line_sync ("%s export \"%s\"".printf (elegance_colors, theme_path));
 			} catch (Error e) {
 				stderr.printf ("Failed to export theme: %s\n", e.message);
 			}
@@ -2283,7 +2295,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 
 		try {
-			Process.spawn_command_line_sync("elegance-colors apply");
+			Process.spawn_command_line_sync ("%s apply".printf (elegance_colors));
 		} catch (Error e) {
 			stderr.printf ("Failed to apply changes: %s\n", e.message);
 		}
