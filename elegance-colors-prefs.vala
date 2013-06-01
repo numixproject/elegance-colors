@@ -1791,7 +1791,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 		font_button.font_set.connect (() => {
 			on_value_changed ();
-			key_file.set_string ("Settings", "fontname", font_button.get_font_name());
+			key_file.set_string ("Settings", "fontname", font_button.get_font_name ());
 		});
 		dropshadow_switch.notify["active"].connect (() => {
 			on_value_changed ();
@@ -2171,7 +2171,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		undo_button.set_sensitive (true);
 		clear_button.set_sensitive (true);
 
-		list_undo.append (key_file.to_data(null,null));
+		list_undo.append (key_file.to_data (null,null));
 
 		if (new_button_clicked == true) {
 				
@@ -2201,8 +2201,10 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		clear_button.set_sensitive (true);
 		redo_button.set_sensitive (true);
-		list_redo.append (key_file.to_data(null,null));
-		unowned string? data = list_undo.nth_data (list_undo.length()-1);
+		list_redo.append (key_file.to_data (null,null));
+
+		unowned string? data = list_undo.nth_data (list_undo.length ()-1);
+
 		try {
 			key_file.load_from_data (data,-1, KeyFileFlags.NONE);			
 		} catch (KeyFileError e) {
@@ -2216,9 +2218,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		set_states ();
 
 		new_button_clicked = true;
-		data = list_undo.nth_data (list_undo.length()-1);
+		data = list_undo.nth_data (list_undo.length ()-1);
 		list_undo.remove (data);
-		data = list_undo.nth_data (list_undo.length()-1);
+		data = list_undo.nth_data (list_undo.length ()-1);
+
 		if (data == null) {
 			undo_button.set_sensitive (false);
 		}
@@ -2230,8 +2233,10 @@ class EleganceColorsWindow : ApplicationWindow {
 	void on_redo_clicked () {
 
 		undo_button.set_sensitive (true);
-		list_undo.append (key_file.to_data(null,null));
-		unowned string? data = list_redo.nth_data (list_redo.length()-1);
+		list_undo.append (key_file.to_data (null,null));
+
+		unowned string? data = list_redo.nth_data (list_redo.length ()-1);
+
 		try {
 			key_file.load_from_data (data,-1, KeyFileFlags.NONE);
 		} catch (KeyFileError e) {
@@ -2245,9 +2250,10 @@ class EleganceColorsWindow : ApplicationWindow {
 		set_states ();
 
 		new_button_clicked = true;
-		data = list_undo.nth_data (list_undo.length()-1);
+		data = list_undo.nth_data (list_undo.length ()-1);
 		list_undo.remove (data);
-		data = list_redo.nth_data (list_redo.length()-1);
+		data = list_redo.nth_data (list_redo.length ()-1);
+
 		if (data == null) {
 			redo_button.set_sensitive (false);
 		}
@@ -2286,17 +2292,9 @@ class EleganceColorsWindow : ApplicationWindow {
 
 	void on_config_applied () {
 
-		if (config_file.query_exists ()) {
-			try {
-				config_file.delete ();
-			} catch (Error e) {
-				stderr.printf ("Failed to delete old configuration: %s\n", e.message);
-			}
-		}
-
 		try {
 			string keyfile_str = key_file.to_data ();
-			var dos = new DataOutputStream (config_file.create (FileCreateFlags.REPLACE_DESTINATION));
+			var dos = new DataOutputStream (config_file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION));
 			dos.put_string (keyfile_str);
 		} catch (Error e) {
 			stderr.printf ("Failed to write configuration: %s\n", e.message);
