@@ -168,7 +168,7 @@ if [[ "$mode" = "gtk" ]]; then
 	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
 		highlight=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
 	else
-		show_error "Failed to dervice highlight color from GTK theme"
+		show_err "Failed to dervice highlight color from GTK theme"
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Getting color from wallpaper $img"
@@ -190,7 +190,7 @@ if [[ "$text" = "auto" ]]; then
 		elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
 			textcolor=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
 		else
-			show_error "Failed to dervice text color from GTK theme"
+			show_err "Failed to dervice text color from GTK theme"
 		fi
 	else
 		if [[ $(get_luma "$highlight") -gt 180 ]]; then
