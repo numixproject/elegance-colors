@@ -1187,7 +1187,11 @@ StScrollBar StButton#hhandle:active {
 }
 
 .app-well-app.app-folder > .overview-icon {
-    background-color: rgba(0,0,0,0.5);
+    color: @dash_fg;
+    background-gradient-direction: vertical;
+    background-gradient-start: @dash_bg1;
+    background-gradient-end: @dash_bg2;
+    border-color: @dash_border;
 }
 
 .app-well-app:hover > .overview-icon,
