@@ -509,6 +509,11 @@ if [[ ! -z "$include_dir" ]]; then
 		fi
 	done
 fi
+# Include additional CSS code in the template
+if [[ ! -z "$include_code" ]]; then
+	show_info "Including code $include_code in theme"
+	echo "$include_code" >> "$makedir/gnome-shell.css"
+fi
 # Replace variables in the template
 show_info "Making the theme"
 for (( i=0; i < ${#vars[@]}; i++ ))
