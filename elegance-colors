@@ -210,6 +210,7 @@ make_theme() {
 SAVEIFS="$IFS"
 IFS=''
 unset vars vals
+unset include_code include_dir include_css include_files
 # Read configuration
 read_config
 # General settings
@@ -484,6 +485,11 @@ if [[ -d "$template" ]]; then
 else
 	show_err "Failed to copy files"
 fi
+# Include additional CSS code in the template
+if [[ ! -z "$include_code" ]]; then
+	show_info "Including code $include_code in theme"
+	echo "$include_code" >> "$makedir/gnome-shell.css"
+fi
 # Include additional files
 if [[ ! -z "$include_dir" ]]; then
 	IFS='; ' read -a css_files <<< "$include_css"
@@ -508,11 +514,6 @@ if [[ ! -z "$include_dir" ]]; then
 			show_err "File $asset_file not found"
 		fi
 	done
-fi
-# Include additional CSS code in the template
-if [[ ! -z "$include_code" ]]; then
-	show_info "Including code $include_code in theme"
-	echo "$include_code" >> "$makedir/gnome-shell.css"
 fi
 # Replace variables in the template
 show_info "Making the theme"
