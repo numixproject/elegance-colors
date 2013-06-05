@@ -76,7 +76,14 @@ For example, you can use,
 
 It takes the symbolic color `@mode`, and darkens it by "10". You can have a look at the included presets to have more understanding.
 
-If you want even more customization, you can also include a custom CSS file to override the values in the default template.
+If you want even more customization, you can include single line custom CSS code,
+
+For example,
+
+	[Include]
+	include_code=.toggle-switch-us:checked,.toggle-switch-intl:checked{background-color:rgba(83,169,63,1.0);}
+
+If that's not enough, you can also include a custom CSS file to override the values in the default template.
 
 To include a custom CSS file, create a directory under `~/.config/elegance-colors/presets/` and put all required files there. Then list the files to be included in the configuration file,
 
