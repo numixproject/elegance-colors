@@ -168,7 +168,9 @@ if [[ "$mode" = "gtk" ]]; then
 	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
 		highlight=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
 	else
-		show_err "Failed to derive highlight color from GTK theme"
+		show_warn "Failed to derive highlight color from GTK theme, using custom color"
+		mode="custom"
+		highlight="$1"
 	fi
 elif [[ "$mode" = "wallpaper" ]]; then
 	show_info "Getting color from wallpaper $img"
