@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Elegance Colors Preferences
 Icon=elegance-colors
-Comment=A chameleon theme for Gnome Shell
+Comment=Chameleon theme for Gnome Shell
 Exec=elegance-colors-prefs
 Terminal=false
 Type=Application
-Categories=GNOME;Settings;X-GNOME-Settings-Panel;X-GNOME-PersonalSettings;
+Categories=GNOME;GTK;Settings;X-GNOME-Settings-Panel;X-GNOME-PersonalSettings;
 OnlyShowIn=GNOME;
 X-GNOME-Settings-Panel=elegance-colors-prefs

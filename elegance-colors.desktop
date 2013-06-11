@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Elegance Colors Process
 Icon=elegance-colors
-Comment=Background process for Elegance Colors Gnome Shell theme
+Comment=Background process for Elegance Colors
 Exec=elegance-colors
 Terminal=false
 Type=Application
-Categories=GNOME;Settings;
+Categories=GNOME;GTK;Monitor;System;
 OnlyShowIn=GNOME;
 AutostartCondition=GNOME3 if-session gnome
