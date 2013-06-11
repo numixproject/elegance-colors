@@ -789,6 +789,17 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse (misc_insensitive_value);
 		misc_insensitive_color.set_rgba (color);
+
+		// Grey out "GTK theme" button if the theme uses gresource system
+		var gtk_theme = new GLib.Settings ("org.gnome.desktop.interface").get_string ("gtk-theme");
+
+		if (File.new_for_path (Environment.get_home_dir ()).get_child (".themes/%s/gtk-3.0/gtk.gresource".printf (gtk_theme)).query_exists () || File.parse_name ("/usr/share/themes/%s/gtk-3.0/gtk.gresource".printf (gtk_theme)).query_exists ()) {
+			match_theme.set_sensitive (false);
+			if (match_theme.get_active ()) {
+				custom_color.set_active (true);
+				color_button.set_sensitive (true);
+			}
+		}
 	}
 
 	void create_widgets () {
