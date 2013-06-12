@@ -163,12 +163,10 @@ get_color() {
 if [[ "$mode" = "gtk" ]]; then
 	# Get color value from the gtk.css file
 	show_info "Getting color from GTK theme $gtkpath"
-	if [[ `grep "@define-color selected_bg_color #" "$gtkpath"` || `grep "@define-color selected_bg_color rgb" "$gtkpath"` ]]; then
-		highlight=`grep "@define-color selected_bg_color" "$gtkpath" | sed -e "s/@define-color selected_bg_color //g" -e "s/;//g"`
-	elif [[ `grep "@define-color theme_selected_bg_color #" "$gtkpath"` || `grep "@define-color theme_selected_bg_color rgb" "$gtkpath"` ]]; then
-		highlight=`grep "@define-color theme_selected_bg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_bg_color //g" -e "s/;//g"`
+	if [[ `grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath"` ]]; then
+		highlight=`grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath" | sed -r -e "s/@define-color (theme_)?selected_bg_color //g" -e "s/;//g"`
 	else
-		show_warn "Failed to derive highlight color from GTK theme, using custom color"
+		show_err "Failed to derive highlight color from GTK theme, using custom color"
 		mode="custom"
 		highlight="$1"
 	fi
@@ -187,12 +185,11 @@ if [[ "$text" = "auto" ]]; then
 	show_info "Determining highlight text color"
 	if [[ "$mode" = "gtk" ]]; then
 		# Get color value from the gtk.css file
-		if [[ `grep "@define-color selected_fg_color #" "$gtkpath"` || `grep "@define-color selected_fg_color rgb" "$gtkpath"` ]]; then
-			textcolor=`grep "@define-color selected_fg_color" "$gtkpath" | sed -e "s/@define-color selected_fg_color //g" -e "s/;//g"`
-		elif [[ `grep "@define-color theme_selected_fg_color #" "$gtkpath"` || `grep "@define-color theme_selected_fg_color rgb" "$gtkpath"` ]]; then
-			textcolor=`grep "@define-color theme_selected_fg_color" "$gtkpath" | sed -e "s/@define-color theme_selected_fg_color //g" -e "s/;//g"`
+		if [[ `grep -E -i '@define-color (theme_)?selected_fg_color (#|rgb).*' "$gtkpath"` ]]; then
+			textcolor=`grep -E -i '@define-color (theme_)?selected_fg_color (#|rgb).*' "$gtkpath" | sed -r -e "s/@define-color (theme_)?selected_fg_color //g" -e "s/;//g"`
 		else
-			show_err "Failed to derive text color from GTK theme"
+			show_err "Failed to derive text color from GTK theme, using custom text color"
+			textcolor="$1"
 		fi
 	else
 		if [[ $(get_luma "$highlight") -gt 180 ]]; then
@@ -655,15 +652,11 @@ if [[ "$mode" = "gtk" ]]; then
 	# Get the gtk theme name
 	theme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
 	# Get the gtk theme path
-	if [[ -f "$HOME/.themes/$theme/gtk-3.0/gtk-main.css" ]]; then
-		gtkpath="$HOME/.themes/$theme/gtk-3.0/gtk-main.css"
-	elif [[ -f "$HOME/.themes/$theme/gtk-3.0/gtk.css" ]]; then
-		gtkpath="$HOME/.themes/$theme/gtk-3.0/gtk.css"
-	elif [[ -f "/usr/share/themes/$theme/gtk-3.0/gtk-main.css" ]]; then
-		gtkpath="/usr/share/themes/$theme/gtk-3.0/gtk-main.css"
-	elif [[ -f "/usr/share/themes/$theme/gtk-3.0/gtk.css" ]]; then
-		gtkpath="/usr/share/themes/$theme/gtk-3.0/gtk.css"
-	fi
+	gtkpaths=( "$HOME/.themes/$theme/gtk-3.0/gtk-main.css" "$HOME/.themes/$theme/gtk-3.0/gtk.css" "/usr/share/themes/$theme/gtk-3.0/gtk-main.css" "/usr/share/themes/$theme/gtk-3.0/gtk.css" )
+	# Get the gtk theme path
+	for gtkpath in "${gtkpaths[@]}"; do
+		[[ -f "$gtkpath" ]] && break
+	done
 elif [[ "$mode" = "wallpaper" ]]; then
 	# Get the background image path
 	img=$(gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'//g" -e "s/file:\/\///g" -e 's/\%20/\ /g')
