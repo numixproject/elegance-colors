@@ -896,6 +896,8 @@ class EleganceColorsWindow : ApplicationWindow {
 			liststore.set (iter, 0, titles[i]);
 		}
 
+		liststore.set_sort_column_id (0, SortType.ASCENDING);
+
 		var cell = new CellRendererText ();
 
 		combobox = new ComboBox.with_model (liststore);
