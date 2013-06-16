@@ -295,7 +295,7 @@ StScrollBar StButton#hhandle:active {
 .popup-slider-menu-item {
     height: 1em;
     min-width: 15em;
-    -slider-height: 0.3em;
+    -slider-height: 0.2em;
     -slider-background-color: rgba(0,0,0,0.3);
     -slider-border-color: transparent;
     -slider-active-background-color: rgba(255,255,255,0.8);
