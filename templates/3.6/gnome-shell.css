@@ -485,7 +485,7 @@ StScrollBar StButton#hhandle:active {
     caret-size: 1px;
     selection-background-color: @selected_bg1;
     selected-color: @textcolor;
-    padding: 4px 12px 5px;
+    padding: 5px 12px 6px;
 }
 
 .notification StEntry,
