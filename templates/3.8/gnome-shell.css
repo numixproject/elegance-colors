@@ -1689,6 +1689,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: transparent !important;
     background-gradient-end: transparent !important;
     padding-bottom: 12px;
+    border-width: 0;
 }
 
 .summary-boxpointer #summary-right-click-menu {
