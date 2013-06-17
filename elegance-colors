@@ -614,10 +614,8 @@ while IFS='= ' read var val; do
 	[[ "$val" =~ ^alpha\; ]] && val1=$(printf "$val" | cut -f2 -d";") && val2=$(printf "$val" | cut -f3 -d";") && val=$(alpha "$val1" "$val2")
 	[[ "$val" =~ ^shade\; ]] && val1=$(printf "$val" | cut -f2 -d";") && val2=$(printf "$val" | cut -f3 -d";") && val=$(shade "$val1" "$val2")
 	[[ "$val" =~ ^tint\; ]] && val1=$(printf "$val" | cut -f2 -d";") && val2=$(printf "$val" | cut -f3 -d";") && val3=$(printf "$val" | cut -f4 -d";") && val=$(tint "$val1" "$val2" "$val3")
-	# Escape ";", "(", ")" and " " for safe use in eval
-	val="${val//\;/\\;}" && val="${val//\(/\\(}" && val="${val//\)/\\)}" && val="${val//\ /\\ }"
 	# Define variables
-	eval "$var"="$val"
+	eval "$var"="\$val"
 done < "$configfile"
 }
 
