@@ -2248,7 +2248,12 @@ StScrollBar StButton#hhandle:active {
     border-color: @button_border;
     border-radius: @roundnesspx;
     font-size: 14pt;
+    /*buttonbold_true
     font-weight: bold;
+    buttonbold_true*/
+    /*buttonbold_false
+    font-weight: normal;
+    buttonbold_false*/
     transition-duration: @transition;
 }
 
