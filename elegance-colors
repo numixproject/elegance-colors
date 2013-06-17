@@ -619,6 +619,20 @@ while IFS='= ' read var val; do
 done < "$configfile"
 }
 
+update_config() {
+# Update the config file
+show_info "Updating the config file"
+while IFS='= ' read var val; do
+	# Escape comments
+	[[ "$var" =~ ^# ]] && continue
+	# Read the section header
+	[[ "$var" =~ ^\[.*\]$ ]] && section="$var" && sectionsafe="${section//\[/\\[}"
+	# Write the non-existent value into the config file
+	[[ `grep "$sectionsafe" "$configfile"` ]] || echo -e "\n$section" >> "$configfile"
+	[[ `grep "$var" "$configfile"` ]] || sed -i "s/$sectionsafe/$sectionsafe\n$var=$val/g" "$configfile"
+done < "$defaultconfig"
+}
+
 set_schemadir() {
 # Set the schemadir
 if [[ -f "$extensiondir/$schemafile" && -f "$extensiondir/gschemas.compiled" ]]; then
@@ -680,7 +694,7 @@ else
 fi
 }
 
-run_process() {
+start_process() {
 show_info "Starting process"
 # Create the temporary directory
 mkdir -p "$tempdir"
@@ -698,7 +712,7 @@ do
 	if [[ -f "$md5self" ]]; then
 		oldmd5s=`cat "$md5self"`
 		if [[ ! "$oldmd5s" = "$md5s" ]]; then
-			show_info "Script has been changed, restarting..."
+			show_info "Script has been changed, restarting"
 			$0 "$@" &
 			exit 0
 		fi
@@ -723,11 +737,13 @@ make_theme
 
 case "$1" in
 	"start")
-		run_process;;
+		start_process;;
 	"stop")
 		stop_process;;
 	"apply")
 		apply_changes;;
+	"update")
+		update_config;;
 	"export")
 		export_theme "$2";;
 	"help")

@@ -46,7 +46,7 @@ A process runs in background which detects changes, generates the theme and relo
 
 `elegance-colors`
 
-To set the theme, run the following commands,
+To set the theme, choose the theme via Gnome Tweak Tool or run the following commands,
 
 `gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'`
 
@@ -107,6 +107,10 @@ To view any error messages produced, run the process in Terminal,
 To manually apply changes, run,
 
 `elegance-colors apply`
+
+If your theme fails to apply after an upgrade, it is likely that the config file doesn't include new options. To update the config file, run,
+
+`elegance-colors update`
 
 To export the theme, run,
 
