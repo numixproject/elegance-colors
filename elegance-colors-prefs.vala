@@ -810,6 +810,15 @@ class EleganceColorsWindow : ApplicationWindow {
 		var presets_label = new Label.with_mnemonic ("Load config from preset");
 		presets_label.set_halign (Align.START);
 
+		// Create user presets directory if doesn't exist
+		if (!presets_dir_usr.query_exists ()) {
+			try {
+				presets_dir_usr.make_directory_with_parents (null);
+			} catch (Error e) {
+				stderr.printf ("Could not create user presets directory: %s\n", e.message);
+			}
+		}
+
 		// Read presets from user dir
 		try {
 			var dir = Dir.open (presets_dir_usr.get_path ());
