@@ -705,6 +705,8 @@ rm -f "$md5self"
 [[ -f "$tempdir/elegance-colors.pid" ]] && stop_process
 # Write the pid to a file
 echo "$$" > "$tempdir/elegance-colors.pid"
+# Update config file, we do it once to avoid high cpu usage
+[[ -f "$configfile" ]] && update_config
 while :
 do
 	# Check if the script has been changed
