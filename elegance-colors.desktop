@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Elegance Colors Process
-Icon=elegance-colors
 Comment=Background process for Elegance Colors
 Exec=elegance-colors
+Icon=elegance-colors
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Monitor;System;
