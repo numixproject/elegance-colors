@@ -1667,7 +1667,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		clear_button.set_tooltip_text ("Clear all changes");
 
 		var toolbar = new Toolbar ();
-		toolbar.get_style_context ().add_class ("primary-toolbar");
+		toolbar.get_style_context ().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
 		toolbar.add (undo_button);
 		toolbar.add (redo_button);
 		toolbar.add (clear_button);
