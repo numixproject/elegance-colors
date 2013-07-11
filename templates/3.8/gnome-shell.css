@@ -827,9 +827,6 @@ StScrollBar StButton#hhandle:active {
 /* Overview */
 
 #overview {
-    background-gradient-direction: vertical;
-    background-gradient-start: @overview_bg1;
-    background-gradient-end: @overview_bg2;
     spacing: 24px;
 }
 

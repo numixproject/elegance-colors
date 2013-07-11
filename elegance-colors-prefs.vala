@@ -45,8 +45,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	string panel_border_value;
 
 	// Overview
-	ColorButton overview_bg1_color;
-	ColorButton overview_bg2_color;
 	ColorButton overview_searchbg1_color;
 	ColorButton overview_searchbg2_color;
 	ColorButton overview_searchfocusbg1_color;
@@ -56,12 +54,9 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton overview_searchborder_color;
 	ColorButton overview_searchfocusborder_color;
 
-	SpinButton overview_tint_value;
 	SpinButton overview_iconsize_value;
 	SpinButton overview_iconspacing_value;
 
-	string overview_bg1_value;
-	string overview_bg2_value;
 	string overview_searchbg1_value;
 	string overview_searchbg2_value;
 	string overview_searchfocusbg1_value;
@@ -477,8 +472,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		}
 
 		try {
-			overview_bg1_value = key_file.get_string ("Overview", "overview_bg1");
-			overview_bg2_value = key_file.get_string ("Overview", "overview_bg2");
 			overview_searchbg1_value = key_file.get_string ("Overview", "overview_searchbg1");
 			overview_searchbg2_value = key_file.get_string ("Overview", "overview_searchbg2");
 			overview_searchfocusbg1_value = key_file.get_string ("Overview", "overview_searchfocusbg1");
@@ -488,7 +481,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			overview_searchborder_value = key_file.get_string ("Overview", "overview_searchborder");
 			overview_searchfocusborder_value = key_file.get_string ("Overview", "overview_searchfocusborder");
 
-			overview_tint_value.adjustment.value = key_file.get_double ("Overview", "overview_tint");
 			overview_iconsize_value.adjustment.value = key_file.get_double ("Overview", "overview_iconsize");
 			overview_iconspacing_value.adjustment.value = key_file.get_double ("Overview", "overview_iconspacing");
 		} catch (Error e) {
@@ -615,12 +607,6 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		color.parse (panel_border_value);
 		panel_border_color.set_rgba (color);
-
-		color.parse (overview_bg1_value);
-		overview_bg1_color.set_rgba (color);
-
-		color.parse (overview_bg2_value);
-		overview_bg2_color.set_rgba (color);
 
 		color.parse (overview_searchbg1_value);
 		overview_searchbg1_color.set_rgba (color);
@@ -1067,14 +1053,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		panel_grid.attach_next_to (panel_bwidth_value, panel_bwidth_label, PositionType.RIGHT, 1, 1);
 
 		// Overview
-		var overview_bg_label = new Label.with_mnemonic ("Background gradient");
-		overview_bg_label.set_halign (Align.START);
-		overview_bg1_color = new ColorButton ();
-		((ColorChooser) overview_bg1_color).set_use_alpha (true);
-		overview_bg1_color.set_tooltip_text ("Set the background gradient start of the overview");
-		overview_bg2_color = new ColorButton ();
-		((ColorChooser) overview_bg2_color).set_use_alpha (true);
-		overview_bg2_color.set_tooltip_text ("Set the background gradient end of the overview");
 		var overview_searchbg_label = new Label.with_mnemonic ("Search entry gradient");
 		overview_searchbg_label.set_halign (Align.START);
 		overview_searchbg1_color = new ColorButton ();
@@ -1111,11 +1089,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_searchfocusborder_color = new ColorButton ();
 		((ColorChooser) overview_searchfocusborder_color).set_use_alpha (true);
 		overview_searchfocusborder_color.set_tooltip_text ("Set the border color of the search entry in focus state");
-		var overview_tint_label = new Label.with_mnemonic ("Background tint level");
-		overview_tint_label.set_halign (Align.START);
-		overview_tint_value = new SpinButton.with_range (0, 100, 1);
-		overview_tint_value.set_tooltip_text ("Set the amount of highlight color to mix with the chosen background color of the overview");
-		overview_tint_value.set_halign (Align.END);
 		var overview_iconsize_label = new Label.with_mnemonic ("App icon size");
 		overview_iconsize_label.set_halign (Align.START);
 		overview_iconsize_value = new SpinButton.with_range (0, 256, 1);
@@ -1126,12 +1099,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_iconspacing_value = new SpinButton.with_range (0, 256, 1);
 		overview_iconspacing_value.set_tooltip_text ("Set the spacing between icons in the application grid");
 		overview_iconspacing_value.set_halign (Align.END);
-
-		var overview_bg_box = new Box (Orientation.HORIZONTAL, 0);
-		overview_bg_box.set_homogeneous (true);
-		overview_bg_box.get_style_context ().add_class ("linked");
-		overview_bg_box.add (overview_bg1_color);
-		overview_bg_box.add (overview_bg2_color);
 
 		var overview_searchbg_box = new Box (Orientation.HORIZONTAL, 0);
 		overview_searchbg_box.set_homogeneous (true);
@@ -1149,25 +1116,21 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_grid.set_column_homogeneous (true);
 		overview_grid.set_column_spacing (10);
 		overview_grid.set_row_spacing (10);
-		overview_grid.attach (overview_bg_label, 0, 0, 2, 1);
-		overview_grid.attach_next_to (overview_bg_box, overview_bg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchbg_label, 0, 1, 2, 1);
+		overview_grid.attach (overview_searchbg_label, 0, 0, 2, 1);
 		overview_grid.attach_next_to (overview_searchbg_box, overview_searchbg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchfocusbg_label, 0, 2, 2, 1);
+		overview_grid.attach (overview_searchfocusbg_label, 0, 1, 2, 1);
 		overview_grid.attach_next_to (overview_searchfocusbg_box, overview_searchfocusbg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchfg_label, 0, 3, 2, 1);
+		overview_grid.attach (overview_searchfg_label, 0, 2, 2, 1);
 		overview_grid.attach_next_to (overview_searchfg_color, overview_searchfg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchfocusfg_label, 0, 4, 2, 1);
+		overview_grid.attach (overview_searchfocusfg_label, 0, 3, 2, 1);
 		overview_grid.attach_next_to (overview_searchfocusfg_color, overview_searchfocusfg_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchborder_label, 0, 5, 2, 1);
+		overview_grid.attach (overview_searchborder_label, 0, 4, 2, 1);
 		overview_grid.attach_next_to (overview_searchborder_color, overview_searchborder_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_searchfocusborder_label, 0, 6, 2, 1);
+		overview_grid.attach (overview_searchfocusborder_label, 0, 5, 2, 1);
 		overview_grid.attach_next_to (overview_searchfocusborder_color, overview_searchfocusborder_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_tint_label, 0, 7, 2, 1);
-		overview_grid.attach_next_to (overview_tint_value, overview_tint_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconsize_label, 0, 8, 2, 1);
+		overview_grid.attach (overview_iconsize_label, 0, 6, 2, 1);
 		overview_grid.attach_next_to (overview_iconsize_value, overview_iconsize_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconspacing_label, 0, 9, 2, 1);
+		overview_grid.attach (overview_iconspacing_label, 0, 7, 2, 1);
 		overview_grid.attach_next_to (overview_iconspacing_value, overview_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Dash
@@ -1861,14 +1824,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		});
 
 		// Overview
-		overview_bg1_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg1", overview_bg1_color.get_rgba ().to_string ());
-		});
-		overview_bg2_color.color_set.connect (() => {
-			on_value_changed ();
-			key_file.set_string ("Overview", "overview_bg2", overview_bg2_color.get_rgba ().to_string ());
-		});
 		overview_searchbg1_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Overview", "overview_searchbg1", overview_searchbg1_color.get_rgba ().to_string ());
@@ -1900,10 +1855,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_searchfocusborder_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.get_rgba ().to_string ());
-		});
-		overview_tint_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_tint", overview_tint_value.adjustment.value);
 		});
 		overview_iconsize_value.adjustment.value_changed.connect (() => {
 			on_value_changed ();

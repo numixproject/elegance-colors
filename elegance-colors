@@ -265,14 +265,9 @@ vals=(
 	"\/\*\*\/"
 )
 # Overview
-overview_bg1=$(tint "$overview_bg1" "$highlight" "$overview_tint")
-overview_bg2=$(tint "$overview_bg2" "$highlight" "$overview_tint")
-# Icon size dash
 overview_itemsize=$(( overview_iconsize + overview_iconspacing - 2 ))
 vars=(
 	"${vars[@]}"
-	"@overview_bg1"
-	"@overview_bg2"
 	"@overview_searchbg1"
 	"@overview_searchbg2"
 	"@overview_searchfocusbg1"
@@ -287,8 +282,6 @@ vars=(
 )
 vals=(
 	"${vals[@]}"
-	"$overview_bg1"
-	"$overview_bg2"
 	"$overview_searchbg1"
 	"$overview_searchbg2"
 	"$overview_searchfocusbg1"
