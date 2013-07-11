@@ -310,8 +310,8 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var exportdialog = new FileChooserDialog ("Export theme", this,
 								FileChooserAction.SAVE,
-								Stock.CANCEL, ResponseType.CANCEL,
-								Stock.SAVE, ResponseType.ACCEPT, null);
+								"Cancel", ResponseType.CANCEL,
+								"Export", ResponseType.ACCEPT, null);
 
 		var filter = new FileFilter ();
 		filter.add_pattern ("*.zip");
@@ -337,8 +337,8 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var exportsettings = new FileChooserDialog ("Export settings", this,
 								FileChooserAction.SAVE,
-								Stock.CANCEL, ResponseType.CANCEL,
-								Stock.SAVE, ResponseType.ACCEPT, null);
+								"Cancel", ResponseType.CANCEL,
+								"Export", ResponseType.ACCEPT, null);
 
 		var filter = new FileFilter ();
 		filter.add_pattern ("*.ini");
@@ -365,8 +365,8 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		var importsettings = new FileChooserDialog ("Import settings", this,
 								FileChooserAction.OPEN,
-								Stock.CANCEL, ResponseType.CANCEL,
-								Stock.OPEN, ResponseType.ACCEPT, null);
+								"Cancel", ResponseType.CANCEL,
+								"Import", ResponseType.ACCEPT, null);
 
 		var filter = new FileFilter ();
 		filter.add_pattern ("*.ini");
@@ -1622,11 +1622,14 @@ class EleganceColorsWindow : ApplicationWindow {
 		misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, PositionType.RIGHT, 1, 1);
 
 		// Toolbar
-		undo_button = new ToolButton.from_stock (Stock.UNDO);
+		undo_button = new ToolButton (null, "Undo");
+		undo_button.set_icon_name ("gtk-undo");
 		undo_button.set_tooltip_text ("Undo the last change");
-		redo_button = new ToolButton.from_stock (Stock.REDO);
+		redo_button = new ToolButton (null, "Redo");
+		redo_button.set_icon_name ("gtk-redo");
 		redo_button.set_tooltip_text ("Redo the last undone change");
-		clear_button = new ToolButton.from_stock (Stock.CLEAR);
+		clear_button = new ToolButton (null, "Clear");
+		clear_button.set_icon_name ("gtk-clear");
 		clear_button.set_tooltip_text ("Clear all changes");
 
 		var toolbar = new Toolbar ();
@@ -1636,7 +1639,7 @@ class EleganceColorsWindow : ApplicationWindow {
 		toolbar.add (clear_button);
 
 		// Apply button
-		apply_button = new Button.from_stock (Stock.APPLY);
+		apply_button = new Button.with_mnemonic ("Apply");
 
 		var buttons = new ButtonBox (Orientation.HORIZONTAL);
 		buttons.set_layout (ButtonBoxStyle.END);
