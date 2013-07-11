@@ -1623,13 +1623,13 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		// Toolbar
 		undo_button = new ToolButton (null, "Undo");
-		undo_button.set_icon_name ("gtk-undo");
+		undo_button.set_icon_name ("edit-undo");
 		undo_button.set_tooltip_text ("Undo the last change");
 		redo_button = new ToolButton (null, "Redo");
-		redo_button.set_icon_name ("gtk-redo");
+		redo_button.set_icon_name ("edit-redo");
 		redo_button.set_tooltip_text ("Redo the last undone change");
 		clear_button = new ToolButton (null, "Clear");
-		clear_button.set_icon_name ("gtk-clear");
+		clear_button.set_icon_name ("edit-clear");
 		clear_button.set_tooltip_text ("Clear all changes");
 
 		var toolbar = new Toolbar ();
