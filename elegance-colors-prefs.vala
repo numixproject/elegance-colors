@@ -321,9 +321,8 @@ class EleganceColorsWindow : ApplicationWindow {
 		exportdialog.set_do_overwrite_confirmation (true);
 
 		if (exportdialog.run () == ResponseType.ACCEPT) {
-			string theme_path = exportdialog.get_file ().get_path ();
-
 			try {
+				string theme_path = exportdialog.get_file ().get_path ();
 				Process.spawn_command_line_sync ("%s export \"%s\"".printf (elegance_colors, theme_path));
 			} catch (Error e) {
 				stderr.printf ("Failed to export theme: %s\n", e.message);
@@ -349,10 +348,10 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		if (exportsettings.run () == ResponseType.ACCEPT) {
 			try {
+				string keyfile_str = key_file.to_data ();
 				var exportpath = File.new_for_path (exportsettings.get_file ().get_path ());
-
-				config_file.copy (exportpath, FileCopyFlags.OVERWRITE);
-				
+				var dos = new DataOutputStream (exportpath.replace (null, false, FileCreateFlags.REPLACE_DESTINATION));
+				dos.put_string (keyfile_str);
 			} catch (Error e) {
 				stderr.printf ("Failed to export settings: %s\n", e.message);
 			}
