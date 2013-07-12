@@ -1430,8 +1430,8 @@ StScrollBar StButton#hhandle:active {
 }
 
 #message-tray:overview {
-    background: @overview_bg2;
-    border-top: 1px solid @overview_bg1;
+    background: rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .notification {
