@@ -1084,6 +1084,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .app-view-controls {
+    width: 250px;
     padding-bottom: 32px;
 }
 
