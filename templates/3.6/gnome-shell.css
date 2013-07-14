@@ -603,16 +603,11 @@ StScrollBar StButton#hhandle:active {
 }
 
 .panel-corner {
-    -panel-corner-radius: 0;
-    -panel-corner-background-color: transparent;
-    -panel-corner-border-width: 0;
-    -panel-corner-border-color: transparent;
 }
 
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-background-color: transparent;
 }
 
 #appMenu {

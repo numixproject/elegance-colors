@@ -645,16 +645,11 @@ StScrollBar StButton#hhandle:active {
 }
 
 .panel-corner {
-    -panel-corner-radius: 0;
-    -panel-corner-background-color: transparent;
-    -panel-corner-border-width: 0;
-    -panel-corner-border-color: transparent;
 }
 
 .panel-corner:active,
 .panel-corner:overview,
 .panel-corner:focus {
-    -panel-corner-background-color: transparent;
 }
 
 .panel-corner.lock-screen,
@@ -993,6 +988,11 @@ StScrollBar StButton#hhandle:active {
     height: 24px;
 }
 
+.empty-dash-drop-target {
+    width: 24px;
+    height: 24px;
+}
+
 /* Search Box */
 
 #searchEntry {
@@ -1084,7 +1084,6 @@ StScrollBar StButton#hhandle:active {
 }
 
 .app-view-controls {
-    width: 250px;
     padding-bottom: 32px;
 }
 
