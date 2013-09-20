@@ -1,0 +1,172 @@
+#!/usr/bin/gjs
+
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
+
+let Keys = new GLib.KeyFile ();
+//let ConfigDir = new Gio.File.new_for_path (Gio.Environment.get_user_config_dir().get_child("elegance-colors"));//let ConfigDir = new Gio.File.new_for_path ("~/.config/elegance-colors"));
+
+const AboutDialogExample = new Lang.Class({
+	Name: 'Elegance Colors Preferences',
+
+	// Create the application itself
+		_init: function() {
+			this.application = new Gtk.Application({
+				application_id: 'org.elegance.colors',
+				flags: Gio.ApplicationFlags.FLAGS_NONE
+			});
+
+	// Connect 'activate' and 'startup' signals to the callback functions
+	this.application.connect('activate', Lang.bind(this, this._onActivate));
+	this.application.connect('startup', Lang.bind(this, this._onStartup));
+	},
+
+	// Callback function for 'activate' signal presents windows when active
+	_onActivate: function() {
+		this._window.present();
+	},
+
+	// Callback function for 'startup' signal creates the menu and builds the UI
+	_onStartup: function() {
+		this._loadKeys();
+		this._initMenus();
+		this._buildUI();
+	},
+
+	// Load the Keyfile
+	_loadKeys: function() {
+		Keys.load_from_file ("/home/satya/.config/elegance-colors/elegance-colors.ini", GLib.KeyFileFlags.NONE);
+	},
+
+	// Build the application's UI
+	_buildUI: function(){
+		// Create the application window
+		this._window = new Gtk.ApplicationWindow({ application: this.application,
+								window_position: Gtk.WindowPosition.CENTER,
+								title: "Elegance Colors Preferences",
+								default_height: 450,
+								default_width: 450,
+								icon_name: "elegance-colors"
+								});
+
+		// Create the grid
+		this.Grid = new Gtk.Grid ();
+
+		// Create the widgets inside the grid
+		this.progressBar = new Gtk.ProgressBar ();
+		this.Button = new Gtk.Button ({ label: "Button" });
+
+		// Assemble the grid
+		this._window.add (this.Grid);
+		this.Grid.attach (this.Button, 1, 1, 1, 1);
+		this.Grid.attach_next_to (this.progressBar, this.Button, Gtk.PositionType.BOTTOM, 1, 1);
+
+		// Show the window and all child widgets
+		this._window.show_all();
+	},
+
+	// Create the application menu
+	_initMenus: function() {
+		let menu = new Gio.Menu();
+		menu.append("Export theme", 'app.theme');
+		menu.append("Export settings", 'app.export');
+		menu.append("Import settings", 'app.import');
+		menu.append("About", 'app.about');
+		menu.append("Quit",'app.quit');
+		this.application.set_app_menu(menu);
+
+		// Create the "Export theme" menu option and have it call the _exportTheme() function
+		let themeAction = new Gio.SimpleAction({ name: 'theme' });
+		themeAction.connect('activate', Lang.bind(this,
+			function() {
+				this._exportTheme();
+			}));
+		this.application.add_action(themeAction);
+
+		// Create the "Export settings" menu option and have it call the _exportSettings() function
+		let exportAction = new Gio.SimpleAction({ name: 'export' });
+		exportAction.connect('activate', Lang.bind(this,
+			function() {
+				this._exportSettings();
+			}));
+		this.application.add_action(exportAction);
+
+		// Create the "Import settings" menu option and have it call the _importSettings() function
+		let importAction = new Gio.SimpleAction({ name: 'import' });
+		importAction.connect('activate', Lang.bind(this,
+			function() {
+				this._importSettings();
+			}));
+		this.application.add_action(importAction);
+
+		// Create the "About" menu option and have it call the _showAbout() function
+		let aboutAction = new Gio.SimpleAction({ name: 'about' });
+		aboutAction.connect('activate', Lang.bind(this,
+			function() {
+				this._showAbout();
+			}));
+		this.application.add_action(aboutAction);
+
+		// Create the "Quit" menu option and have it close the window
+		let quitAction = new Gio.SimpleAction ({ name: 'quit' });
+		quitAction.connect('activate', Lang.bind(this,
+			function() {
+				this._window.destroy();
+			}));
+		this.application.add_action(quitAction);
+	},
+
+	_exportTheme: function() {
+
+		try {
+			GLib.spawn_command_line_sync( "elegance-colors export /home/satya/custom.zip" );
+		} catch ( e ) {
+			throw e;
+		}
+	},
+
+	_exportsettings: function() {
+	},
+
+	_importSettings: function() {
+	},
+
+	_showAbout: function() {
+
+		// String arrays of the names of the people involved in the project
+		var authors = [ "Satyajit Sahoo", "Valentin Uveges" ];
+		var documenters = [ "Satyajit Sahoo" ];
+		var artists = [ "Reda Lazri", "Joern Kanopka" ];
+
+		// Create the About dialog
+		let aboutDialog = new Gtk.AboutDialog({ title: "About Elegance Colors",
+							program_name: "Elegance Colors",
+							logo_icon_name: "elegance-colors",
+							comments: "Highly customizable chameleon theme for Gnome Shell",
+							copyright: "Copyright \xa9 Satyajit Sahoo",
+							license_type: 3,
+							authors: authors,
+							documenters: documenters,
+							artists: artists,
+							website: "https://github.com/satya164/elegance-colors",
+							website_label: "Elegance Colors on GitHub" });
+
+		// Attach the About dialog to the window
+		aboutDialog.modal = true;
+		aboutDialog.transient_for = this._window;
+
+		// Show the About dialog
+		aboutDialog.show();
+
+		// Connect the Close button to the destroy signal for the dialog
+		aboutDialog.connect('response', function() {
+			aboutDialog.destroy();
+		});
+	}
+});
+
+// Run the application
+let app = new AboutDialogExample();
+app.application.run(ARGV);
