@@ -265,7 +265,6 @@ vals=(
 	"\/\*\*\/"
 )
 # Overview
-overview_itemsize=$(( overview_iconsize + overview_iconspacing - 2 ))
 vars=(
 	"${vars[@]}"
 	"@overview_searchbg1"
@@ -276,9 +275,6 @@ vars=(
 	"@overview_searchfocusfg"
 	"@overview_searchborder"
 	"@overview_searchfocusborder"
-	"@overview_iconsize"
-	"@overview_itemsize"
-	"@overview_iconspacing"
 )
 vals=(
 	"${vals[@]}"
@@ -290,9 +286,6 @@ vals=(
 	"$overview_searchfocusfg"
 	"$overview_searchborder"
 	"$overview_searchfocusborder"
-	"$overview_iconsize"
-	"$overview_itemsize"
-	"$overview_iconspacing"
 )
 # Dash
 dash_bg1=$(tint "$dash_bg1" "$highlight" "$dash_tint")

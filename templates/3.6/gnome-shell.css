@@ -961,13 +961,13 @@ StScrollBar StButton#hhandle:active {
 /* Application Launchers and Grid */
 
 .icon-grid {
-    spacing: @overview_iconspacingpx;
-    -shell-grid-horizontal-item-size: @overview_itemsizepx;
-    -shell-grid-vertical-item-size: @overview_itemsizepx;
+    spacing: 30px;
+    -shell-grid-horizontal-item-size: 136px;
+    -shell-grid-vertical-item-size: 136px;
 }
 
 .icon-grid .overview-icon {
-    icon-size: @overview_iconsizepx;
+    icon-size: 96px;
 }
 
 .all-app {

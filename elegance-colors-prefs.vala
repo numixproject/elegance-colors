@@ -54,9 +54,6 @@ class EleganceColorsWindow : ApplicationWindow {
 	ColorButton overview_searchborder_color;
 	ColorButton overview_searchfocusborder_color;
 
-	SpinButton overview_iconsize_value;
-	SpinButton overview_iconspacing_value;
-
 	string overview_searchbg1_value;
 	string overview_searchbg2_value;
 	string overview_searchfocusbg1_value;
@@ -479,9 +476,6 @@ class EleganceColorsWindow : ApplicationWindow {
 			overview_searchfocusfg_value = key_file.get_string ("Overview", "overview_searchfocusfg");
 			overview_searchborder_value = key_file.get_string ("Overview", "overview_searchborder");
 			overview_searchfocusborder_value = key_file.get_string ("Overview", "overview_searchfocusborder");
-
-			overview_iconsize_value.adjustment.value = key_file.get_double ("Overview", "overview_iconsize");
-			overview_iconspacing_value.adjustment.value = key_file.get_double ("Overview", "overview_iconspacing");
 		} catch (Error e) {
 			stderr.printf ("Failed to set properties: %s\n", e.message);
 		}
@@ -1088,16 +1082,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_searchfocusborder_color = new ColorButton ();
 		((ColorChooser) overview_searchfocusborder_color).set_use_alpha (true);
 		overview_searchfocusborder_color.set_tooltip_text ("Set the border color of the search entry in focus state");
-		var overview_iconsize_label = new Label.with_mnemonic ("App icon size");
-		overview_iconsize_label.set_halign (Align.START);
-		overview_iconsize_value = new SpinButton.with_range (0, 256, 1);
-		overview_iconsize_value.set_tooltip_text ("Set the size of icons in the application grid");
-		overview_iconsize_value.set_halign (Align.END);
-		var overview_iconspacing_label = new Label.with_mnemonic ("App icon spacing");
-		overview_iconspacing_label.set_halign (Align.START);
-		overview_iconspacing_value = new SpinButton.with_range (0, 256, 1);
-		overview_iconspacing_value.set_tooltip_text ("Set the spacing between icons in the application grid");
-		overview_iconspacing_value.set_halign (Align.END);
 
 		var overview_searchbg_box = new Box (Orientation.HORIZONTAL, 0);
 		overview_searchbg_box.set_homogeneous (true);
@@ -1127,10 +1111,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_grid.attach_next_to (overview_searchborder_color, overview_searchborder_label, PositionType.RIGHT, 1, 1);
 		overview_grid.attach (overview_searchfocusborder_label, 0, 5, 2, 1);
 		overview_grid.attach_next_to (overview_searchfocusborder_color, overview_searchfocusborder_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconsize_label, 0, 6, 2, 1);
-		overview_grid.attach_next_to (overview_iconsize_value, overview_iconsize_label, PositionType.RIGHT, 1, 1);
-		overview_grid.attach (overview_iconspacing_label, 0, 7, 2, 1);
-		overview_grid.attach_next_to (overview_iconspacing_value, overview_iconspacing_label, PositionType.RIGHT, 1, 1);
 
 		// Dash
 		var dash_bg_label = new Label.with_mnemonic ("Background gradient");
@@ -1857,14 +1837,6 @@ class EleganceColorsWindow : ApplicationWindow {
 		overview_searchfocusborder_color.color_set.connect (() => {
 			on_value_changed ();
 			key_file.set_string ("Overview", "overview_searchfocusborder", overview_searchfocusborder_color.get_rgba ().to_string ());
-		});
-		overview_iconsize_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_iconsize", overview_iconsize_value.adjustment.value);
-		});
-		overview_iconspacing_value.adjustment.value_changed.connect (() => {
-			on_value_changed ();
-			key_file.set_double ("Overview", "overview_iconspacing", overview_iconspacing_value.adjustment.value);
 		});
 
 		// Dash
