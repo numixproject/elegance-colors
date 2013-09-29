@@ -6,7 +6,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 let Keys = new GLib.KeyFile ();
-//let ConfigDir = new Gio.File.new_for_path (Gio.Environment.get_user_config_dir().get_child("elegance-colors"));//let ConfigDir = new Gio.File.new_for_path ("~/.config/elegance-colors"));
+//let ConfigDir = new Gio.File.new_for_path (Gio.Environment.get_user_config_dir().get_child("elegance-colors"));
+//let ConfigDir = new Gio.File.new_for_path ("~/.config/elegance-colors"));
 
 const AboutDialogExample = new Lang.Class({
 	Name: 'Elegance Colors Preferences',
