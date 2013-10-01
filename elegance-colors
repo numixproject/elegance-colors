@@ -159,7 +159,7 @@ printf "rgba($red3,$green3,$blue3,$opacity)"
 get_color() {
 if [[ "$mode" = "gtk" ]]; then
     # Get color value from the gtk.css file
-    show_info "Getting color from GTK theme $gtkpath"
+    show_info "Getting color from GTK theme '$gtkpath'"
     if [[ `grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath"` ]]; then
         highlight=`grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath" | sed -r -e "s/@define-color (theme_)?selected_bg_color //g" -e "s/;//g"`
     else
@@ -168,7 +168,7 @@ if [[ "$mode" = "gtk" ]]; then
         highlight="$1"
     fi
 elif [[ "$mode" = "wallpaper" ]]; then
-    show_info "Getting color from wallpaper $img"
+    show_info "Getting color from wallpaper '$wallpaper'"
     # Scale background image to 3x3 and take the color from top-left
     highlight=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
 else
@@ -469,31 +469,31 @@ else
 fi
 # Include additional CSS code in the template
 if [[ ! -z "$include_code" ]]; then
-    show_info "Including code $include_code in theme"
+    show_info "Including code '$include_code' in theme"
     echo "$include_code" >> "$makedir/$cssfile"
 fi
 # Include additional files
 if [[ ! -z "$include_dir" ]]; then
     IFS='; ' read -a css_files <<< "$include_css"
     for css_file in "${css_files[@]}"; do
-        show_info "Including CSS file $css_file in theme"
+        show_info "Including CSS file '$css_file' in theme"
         if [[ -f "$configdir/presets/$include_dir/$css_file" ]]; then
             cat "$configdir/presets/$include_dir/$css_file" >> "$makedir/$cssfile"
         elif [[ -f "$installdir/presets/$include_dir/$css_file" ]]; then
             cat "$installdir/presets/$include_dir/$css_file" >> "$makedir/$cssfile"
         else
-            show_err "CSS file $css_file not found"
+            show_err "CSS file '$css_file' not found"
         fi
     done
     IFS='; ' read -a asset_files <<< "$include_files"
     for asset_file in "${asset_files[@]}"; do
-        show_info "Copying file $asset_file to theme directory"
+        show_info "Copying file '$asset_file' to theme directory"
         if [[ -f "$configdir/presets/$include_dir/$asset_file" ]]; then
             cp -f "$configdir/presets/$include_dir/$asset_file" "$makedir/"
         elif [[ -f "$installdir/presets/$include_dir/$asset_file" ]]; then
             cp -f "$installdir/presets/$include_dir/$asset_file" "$makedir/"
         else
-            show_err "File $asset_file not found"
+            show_err "File '$asset_file' not found"
         fi
     done
 fi
@@ -502,11 +502,11 @@ show_info "Making the theme"
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
     if [[ ! `grep "${vars[i]}" "$makedir/$cssfile"` ]]; then
-        show_warn "Template does not have any ${vars[i]} variable"
+        show_warn "Template does not have any '${vars[i]}' variable"
     elif [[ "${vals[i]}" = "" ]]; then
-        show_warn "The value of ${vars[i]} variable is not set"
+        show_warn "The value of '${vars[i]}' variable is not set"
     else
-        show_info "Replacing ${vars[i]} with ${vals[i]}"
+        show_info "Replacing '${vars[i]}' with '${vals[i]}'"
         sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/$cssfile"
     fi
 done
@@ -628,7 +628,6 @@ for module in `ls "$moduledir/" | sort -u`; do
         break
     fi
 done
-run_blank
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -636,19 +635,15 @@ run_blank
 # Get the mode
 mode=$(grep "mode=" $configfile | cut -d '=' -f 2)
 if [[ "$mode" = "gtk" ]]; then
-    # Get the gtk theme name
-    theme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
     # Get the gtk theme path
-    gtkpaths=( "$HOME/.themes/$theme/gtk-3.0/gtk-main.css" "$HOME/.themes/$theme/gtk-3.0/gtk.css" "/usr/share/themes/$theme/gtk-3.0/gtk-main.css" "/usr/share/themes/$theme/gtk-3.0/gtk.css" )
+    gtkpaths=( "$HOME/.themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk.css" )
     # Get the gtk theme path
     for gtkpath in "${gtkpaths[@]}"; do
         [[ -f "$gtkpath" ]] && break
     done
 elif [[ "$mode" = "wallpaper" ]]; then
-    # Get the background image path
-    img=$(gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'//g" -e "s/file:\/\///g" -e 's/\%20/\ /g')
     # See if the returned image is a xml file
-    [[ "$img" =~ .xml$ ]] && img=$(grep "<file>" "$img" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
+    [[ "$wallpaper" =~ .xml$ ]] && img=$(grep "<file>" "$wallpaper" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 [[ -f "$themefile" ]] || make_theme

@@ -24,6 +24,8 @@ install: $(MAIN)
 	$(INSTALL_DATA) README.md $(DESTDIR)/usr/share/elegance-colors/README.md
 	$(INSTALL_DATA) CREDITS $(DESTDIR)/usr/share/elegance-colors/CREDITS
 	$(INSTALL_DATA) elegance-colors.desktop $(DESTDIR)/etc/xdg/autostart/elegance-colors.desktop
+	$(INSTALL_DIRECTORY) $(DESTDIR)/usr/share/elegance-colors/modules
+	$(INSTALL_DATA) modules/* $(DESTDIR)/usr/share/elegance-colors/modules
 	$(INSTALL_DIRECTORY) $(DESTDIR)/usr/share/elegance-colors/presets
 	$(INSTALL_DATA) presets/* $(DESTDIR)/usr/share/elegance-colors/presets
 	for dir in templates/*; do \

@@ -1,10 +1,13 @@
 #!/bin/bash
 # Elegance Colors module for Gnome Shell
 
-shellversion="$(gnome-shell --version)"
+shellversion=$(gnome-shell --version)
 template="$installdir/templates/gs-$(echo $shellversion | cut -f3 -d\  | cut -f1-2 -d.)"
 cssfile="gnome-shell.css"
 themefile="$HOME/.themes/elegance-colors/gnome-shell/gnome-shell.css"
+
+gtktheme=$(gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g")
+wallpaper=$(gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'//g" -e "s/file:\/\///g" -e 's/\%20/\ /g')
 
 glibschemas="/usr/share/glib-2.0/schemas"
 extensiondir="$HOME/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas"
