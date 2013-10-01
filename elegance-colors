@@ -614,20 +614,6 @@ done < "$defaultconfig"
 }
 
 initialize() {
-# Load the appropriate module
-for module in `ls "$moduledir/" | sort -u`; do
-    if ( [ "$(pidof $module)" ] ); then
-        show_info "Loading module '$module'"
-        if [[ -f "$moduledir/$module" ]]; then
-            source "$moduledir/$module"
-            init_module
-        else
-            show_err "Failed to load required module '$module'"
-            exit 1
-        fi
-        break
-    fi
-done
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -647,6 +633,22 @@ elif [[ "$mode" = "wallpaper" ]]; then
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 [[ -f "$themefile" ]] || make_theme
+}
+
+load_module() {
+for module in `ls "$moduledir/" | sort -u`; do
+    if ( [ "$(pidof $module)" ] ); then
+        show_info "Loading module '$module'"
+        if [[ -f "$moduledir/$module" ]]; then
+            source "$moduledir/$module"
+            init_module
+        else
+            show_err "Failed to load required module '$module'"
+            exit 1
+        fi
+        break
+    fi
+done
 }
 
 stop_process() {
@@ -677,6 +679,8 @@ rm -f "$md5self"
 echo "$$" > "$tempdir/elegance-colors.pid"
 # Update config file, we do it once to avoid high cpu usage
 [[ -f "$configfile" ]] && update_config
+# Load the appropriate module
+load_module
 while :
 do
     # Check if the script has been changed
@@ -701,6 +705,7 @@ done
 }
 
 apply_changes() {
+load_module
 initialize
 make_theme
 }
