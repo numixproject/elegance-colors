@@ -460,7 +460,6 @@ vals=(
 )
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/$module"
-echo $makedir
 # Copy Elegance Colors to create a new theme
 if [[ -d "$template" ]]; then
     mkdir -p "$makedir"
