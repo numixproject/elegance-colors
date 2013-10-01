@@ -170,7 +170,7 @@ if [[ "$mode" = "gtk" ]]; then
 elif [[ "$mode" = "wallpaper" ]]; then
     show_info "Getting color from wallpaper '$wallpaper'"
     # Scale background image to 3x3 and take the color from top-left
-    highlight=`convert "$img" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
+    highlight=`convert "$wallpaper" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
 else
     show_info "Using custom highlight color"
     highlight="$1"
@@ -559,7 +559,7 @@ if [[ "$mode" = "gtk" ]]; then
 # Check if the wallpaper has been changed
 elif [[ "$mode" = "wallpaper" ]]; then
     md5bg="$tempdir/background-md5"
-    md5b=`md5sum "$img"`
+    md5b=`md5sum "$wallpaper"`
     if [[ -f "$md5bg" ]]; then
         oldmd5b=`cat "$md5bg"`
         if [[ ! "$oldmd5b" = "$md5b" ]]; then
@@ -621,15 +621,18 @@ initialize() {
 # Get the mode
 mode=$(grep "mode=" $configfile | cut -d '=' -f 2)
 if [[ "$mode" = "gtk" ]]; then
+    # Get the gtk theme name
+    gtktheme=`get_gtktheme`
     # Get the gtk theme path
     gtkpaths=( "$HOME/.themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk.css" )
-    # Get the gtk theme path
     for gtkpath in "${gtkpaths[@]}"; do
         [[ -f "$gtkpath" ]] && break
     done
 elif [[ "$mode" = "wallpaper" ]]; then
-    # See if the returned image is a xml file
-    [[ "$wallpaper" =~ .xml$ ]] && img=$(grep "<file>" "$wallpaper" | grep ".jpg\|.png" | sed -e 's/<file>//' -e 's/<\/file>//' | head -n 1)
+    # Get wallpaper path
+    wallpaper=`get_wallpaper`
+    # If the returned image is a xml file, take a random image from it
+    [[ "$wallpaper" =~ .xml$ ]] && wallpaper=$(grep ".jpg\|.png" "$wallpaper" | sort -R | cut -f2 -d\> | cut -f1 -d\< | head -n 1)
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 [[ -f "$themefile" ]] || make_theme
