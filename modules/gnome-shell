@@ -18,7 +18,8 @@ gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme nam
 }
 
 set_theme() {
-if [[ `check_theme` ]]; then
+check_theme > /dev/null 2>&1
+if [[ ! $? -eq 0 ]]; then
     show_info "Applying the theme"
     gsettings --schemadir "$schemadir" set org.gnome.shell.extensions.user-theme name 'elegance-colors'
 fi
