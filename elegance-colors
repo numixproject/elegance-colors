@@ -631,8 +631,8 @@ if [[ "$mode" = "gtk" ]]; then
 elif [[ "$mode" = "wallpaper" ]]; then
     # Get wallpaper path
     wallpaper=`get_wallpaper`
-    # If the returned image is a xml file, take a random image from it
-    [[ "$wallpaper" =~ .xml$ ]] && wallpaper=$(grep ".jpg\|.png" "$wallpaper" | sort -R | cut -f2 -d\> | cut -f1 -d\< | head -n 1)
+    # If the returned image is a xml file, take the first image
+    [[ "$wallpaper" =~ .xml$ ]] && wallpaper=$(grep ".jpg\|.png" "$wallpaper" | cut -f2 -d\> | cut -f1 -d\< | head -n 1)
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
 [[ -f "$themefile" ]] || make_theme
