@@ -638,7 +638,7 @@ fi
 load_module() {
 for module in `ls "$moduledir/" | sort -u`; do
     if ( [ "$(pidof $module)" ] ); then
-        show_info "Loading module '$module'"
+        show_info "Loading module '$moduledir/$module'"
         if [[ -f "$moduledir/$module" ]]; then
             source "$moduledir/$module"
             init_module
@@ -697,7 +697,7 @@ do
     initialize
     # Check if the current theme name matches elegance-colors
     check_theme > /dev/null 2>&1
-    if [[ ! $? -eq 0 ]]; then
+    if [[ $? -eq 0 ]]; then
         monitor_changes
     fi
     sleep 3
