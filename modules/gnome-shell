@@ -15,7 +15,7 @@ gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme nam
 }
 
 set_theme() {
-if [[ `gsettings --schemadir "$schemadir" get org.gnome.shell.extensions.user-theme name | grep -iw "elegance-colors"` ]]; then
+if [[ `check_theme` ]]; then
     show_info "Applying the theme"
     gsettings --schemadir "$schemadir" set org.gnome.shell.extensions.user-theme name 'elegance-colors'
 fi
@@ -24,11 +24,11 @@ fi
 set_schemadir() {
 # Set the schemadir
 if [[ -f "$extensiondir/$schemafile" && -f "$extensiondir/gschemas.compiled" ]]; then
-	schemadir="$extensiondir"
+    schemadir="$extensiondir"
 elif [[ -f "$glibschemas/$schemafile" && -f "$glibschemas/gschemas.compiled" ]]; then
-	schemadir="$glibschemas"
+    schemadir="$glibschemas"
 else
-	return 1
+    return 1
 fi
 }
 
@@ -36,10 +36,10 @@ init_module() {
 # Verify if User themes extension is installed and set schemadir
 set_schemadir
 if [[ ! $? -eq 0 ]]; then
-	notify_err "User themes extension is not installed, please install from https://extensions.gnome.org/extension/19/user-themes/"
-	# Wait till the User theme extension is installed
-	until set_schemadir; do
-		sleep 5
-	done
+    notify_err "User themes extension is not installed, please install from https://extensions.gnome.org/extension/19/user-themes/"
+    # Wait till the User theme extension is installed
+    until set_schemadir; do
+        sleep 5
+    done
 fi
 }

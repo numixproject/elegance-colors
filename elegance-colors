@@ -618,13 +618,17 @@ initialize() {
 for module in `ls "$moduledir/" | sort -u`; do
     if ( [ "$(pidof $module)" ] ); then
         show_info "Loading module '$module'"
-        source "$moduledir/$module"
-        init_module
-    else
-        show_err "Failed to load required module '$module'"
-        exit 1
+        if [[ -f "$moduledir/$module" ]]; then
+            source "$moduledir/$module"
+            init_module
+        else
+            show_err "Failed to load required module '$module'"
+            exit 1
+        fi
+        break
     fi
 done
+run_blank
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -693,7 +697,10 @@ do
     echo "$md5s" > "$md5self"
     initialize
     # Check if the current theme name matches elegance-colors
-    [[ `check_theme` ]] && monitor_changes
+    check_theme
+    if [[ ! $? -eq 0 ]]; then
+        monitor_changes
+    fi
     sleep 3
 done
 }
