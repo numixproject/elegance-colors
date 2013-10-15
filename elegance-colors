@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to change the colors of Elegance Colors Gnome Shell theme
+# Script for Elegance Colors theme
 #
 # Copyright (C) 2012  Satyajit Sahoo
 #
@@ -607,8 +607,8 @@ done < "$configfile"
 }
 
 update_config() {
-# Update the config file
-show_info "Updating the config file"
+# Update config file
+show_info "Updating config file"
 while IFS='= ' read var val; do
     # Escape comments
     [[ "$var" =~ ^# ]] && continue
@@ -639,7 +639,7 @@ elif [[ "$mode" = "wallpaper" ]]; then
     # If the wallpaper is a xml file, take the first image
     [[ "$wallpaper" =~ .xml$ ]] && wallpaper=$(grep ".jpg\|.png" "$wallpaper" | cut -f2 -d\> | cut -f1 -d\< | head -n 1)
 fi
-# If elegance-colors doesn't exist in ~./themes, create it
+# Generate theme files for elegance-colors if don't exist
 [[ -f "$themedir/$module/$cssfile" ]] || make_theme
 }
 
@@ -647,6 +647,7 @@ load_module() {
 for module in `ls "$moduledir/" | sort -u`; do
     if ( [ "$(pidof $module)" ] ); then
         if [[ -f "$moduledir/$module" ]]; then
+            show_info "Loading module '$module'"
             source "$moduledir/$module"
         else
             show_err "Failed to load required module '$module'"
