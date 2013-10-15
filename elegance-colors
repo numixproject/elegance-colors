@@ -46,7 +46,7 @@ notify-send -h int:transient:1 -i dialog-error "Elegance Colors" "$@"
 }
 
 export_theme() {
-load_module
+load_module || return 1
 if [[ -f "$themedir/$module/$cssfile" ]]; then
     if [[ -z "$1" ]]; then
         read -p  "Enter a name for the theme: " themename
@@ -66,14 +66,14 @@ if [[ -f "$themedir/$module/$cssfile" ]]; then
     rm -rf "$tempdir/elegance-colors.tmp"
     if [[ -f "$themepath/$themefile" ]]; then
         show_info "Theme exported to '$themepath/$themefile'"
-        exit
+        return 0
     else
         notify_err "Failed to export theme!"
-        exit 1
+        return 1
     fi
 else
     notify_err "Theme files not found!"
-    exit 1
+    return 1
 fi
 }
 
@@ -105,6 +105,7 @@ elif [[ "$basecolor" =~ ^# && "${#basecolor}" -eq 7 ]]; then
     alpha="1.0"
 else
     show_err "Invalid color '$basecolor'"
+    return 1
 fi
 }
 
@@ -158,17 +159,16 @@ printf "rgba($red3,$green3,$blue3,$opacity)"
 }
 
 get_color() {
-if [[ "$mode" = "gtk" ]]; then
+if [[ "$mode" = "gtk" && -f "$gtkpath" ]]; then
     # Get color value from the gtk.css file
     show_info "Getting color from GTK theme '$gtkpath'"
     if [[ `grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath"` ]]; then
         highlight=`grep -E -i '@define-color (theme_)?selected_bg_color (#|rgb).*' "$gtkpath" | sed -r -e "s/@define-color (theme_)?selected_bg_color //g" -e "s/;//g"`
     else
         show_err "Failed to derive highlight color from GTK theme, using custom color"
-        mode="custom"
         highlight="$1"
     fi
-elif [[ "$mode" = "wallpaper" ]]; then
+elif [[ "$mode" = "wallpaper" && -f "$wallpaper" ]]; then
     show_info "Getting color from wallpaper '$wallpaper'"
     # Scale background image to 3x3 and take the color from top-left
     highlight=`convert "$wallpaper" -resize 3x3 -filter cubic -fuzz 15% -brightness-contrast 15% -colorspace RGB -format '%[pixel:s]' info:-`
@@ -181,7 +181,7 @@ fi
 get_textcolor() {
 if [[ "$text" = "auto" ]]; then
     show_info "Determining highlight text color"
-    if [[ "$mode" = "gtk" ]]; then
+    if [[ "$mode" = "gtk" && -f "$gtkpath" ]]; then
         # Get color value from the gtk.css file
         if [[ `grep -E -i '@define-color (theme_)?selected_fg_color (#|rgb).*' "$gtkpath"` ]]; then
             textcolor=`grep -E -i '@define-color (theme_)?selected_fg_color (#|rgb).*' "$gtkpath" | sed -r -e "s/@define-color (theme_)?selected_fg_color //g" -e "s/;//g"`
@@ -464,9 +464,10 @@ makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/$module"
 if [[ -d "$template" ]]; then
     mkdir -p "$makedir"
     show_info "Using template '$template'"
-    cp -rf "$template/." "$makedir"
+    cp -rf "$template/." "$makedir" || show_err "Failed to copy files"
 else
-    show_err "Failed to copy files"
+    show_err "Template '$template' not found"
+    return 1
 fi
 # Include additional CSS code in the template
 if [[ ! -z "$include_code" ]]; then
@@ -484,6 +485,7 @@ if [[ ! -z "$include_dir" ]]; then
             cat "$installdir/presets/$include_dir/$css_file" >> "$makedir/$cssfile"
         else
             show_err "CSS file '$css_file' not found"
+            return 1
         fi
     done
     IFS='; ' read -a asset_files <<< "$include_files"
@@ -495,6 +497,7 @@ if [[ ! -z "$include_dir" ]]; then
             cp -f "$installdir/presets/$include_dir/$asset_file" "$makedir/"
         else
             show_err "File '$asset_file' not found"
+            return 1
         fi
     done
 fi
@@ -502,7 +505,7 @@ fi
 show_info "Making the theme"
 for (( i=0; i < ${#vars[@]}; i++ ))
 do
-    if [[ "${vals[i]}" = "" ]]; then
+    if [[ -z "${vals[i]}" ]]; then
         show_warn "The value of '${vars[i]}' variable is not set"
     elif [[ ! `grep "${vars[i]}" "$makedir/$cssfile"` ]]; then
         show_warn "Template does not have any '${vars[i]}' variable"
@@ -514,12 +517,15 @@ done
 # Copy the newly created theme
 if [[ ! -f "$makedir/$cssfile" ]]; then
     show_err "Failed to make the theme, files were lost"
+    return 1
 elif [[ `grep "@" "$makedir/$cssfile"` ]]; then
     show_err "Failed to make the theme, could not replace variables"
     grep "@" "$makedir/$cssfile" | sort -u
+    return 1
 elif [[ `grep ",," "$makedir/$cssfile"` ]]; then
     show_err "Failed to make the theme, invalid color expression"
     grep ",," "$makedir/$cssfile" | sort -u
+    return 1
 else
     rm -rf "$themedir/$module"
     mkdir -p "$themedir"
@@ -615,6 +621,8 @@ done < "$defaultconfig"
 }
 
 initialize() {
+# Initialize module
+init_module
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -622,17 +630,13 @@ initialize() {
 # Get the mode
 mode=$(grep "mode=" $configfile | cut -d '=' -f 2)
 if [[ "$mode" = "gtk" ]]; then
-    # Get the gtk theme name
-    gtktheme=`get_gtktheme`
     # Get the gtk theme path
     gtkpaths=( "$HOME/.themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk.css" )
     for gtkpath in "${gtkpaths[@]}"; do
         [[ -f "$gtkpath" ]] && break
     done
 elif [[ "$mode" = "wallpaper" ]]; then
-    # Get wallpaper path
-    wallpaper=`get_wallpaper`
-    # If the returned image is a xml file, take the first image
+    # If the wallpaper is a xml file, take the first image
     [[ "$wallpaper" =~ .xml$ ]] && wallpaper=$(grep ".jpg\|.png" "$wallpaper" | cut -f2 -d\> | cut -f1 -d\< | head -n 1)
 fi
 # If elegance-colors doesn't exist in ~./themes, create it
@@ -642,17 +646,20 @@ fi
 load_module() {
 for module in `ls "$moduledir/" | sort -u`; do
     if ( [ "$(pidof $module)" ] ); then
-        show_info "Loading module '$moduledir/$module'"
         if [[ -f "$moduledir/$module" ]]; then
             source "$moduledir/$module"
-            init_module
         else
             show_err "Failed to load required module '$module'"
-            exit 1
+            return 1
         fi
         break
     fi
+    unset module
 done
+if [[ -z "$module" ]]; then
+    show_err "Failed to initialize module"
+    return 1
+fi
 }
 
 stop_process() {
@@ -684,7 +691,7 @@ echo "$$" > "$tempdir/elegance-colors.pid"
 # Update config file, we do it once to avoid high cpu usage
 [[ -f "$configfile" ]] && update_config
 # Load the appropriate module
-load_module
+load_module || return 1
 while :
 do
     # Check if the script has been changed
@@ -698,9 +705,10 @@ do
         fi
     fi
     echo "$md5s" > "$md5self"
+    # Initialize required files and variables
     initialize
     # Check if the current theme name matches elegance-colors
-    check_theme > /dev/null 2>&1
+    check_theme &> /dev/null
     if [[ $? -eq 0 ]]; then
         monitor_changes
     fi
@@ -709,9 +717,9 @@ done
 }
 
 apply_changes() {
-load_module
-initialize
-make_theme
+load_module || return 1
+initialize || return 1
+make_theme || return 1
 }
 
 case "$1" in
@@ -728,6 +736,6 @@ case "$1" in
     "help")
         man elegance-colors;;
     *)
-        exec "$0" start > /dev/null 2>&1 &
+        exec "$0" start &> /dev/null &
         disown;;
 esac
