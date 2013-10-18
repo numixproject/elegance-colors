@@ -28,7 +28,7 @@ init_module() {
 # Initialize variables
 shellversion=`gnome-shell --version`
 template="$installdir/templates/gs-$(echo $shellversion | cut -f3 -d\  | cut -f1-2 -d.)"
-themedir="$HOME/.themes/elegance-colors"
+themedir="$HOME/.local/share/themes/elegance-colors"
 cssfile="gnome-shell.css"
 
 gtktheme=`gsettings get org.gnome.desktop.interface gtk-theme | sed -e "s/'//g"`
@@ -37,6 +37,13 @@ wallpaper=`gsettings get org.gnome.desktop.background picture-uri | sed -e "s/'/
 glibschemas="/usr/share/glib-2.0/schemas"
 extensiondir="$HOME/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas"
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
+
+# Create link for compatibility in older versions
+if [[ ! -e "$HOME/.themes" ]]; then
+    ln -sf "$HOME/.local/share/themes" "$HOME/.themes"
+elif [[ ! -L "$HOME/.themes" ]]; then
+    ln -sf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
+fi
 
 # Verify if User themes extension is installed and set schemadir
 set_schemadir

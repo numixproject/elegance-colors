@@ -631,7 +631,7 @@ init_module
 mode=$(grep "mode=" $configfile | cut -d '=' -f 2)
 if [[ "$mode" = "gtk" ]]; then
     # Get the gtk theme path
-    gtkpaths=( "$HOME/.themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk.css" )
+    gtkpaths=( "$HOME/.local/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.local/share/themes/$gtktheme/gtk-3.0/gtk.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk-main.css" "$HOME/.themes/$gtktheme/gtk-3.0/gtk.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk-main.css" "/usr/share/themes/$gtktheme/gtk-3.0/gtk.css" )
     for gtkpath in "${gtkpaths[@]}"; do
         [[ -f "$gtkpath" ]] && break
     done
