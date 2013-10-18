@@ -2,8 +2,6 @@
 
 Elegance Colors is a highly customizable chameleon theme for Gnome Shell. It can change colors according to the current GTK theme, current wallpaper (uses imagemagick to get color) or use a user defined color.
 
-Currently Elegance Colors supports Gnome Shell 3.6 and 3.8.
-
 ### License
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
