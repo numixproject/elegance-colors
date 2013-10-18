@@ -43,7 +43,7 @@ if [[ ! -d "$HOME/.themes" ]]; then
     ln -sf "$HOME/.local/share/themes" "$HOME/.themes"
 elif [[ ! -L "$HOME/.themes" ]]; then
     rm -rf "$HOME/.themes/elegance-colors"
-    ln -nsf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
+    ln -sf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
 fi
 
 # Verify if User themes extension is installed and set schemadir
