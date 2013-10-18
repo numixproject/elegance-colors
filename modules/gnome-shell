@@ -39,10 +39,11 @@ extensiondir="$HOME/.local/share/gnome-shell/extensions/user-theme@gnome-shell-e
 schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
 
 # Create link for compatibility in older versions
-if [[ ! -e "$HOME/.themes" ]]; then
+if [[ ! -d "$HOME/.themes" ]]; then
     ln -sf "$HOME/.local/share/themes" "$HOME/.themes"
 elif [[ ! -L "$HOME/.themes" ]]; then
-    ln -sf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
+    rm -rf "$HOME/.themes/elegance-colors"
+    ln -nsf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
 fi
 
 # Verify if User themes extension is installed and set schemadir
