@@ -1,10 +1,10 @@
 #!/usr/bin/gjs
 
-const Lang = imports.lang;
-const Gtk = imports.gi.Gtk;
-const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib; 
+const GObject = imports.gi.GObject;
+const Lang = imports.lang;
+const Gtk = imports.gi.Gtk;
 
 imports.searchPath.unshift('.');
 const View = imports.View;
@@ -28,7 +28,7 @@ const Application = new Lang.Class({
         //window
         this._window = new Gtk.ApplicationWindow({ application: this.application,
                                                    title: "Elegance-Colors Preferences" });
-        this._window.set_default_size(800, 600);
+        this._window.set_default_size(800, 400);
         this._window.window_position = Gtk.WindowPosition.CENTER;
         
         //Model
