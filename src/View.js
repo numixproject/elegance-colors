@@ -9,7 +9,7 @@ const Paned = new Lang.Class({
             });
             
             this.boxLeft = new BoxLeft(storage);
-            this.boxRight = new BoxRight();
+            this.boxRight = new BoxRight(storage);
 
             this.paned.add1(this.boxLeft.getFrame());
             this.paned.add2(this.boxRight.getFrame());
@@ -25,10 +25,12 @@ const BoxLeft = new Lang.Class({
         Name: 'BoxLeft',
        
         _init: function(storage) {
+            this.storage = storage;
 	       	this.box = new Gtk.Box();
 
-        	this.createListStore(storage);
-            this.createTreeView();
+        	this.listStore = this.createListStore();
+            this.treeView = this.createTreeView(this.listStore);
+            this.connectEventChange(this.treeView);
             
             this.scrolledWindow = new Gtk.ScrolledWindow({
                 "vscrollbar-policy": Gtk.PolicyType.ALWAYS
@@ -38,34 +40,47 @@ const BoxLeft = new Lang.Class({
             this.box.add(this.scrolledWindow);
         },
 
-        createListStore: function(storage){
-            this.listStore = new Gtk.ListStore();
-            this.listStore.set_column_types ([
+        createListStore: function(){
+            let listStore = new Gtk.ListStore();
+            listStore.set_column_types ([
                 GObject.TYPE_STRING
             ]);
 
-            for (let i=0; i<storage.presets.length; i++){
-               let title = storage.presets[i].content.get_string("Preset","title");
-               this.listStore.set(this.listStore.append(), [0], [title]);
+            for (let i=0; i<this.storage.presets.length; i++){
+               let title = this.storage.presets[i].keyFile.get_string("Preset","title");
+               listStore.set(listStore.append(), [0], [title]);
             }
+            return listStore;
         },
 
-        createTreeView: function(){
-            this.treeView = new Gtk.TreeView();
-            this.treeView.set_model(this.listStore);
-            this.treeView.set_headers_visible(false);
-            this.treeView.set_hexpand(true);
+        createTreeView: function(listStore){
+            let treeView = new Gtk.TreeView();
+            treeView.set_model(listStore);
+            treeView.set_headers_visible(false);
+            treeView.set_hexpand(true);
 
 
             let columnName = new Gtk.TreeViewColumn ({ title: "Themes" });
-
             let normal = new Gtk.CellRendererText();
-
             columnName.pack_start(normal, true);
-
             columnName.add_attribute (normal, "text", 0);
-            this.treeView.insert_column (columnName, 0);
+            treeView.insert_column (columnName, 0);
 
+            return treeView;
+        },
+
+        connectEventChange: function(treeView){
+            let selection = treeView.get_selection();
+            selection.connect ('changed', Lang.bind (this, this.onSelectionChanged));
+
+        },
+
+        onSelectionChanged: function(){
+            let [ isSelected, model, iter ] = this.treeView.get_selection().get_selected();
+            let currentPresetNumber = this.listStore.get_path(iter).to_string();
+            print(this.listStore.get_path(iter).to_string());
+            print(this.listStore.get_value(iter, 0));
+            this.storage.setCurrentPresetNumber(currentPresetNumber)
 
         },
 
@@ -76,37 +91,108 @@ const BoxLeft = new Lang.Class({
 
 const BoxRight = new Lang.Class({
         Name: 'BoxRight',
-               
-        _init: function() {
-        	this.box = new Gtk.Box({
+
+        _init: function(storage) {
+            this.box = new Gtk.Box({
                 orientation: Gtk.Orientation.VERTICAL
             });
 
-            this.centralBox = new Gtk.Box();
-            this.label = new Gtk.Label({label: "Test Test Test"});
+            this.boxInfo = new BoxRightInfo(storage).getBoxInfo();
+            this.boxControls = new BoxRightControls().getBoxControls();
 
-            this.bottomBox = new Gtk.Box();
-            this.applyButton = new Gtk.Button({label: "Apply"});
-            
-            let image = new Gtk.Image({stock: Gtk.STOCK_PROPERTIES});
-            this.configButton = new Gtk.Button({image: image});
-            
-            let image = new Gtk.Image({stock: Gtk.STOCK_DELETE});
-            this.deleteButton = new Gtk.Button({image: image});
+            this.box.pack_start(this.boxInfo, false, false, 10);
+            this.box.pack_end(this.boxControls, false, false, 10);
 
-
-            this.bottomBox.pack_start(this.deleteButton, false, false, 10);
-            this.bottomBox.pack_end(this.applyButton, false, false, 10);
-            this.bottomBox.pack_end(this.configButton, false, false, 10);
-            this.centralBox.add(this.label);
-
-            this.box.pack_start(this.centralBox, true, true, 10);
-            this.box.pack_end(this.bottomBox, false, false, 10);
-
-	        	        
         },
 
         getFrame: function(){
-	       	return this.box;
+            return this.box;
+        }
+
+
+});
+
+const BoxRightInfo = new Lang.Class({
+        Name: 'BoxRightInfo',
+               
+        _init: function(storage) {
+            this.storage = storage;
+            this.storage.connect("UpdateCurrentPresetNumber",  Lang.bind(this, function() {
+                this.updateInfo();
+            }));
+
+            this.boxInfo = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL
+            });
+            this.boxInfo.add(this.createBoxInfo());
+        },
+
+        createBoxInfo: function(){
+            let box = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL
+            });
+
+
+            let preset = this.storage.getCurrentPreset();
+            let labelTitle = new Gtk.Label({label: preset.keyFile.get_string("Preset","title")});
+            let labelDescription = new Gtk.Label({label: preset.keyFile.get_string("Preset","description")});
+            
+            box.pack_start(labelTitle, false, false, 10);
+            box.pack_start(labelDescription, false, false, 10);
+
+            return box;
+
+        },
+
+        updateInfo: function(){
+            print("view - boxRightInfo - updateInfo");
+            
+            this.boxInfo.remove(this.boxInfo.get_children()[0]);
+            this.boxInfo.add(this.createBoxInfo());
+            this.boxInfo.show_all();
+          
+
+        },
+
+        getBoxInfo: function(){
+	       	return this.boxInfo;
 	    }
+});
+
+const BoxRightControls = new Lang.Class({
+        Name: 'BoxRightControls',
+
+        _init: function() {
+            this.bottomToolBar = this.createBottomToolBar();
+        
+        },
+
+        createBottomToolBar: function(){
+            let bottomBox = new Gtk.Box();
+            let applyButton = new Gtk.Button({
+                label: "Apply",
+                "width-request": 80 
+
+            });
+
+            let image = new Gtk.Image({"icon-name": "gtk-properties"});
+            let configButton = new Gtk.Button({image: image});
+            
+            let image = new Gtk.Image({"icon-name": "gtk-delete"});
+            let deleteButton = new Gtk.Button({image: image});
+
+
+            bottomBox.pack_start(deleteButton, false, false, 5);
+            bottomBox.pack_end(applyButton, false, false, 5);
+            bottomBox.pack_end(configButton, false, false, 5);
+
+
+            return bottomBox;
+        },
+
+        getBoxControls: function(){
+            return this.bottomToolBar;
+        }
+
+
 });

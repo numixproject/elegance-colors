@@ -3,21 +3,43 @@ const Storage = new Lang.Class({
 
 	_init: function(){
 		this.directoryPresets = "./../presets";
-		this.currentPreset = "./../current.ini";
-		
+		this.currentPresetFile = "./../current.ini";
+
 		this.presets = [];
+		this.currentPresetNumber = 0;
+		
+		this.loadPresetsFromDirectory(this.directoryPresets);
 
-		this.loadKeysFromDirectory(this.directoryPresets);
-		//this.printPresets();
 
-		//this.writeKeysToDirectory();
+
+		Signals.addSignalMethods(this);
+		
+		this.connect("UpdateCurrentPresetNumber",  Lang.bind(this, function() {
+        	
+        }));
+		
+				
 	},
+
 
 	printPresets: function(){
 		for (let i=0; i<this.presets.length; i++){
 			print("-> path: \n"+this.presets[i].path+"\n"+
-				"-> content: \n"+this.presets[i].content.to_data()+"\n");
+				"-> keyFileData: \n"+this.presets[i].keyFile.to_data()+"\n");
 		}
+	},
+
+	setCurrentPresetNumber: function(number){
+		this.currentPresetNumber = number;
+		this.emit("UpdateCurrentPresetNumber");
+	},
+
+	getCurrentPresetNumber: function(){
+		return this.currentPresetNumber;
+	},
+
+	getCurrentPreset: function(){
+		return this.presets[this.currentPresetNumber];
 	},
 
 	createPreset: function(name){
@@ -40,7 +62,7 @@ const Storage = new Lang.Class({
 
 		this.presets.push({
 			path: (this.directoryPresets+"/"+fileName+".ini"),
-			content: newKeyFile,
+			keyFile: newKeyFile,
 			modified: true
 		});
 
@@ -48,7 +70,7 @@ const Storage = new Lang.Class({
 	
 	},
 
-	loadKeysFromDirectory: function(location){
+	loadPresetsFromDirectory: function(location){
 		try {
 			let directory = Gio.File.new_for_path(location);
 			let directoryEnum = directory.enumerate_children("standard::*", Gio.FileQueryInfoFlags.NONE, null);
@@ -62,7 +84,7 @@ const Storage = new Lang.Class({
 					let presetPath = directoryEnum.get_container().get_path()+"/"+presetFileInfo.get_name();
 					this.presets.push({
 						path: presetPath,
-						content: this.loadKeysFromFile(presetPath),
+						keyFile: this.loadKeysFromFile(presetPath),
 						modified: false
 					});
 				}
@@ -112,7 +134,7 @@ const Storage = new Lang.Class({
 
 	writeKeysToCurrent: function(number){
 		if (this.presets[number].modified === true){
-			writeKeysToFile(this.currentPreset, this.presets[number].data);
+			writeKeysToFile(this.currentPresetFile, this.presets[number].data);
 		}
 	}
 });

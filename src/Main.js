@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
+const Signals = imports.signals;
 
 imports.searchPath.unshift('.');
 const View = imports.View;
