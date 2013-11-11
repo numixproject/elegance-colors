@@ -82,6 +82,7 @@ const Storage = new Lang.Class({
 					hasMore = false;
 				} else {
 					let presetPath = directoryEnum.get_container().get_path()+"/"+presetFileInfo.get_name();
+					
 					this.presets.push({
 						path: presetPath,
 						keyFile: this.loadKeysFromFile(presetPath),
@@ -135,6 +136,65 @@ const Storage = new Lang.Class({
 	writeKeysToCurrent: function(number){
 		if (this.presets[number].modified === true){
 			writeKeysToFile(this.currentPresetFile, this.presets[number].data);
+		}
+	}
+});
+
+const Preset = new Lang.Class({
+	Name: 'Preset',
+
+	_init: function(keyFilePath, imagePath)
+		//configuration
+		this.keyFilePath = keyFilePath;
+		this.keyFile = null;
+		
+		//image
+		this.imagePath = imagePath;
+		this.image = null;
+		
+		//state
+		this.modified = false;
+		this.current = false;
+
+		//load data to preset
+		this.keyFile = this.loadKeyFile(this.keyFilePath);
+		this.image = this.loadImage(this.imagePath);
+	},
+
+	loadKeyFile: function(location){
+		let keyFile = new GLib.KeyFile();
+		try {
+			keyFile.load_from_file(location, GLib.KeyFileFlags.NONE);
+		}catch (error){
+			print(error);
+		}
+		return keyFile;
+	},
+
+	loadImage: function(location){
+		let image = null;
+		try {
+			image = new Gtk.Image ({ file: location });
+		} catch(error){
+			print(error);
+		}
+		return image;
+	},
+
+	writeKeyFile: function(){
+		let file;
+		let fileOutputStream;
+		let dataOutputStream;
+		try {
+			file = new Gio.File.new_for_path(this.keyFilePath);
+			fileOutputStream = file.replace(null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+			dataOutputStream = new Gio.DataOutputStream({ base_stream: fileOutputStream});
+			dataOutputStream.put_string(this.keyFile.to_data(),null);
+		} catch (error){
+			print(error);
+		} finally {
+			dataOutputStream.close(null);
+			fileOutputStream.close(null);
 		}
 	}
 });
