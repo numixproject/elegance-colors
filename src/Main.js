@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 const Signals = imports.signals;
 
 imports.searchPath.unshift('.');
@@ -29,7 +30,7 @@ const Application = new Lang.Class({
         //window
         this._window = new Gtk.ApplicationWindow({ application: this.application,
                                                    title: "Elegance-Colors Preferences" });
-        this._window.set_default_size(800, 400);
+        this._window.set_default_size(960, 540);
         this._window.window_position = Gtk.WindowPosition.CENTER;
         
         //Model

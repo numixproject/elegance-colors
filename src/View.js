@@ -134,9 +134,14 @@ const BoxRightInfo = new Lang.Class({
 
 
             let preset = this.storage.getCurrentPreset();
+            print(preset.image.pixbuf);
+            let image = new Gtk.Image({
+                pixbuf: preset.image.pixbuf
+            });
             let labelTitle = new Gtk.Label({label: preset.keyFile.get_string("Preset","title")});
             let labelDescription = new Gtk.Label({label: preset.keyFile.get_string("Preset","description")});
             
+            box.pack_start(image, false, false, 10);
             box.pack_start(labelTitle, false, false, 10);
             box.pack_start(labelDescription, false, false, 10);
 

@@ -70,7 +70,8 @@ const Preset = new Lang.Class({
 
 	_init: function(location){
 		//Default
-		this.defaultKeyFile = "./../data/config/config.ini";
+		this.defaultKeyFile = "./../data/config/defaultPreset/config.ini";
+		this.defaultImageFile = "./../data/config/defaultPreset/screenshot.png";
 		
 		//keyfile
 		this.keyFilePath = location+"/config.ini";
@@ -99,12 +100,15 @@ const Preset = new Lang.Class({
 	},
 
 	readImage: function(){
+		// image should be for: 16:9, size: 640×360
 		try {
-			this.image = new Gtk.Image();
-			this.image.set_from_file(this.imagePath);
+			this.image = new Gtk.Image({file: this.imagePath});
+			if (this.image.pixbuf == null){
+				print("test");
+				this.readDefaultImageFile();
+			}
 		} catch(error){
 			print(error+" | path: " + this.imagePath +" -> fallback to default Image");
-			//this.readDefaultImage();
 		}
 	},
 
@@ -116,6 +120,15 @@ const Preset = new Lang.Class({
 			print(error+" | path: " + this.defaultKeyFile);
 		}
 	},
+
+	readDefaultImageFile: function(){
+		try {
+			this.image = new Gtk.Image({file: this.defaultImageFile});
+		} catch(error){
+			print(error+" | path: " + this.imagePath +" -> fallback to default Image");
+		}
+	},
+
 
 	print: function(){
 		print(this.keyFilePath);
