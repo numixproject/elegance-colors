@@ -3,18 +3,30 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Signals = imports.signals;
 
 const Storage = new Lang.Class({
 	Name: 'Storage',
 
 	_init: function(){
+		//directory and files location
 		this.directoryPresets = "./../presets";
-		this.presets=[];
+		this.currentPresetFile = "./../current.ini";
 
-		this.test(this.directoryPresets);
+		//Storage Data
+		this.presets = [];
+		this.readPresetsFromDirectory(this.directoryPresets);
+		this.printPresets();
+		
+		//signals
+		Signals.addSignalMethods(this);
+		this.connect("UpdateCurrentPresetNumber",  Lang.bind(this, function(){
+			//to be added
+		}));
+				
 	},
 
-	test: function(location){
+	readPresetsFromDirectory: function(location){
 		try {
 			let directory = Gio.File.new_for_path(location);
 			let directoryEnum = directory.enumerate_children("standard::*", Gio.FileQueryInfoFlags.NONE, null);
@@ -28,7 +40,6 @@ const Storage = new Lang.Class({
 					let presetPath = directoryEnum.get_container().get_path()+"/"+presetFileInfo.get_name();
 					if (presetFileInfo.get_file_type() === Gio.FileType.DIRECTORY){
 						let preset = new Preset(presetPath);
-						//preset.print();
 						this.presets.push(preset);
 					}
 				}
@@ -37,73 +48,76 @@ const Storage = new Lang.Class({
 			print(error);
 		}
 
-	}	
-	
+	},
+
+	printPresets: function(){
+		for (let i=0; i<this.presets.length; i++){
+			this.presets[i].print();
+		}
+	}
+
+
 });
 
 const Preset = new Lang.Class({
 	Name: 'Preset',
 
 	_init: function(location){
-		//location
-		this.presetPath = location;
+		//Default
+		this.defaultKeyFile = location+"/../default/config.ini"
+
+		//keyfile
+		this.keyFilePath = location+"/config.ini";
+		this.keyFile = null;
 		
-		//properties
-		this.readKeyFile();
-		this.readImage();
+		//image
+		this.imagePath = location+"/screenshot.png";
+		this.image = null;
 		
 		//state
 		this.modified = false;
-		
+		this.current = false;
+
+		//load data to preset
+		this.readKeyFile();
+		this.readImage();
 	},
 
 	readKeyFile: function(){
-		this.keyFile = null;
 		try {
 			this.keyFile = new GLib.KeyFile();
-			this.keyFile.load_from_file(this.presetPath+"/config.ini", GLib.KeyFileFlags.NONE);
+			this.keyFile.load_from_file(this.keyFilePath, GLib.KeyFileFlags.NONE);
 		}catch (error){
-			print(error+" | path: " + this.presetPath+"/config.ini" +" -> fallback to default KeyFile");
+			print(error+" | path: " + this.keyFilePath +" -> fallback to default KeyFile");
 			this.readDefaultKeyFile();
 		}
 	},
 
 	readImage: function(){
 		try {
-			this.image = new Gtk.Image.set_from_file(this.presetPath+"/screenshot.png");
+			this.image = new Gtk.Image();
+			this.image.set_from_file(this.imagePath);
 		} catch(error){
-			print(error+" | path: " + this.presetPath+"/screenshot.png" +" -> fallback to default Image");
-			this.readDefaultImage();
-			this.image = null;
+			print(error+" | path: " + this.imagePath +" -> fallback to default Image");
+			//this.readDefaultImage();
 		}
 	},
 
 	readDefaultKeyFile: function(){
-		this.keyFile = null;
 		try {
-			let file = Gio.File.new_for_path(this.presetPath);
 			this.keyFile = new GLib.KeyFile();
-			this.keyFile.load_from_file(file.get_parent().get_child("default").get_path()+"/config.ini", GLib.KeyFileFlags.NONE);
+			this.keyFile.load_from_file(this.defaultKeyFile, GLib.KeyFileFlags.NONE);
 		}catch (error){
-			print(error+" | path: " + this.presetPath+"/config.ini"+" No default keyFile!!!");
-			this.keyFile = null;
-		}
-
-	},
-
-	readDefaultImage: function(){
-		try {
-			let file = Gio.File.new_for_path(this.presetPath);
-			this.image = new Gtk.Image ({ file: file.get_parent().get_child("default").get_path()+"/screenshot.png" });
-		} catch(error){
-			print(error+" | path: " + this.presetPath+"/screenshot.png"+" No default Image!!!");
-			this.image = null;
+			print(error+" | path: " + this.keyFilePath);
 		}
 	},
 
 	print: function(){
-		print("path: "+ this.presetPath+"/config.ini");
-		print(this.keyFile.to_data());
+		print(this.keyFilePath);
+		print(this.keyFile);
+		print(this.imagePath);
+		print(this.image);
+		print();
 	}
 
 });
