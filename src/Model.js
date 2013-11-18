@@ -104,7 +104,6 @@ const Preset = new Lang.Class({
 		try {
 			this.image = new Gtk.Image({file: this.imagePath});
 			if (this.image.pixbuf == null){
-				print("test");
 				this.readDefaultImageFile();
 			}
 		} catch(error){

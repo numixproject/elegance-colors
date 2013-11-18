@@ -5,7 +5,7 @@ const Paned = new Lang.Class({
             
             this.paned = new Gtk.Paned({
                 orientation: Gtk.Orientation.HORIZONTAL,
-                position: 200
+                position: 230
             });
             
             this.boxLeft = new BoxLeft(storage);
@@ -26,18 +26,24 @@ const BoxLeft = new Lang.Class({
        
         _init: function(storage) {
             this.storage = storage;
-	       	this.box = new Gtk.Box();
+            this.box = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL
+            });
 
-        	this.listStore = this.createListStore();
+            this.listStore = this.createListStore();
             this.treeView = this.createTreeView(this.listStore);
             this.connectEventChange(this.treeView);
             
             this.scrolledWindow = new Gtk.ScrolledWindow({
                 "vscrollbar-policy": Gtk.PolicyType.ALWAYS
             });
+
+            this.toolBar = this.createToolBar();
                             
             this.scrolledWindow.add(this.treeView);                            
-            this.box.add(this.scrolledWindow);
+            this.box.pack_start(this.toolBar, false, false, 0)
+            this.box.pack_start(new Gtk.Separator(), false, false, 0);
+            this.box.pack_start(this.scrolledWindow, true, true, 0);
         },
 
         createListStore: function(){
@@ -48,7 +54,9 @@ const BoxLeft = new Lang.Class({
 
             for (let i=0; i<this.storage.presets.length; i++){
                let title = this.storage.presets[i].keyFile.get_string("Preset","title");
-               listStore.set(listStore.append(), [0], [title]);
+               let description = this.storage.presets[i].keyFile.get_string("Preset","description");
+               listStore.set(listStore.append(), [0], ["<b>"+title+"</b>"+"\n"+description]);
+
             }
             return listStore;
         },
@@ -61,10 +69,16 @@ const BoxLeft = new Lang.Class({
 
 
             let columnName = new Gtk.TreeViewColumn ({ title: "Themes" });
-            let normal = new Gtk.CellRendererText();
+            let normal = new Gtk.CellRendererText({
+                "height": 52,
+                "xpad": 5,
+
+            });
             columnName.pack_start(normal, true);
-            columnName.add_attribute (normal, "text", 0);
-            treeView.insert_column (columnName, 0);
+            columnName.add_attribute (normal, "markup" , 0);
+           
+
+            treeView.insert_column(columnName, 0);
 
             return treeView;
         },
@@ -78,15 +92,39 @@ const BoxLeft = new Lang.Class({
         onSelectionChanged: function(){
             let [ isSelected, model, iter ] = this.treeView.get_selection().get_selected();
             let currentPresetNumber = this.listStore.get_path(iter).to_string();
-            print(this.listStore.get_path(iter).to_string());
-            print(this.listStore.get_value(iter, 0));
             this.storage.setCurrentPresetNumber(currentPresetNumber)
 
         },
 
+        createToolBar: function(){
+            let toolBar = new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL
+            });
+            let image = new Gtk.Image({"icon-name": "gtk-add"});
+            let addPresetButton = new Gtk.Button({
+                image: image,
+                margin: 5
+            });
+            let image = new Gtk.Image({"icon-name": "gtk-save"});
+            let savePresetButton = new Gtk.Button({
+                image: image,
+                margin: 5
+            });
+
+            let toolBarLabel = new Gtk.Label({label: "Themes"});
+
+            toolBar.pack_start(addPresetButton, false, false, 0);
+            toolBar.pack_start(toolBarLabel, true, true, 0);
+            toolBar.pack_end(new Gtk.Separator({orientation: Gtk.Orientation.VERTICAL}), false, false, 0);
+            toolBar.pack_end(savePresetButton, false, false, 0);
+
+
+            return toolBar;
+        },
+
         getFrame: function(){
-	       	return this.box;
-	    }
+            return this.box;
+        }
 });
 
 const BoxRight = new Lang.Class({
@@ -134,9 +172,17 @@ const BoxRightInfo = new Lang.Class({
                 "margin-right": 20
             });
 
+            let detailsBox = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL
+            });
+            let detailsLabel = new Gtk.Label({
+                label: "Details",
+                margin: 2,
+                halign: Gtk.Align.CENTER
+            });
+            detailsBox.add(detailsLabel);
 
             let preset = this.storage.getCurrentPreset();
-            print(preset.image.pixbuf);
             let image = new Gtk.Image({
                 "margin-left": 20,
                 "margin-right": 20,
@@ -161,6 +207,8 @@ const BoxRightInfo = new Lang.Class({
             });
             
             //add to box 
+            box.pack_start(detailsBox, true, true, 0);
+            box.pack_start(new Gtk.Separator(), false, false, 10);
             box.pack_start(image, true, true, 10);
             box.pack_start(labelTitle, false, false, 5);
             box.pack_start(labelDescription, false, false, 0);
@@ -174,10 +222,8 @@ const BoxRightInfo = new Lang.Class({
         },
 
         updateInfo: function(){
-            print("view - boxRightInfo - updateInfo");
-            
-            this.boxInfo.remove(this.boxInfo.get_children()[0]);
-            //this.boxInfo.get_children()[0].destroy();
+            //this.boxInfo.remove(this.boxInfo.get_children()[0]);
+            this.boxInfo.get_children()[0].destroy();
             this.boxInfo.add(this.createBoxInfo());
             this.boxInfo.show_all();
           
