@@ -129,21 +129,45 @@ const BoxRightInfo = new Lang.Class({
 
         createBoxInfo: function(){
             let box = new Gtk.Box({
-                orientation: Gtk.Orientation.VERTICAL
+                orientation: Gtk.Orientation.VERTICAL,
+                "margin-left": 20,
+                "margin-right": 20
             });
 
 
             let preset = this.storage.getCurrentPreset();
             print(preset.image.pixbuf);
             let image = new Gtk.Image({
-                pixbuf: preset.image.pixbuf
+                "margin-left": 20,
+                "margin-right": 20,
+                pixbuf: preset.image.pixbuf,
+                
+                
             });
-            let labelTitle = new Gtk.Label({label: preset.keyFile.get_string("Preset","title")});
-            let labelDescription = new Gtk.Label({label: preset.keyFile.get_string("Preset","description")});
+            let labelTitle = new Gtk.Label({
+                label: preset.keyFile.get_string("Preset","title"),
+                halign: Gtk.Align.START,
+                "margin-left": 20,
+                "margin-right": 20
+
+            });
+            let labelDescription = new Gtk.Label({
+                label: preset.keyFile.get_string("Preset","description"),
+                halign: Gtk.Align.START,
+                "margin-left": 20,
+                "margin-right": 20,
+                "justify": Gtk.Justification.FILL,
+                "wrap": true,
+            });
             
-            box.pack_start(image, false, false, 10);
-            box.pack_start(labelTitle, false, false, 10);
-            box.pack_start(labelDescription, false, false, 10);
+            //add to box 
+            box.pack_start(image, true, true, 10);
+            box.pack_start(labelTitle, false, false, 5);
+            box.pack_start(labelDescription, false, false, 0);
+
+           
+
+        
 
             return box;
 
@@ -153,6 +177,7 @@ const BoxRightInfo = new Lang.Class({
             print("view - boxRightInfo - updateInfo");
             
             this.boxInfo.remove(this.boxInfo.get_children()[0]);
+            //this.boxInfo.get_children()[0].destroy();
             this.boxInfo.add(this.createBoxInfo());
             this.boxInfo.show_all();
           
