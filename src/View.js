@@ -66,6 +66,7 @@ const BoxLeft = new Lang.Class({
             treeView.set_model(listStore);
             treeView.set_headers_visible(false);
             treeView.set_hexpand(true);
+            treeView.set_grid_lines(Gtk.TreeViewGridLines.HORIZONTAL);
 
 
             let columnName = new Gtk.TreeViewColumn ({ title: "Themes" });
