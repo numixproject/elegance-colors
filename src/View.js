@@ -101,12 +101,18 @@ const BoxLeft = new Lang.Class({
             let toolBar = new Gtk.Box({
                 orientation: Gtk.Orientation.HORIZONTAL
             });
-            let image = new Gtk.Image({"icon-name": "list-add-symbolic"});
+            let image = new Gtk.Image({
+                "icon-name": "list-add-symbolic",
+                "icon-size": Gtk.IconSize.SMALL_TOOLBAR
+            })
             let addPresetButton = new Gtk.Button({
                 image: image,
                 margin: 5
             });
-            let image = new Gtk.Image({"icon-name": "document-save-symbolic"});
+            let image = new Gtk.Image({
+                "icon-name": "document-save-symbolic",
+                "icon-size": Gtk.IconSize.SMALL_TOOLBAR
+            });
             let savePresetButton = new Gtk.Button({
                 image: image,
                 margin: 5
@@ -252,10 +258,16 @@ const BoxRightControls = new Lang.Class({
 
             });
 
-            let image = new Gtk.Image({"icon-name": "document-properties-symbolic"});
+            let image = new Gtk.Image({
+                "icon-name": "document-properties-symbolic",
+                "icon-size": Gtk.IconSize.SMALL_TOOLBAR
+            });
             let configButton = new Gtk.Button({image: image});
             
-            let image = new Gtk.Image({"icon-name": "edit-delete-symbolic"});
+            let image = new Gtk.Image({
+                "icon-name": "edit-delete-symbolic",
+                "icon-size": Gtk.IconSize.SMALL_TOOLBAR
+            })
             let deleteButton = new Gtk.Button({image: image});
 
 
