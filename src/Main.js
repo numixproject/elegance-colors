@@ -7,10 +7,19 @@ const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 const Signals = imports.signals;
+const Pango = imports.gi.Pango;
 
 imports.searchPath.unshift('.');
-const View = imports.View;
-const Model = imports.Model;
+const Storage = imports.model.Storage.Storage;
+const Preset = imports.model.Preset.Preset;
+
+const Paned = imports.view.Paned.Paned;
+    const BoxLeft = imports.view.Left.BoxLeft.BoxLeft;
+
+    const BoxRight = imports.view.Right.BoxRight.BoxRight;
+        const BoxRightInfo = imports.view.Right.BoxRightInfo.BoxRightInfo;
+        const BoxRightControls = imports.view.Right.BoxRightControls.BoxRightControls;
+
 
 const Application = new Lang.Class({
     //A Class requires an explicit Name parameter. This is the Class Name.
@@ -34,13 +43,14 @@ const Application = new Lang.Class({
         this._window.window_position = Gtk.WindowPosition.CENTER;
         
         //Model
-        this.storage = new Model.Storage();
+        this.storage = new Storage();
         
         //View
-        this.paned = new View.Paned(this.storage);
+        this.paned = new Paned(this.storage);
         
 
         this._window.add(this.paned.getPaned());
+        
 
     },
 
