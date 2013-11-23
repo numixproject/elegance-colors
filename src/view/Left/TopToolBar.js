@@ -30,7 +30,6 @@ const TopToolBar = new Lang.Class({
 
             let toolBarLabel = new Gtk.Label({
                 label: "Themes",
-                margin: 10 
             });
 
             box.pack_start(addPresetButton, false, false, 0);

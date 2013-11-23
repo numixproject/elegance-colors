@@ -43,14 +43,16 @@ const BoxRightInfo = new Lang.Class({
                 halign: Gtk.Align.START,
                 "justify": Gtk.Justification.FILL,
                 "wrap": true,
+                "max-width-chars": 80,
+                //"ellipsize": Pango.EllipsizeMode.END
 
             });
-            
+                        
             //image 
-            box.pack_start(image, true, true, 0);
+            box.pack_start(image, true, true, 10);
             
             //Text
-            box.pack_start(labelTitle, false, false, 0);
+            box.pack_start(labelTitle, false, false, 5);
             box.pack_start(labelDescription, false, false, 0);
 
            
