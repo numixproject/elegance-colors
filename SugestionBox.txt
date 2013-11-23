@@ -1,0 +1,10 @@
+To do:
+	- Add spacing option to top icons.
+	These mockups look beautiful. I have a request, and this might not be the best place to ask it since you are just looking for suggestions of the UI/UX; but could we add a setting to set the padding/spacing of the top panel system icons?
+
+	I always edit the CSS to be a little tighter w/ uniform spacing, but it gets overwritten with the elegance colors script if I try to run it at start.
+
+	My desktop, look at top right:
+	http://f.cl.ly/items/0f3R1n1r2Z1Z0R3G1A1N/Screenshot%20from%202013-11-21%2013%3A46%3A58.png
+
+

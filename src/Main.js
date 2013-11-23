@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Signals = imports.signals;
 const Pango = imports.gi.Pango;
 
@@ -15,8 +16,11 @@ const Preset = imports.model.Preset.Preset;
 
 const Paned = imports.view.Paned.Paned;
     const BoxLeft = imports.view.Left.BoxLeft.BoxLeft;
+        const PresetsView = imports.view.Left.PresetsView.PresetsView;
+        const TopToolBar = imports.view.Left.TopToolBar.TopToolBar;
 
     const BoxRight = imports.view.Right.BoxRight.BoxRight;
+        const TopLabelBar = imports.view.Right.TopLabelBar.TopLabelBar;
         const BoxRightInfo = imports.view.Right.BoxRightInfo.BoxRightInfo;
         const BoxRightControls = imports.view.Right.BoxRightControls.BoxRightControls;
 

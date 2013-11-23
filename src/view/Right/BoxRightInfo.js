@@ -8,7 +8,9 @@ const BoxRightInfo = new Lang.Class({
             }));
 
             this.boxInfo = new Gtk.Box({
-                orientation: Gtk.Orientation.VERTICAL
+                orientation: Gtk.Orientation.VERTICAL,
+                "margin-left": 40,
+                "margin-right": 40
             });
             this.boxInfo.add(this.createBoxInfo());
         },
@@ -16,49 +18,39 @@ const BoxRightInfo = new Lang.Class({
         createBoxInfo: function(){
             let box = new Gtk.Box({
                 orientation: Gtk.Orientation.VERTICAL,
-                "margin-left": 20,
-                "margin-right": 20
+                halign: Gtk.Align.CENTER,
             });
-
-            let detailsBox = new Gtk.Box({
-                orientation: Gtk.Orientation.VERTICAL
-            });
-            let detailsLabel = new Gtk.Label({
-                label: "Details",
-                margin: 2,
-                halign: Gtk.Align.CENTER
-            });
-            detailsBox.add(detailsLabel);
 
             let preset = this.storage.getCurrentPreset();
+            let pixbuf = preset.image.pixbuf;
+            // scale image to: 640×360
+            pixbuf = pixbuf.scale_simple(640,360,GdkPixbuf.InterpType.BILINEAR);
             let image = new Gtk.Image({
-                "margin-left": 20,
-                "margin-right": 20,
-                pixbuf: preset.image.pixbuf,
-                
+                halign: Gtk.Align.START,
+                pixbuf: pixbuf,
                 
             });
+            
+
             let labelTitle = new Gtk.Label({
-                label: preset.keyFile.get_string("Preset","title"),
+                label: "<b>"+preset.keyFile.get_string("Preset","title")+"</b>",
                 halign: Gtk.Align.START,
-                "margin-left": 20,
-                "margin-right": 20
+                "use-markup": true,
 
             });
             let labelDescription = new Gtk.Label({
                 label: preset.keyFile.get_string("Preset","description"),
                 halign: Gtk.Align.START,
-                "margin-left": 20,
-                "margin-right": 20,
                 "justify": Gtk.Justification.FILL,
                 "wrap": true,
+
             });
             
-            //add to box 
-            box.pack_start(detailsBox, true, true, 0);
-            box.pack_start(new Gtk.Separator(), false, false, 10);
-            box.pack_start(image, true, true, 10);
-            box.pack_start(labelTitle, false, false, 5);
+            //image 
+            box.pack_start(image, true, true, 0);
+            
+            //Text
+            box.pack_start(labelTitle, false, false, 0);
             box.pack_start(labelDescription, false, false, 0);
 
            
