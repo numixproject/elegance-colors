@@ -26,8 +26,8 @@ fi
 
 init_module() {
 # Initialize variables
-shellversion=`gnome-shell --version`
-template="$installdir/templates/gs-$(echo $shellversion | cut -f3 -d\  | cut -f1-2 -d.)"
+shellversion=`gnome-shell --version | cut -f3 -d\  | cut -f1-2 -d.`
+template="$installdir/templates/gs-$shellversion"
 themedir="$HOME/.local/share/themes/elegance-colors"
 cssfile="gnome-shell.css"
 
@@ -42,8 +42,7 @@ schemafile="org.gnome.shell.extensions.user-theme.gschema.xml"
 if [[ ! -d "$HOME/.themes" ]]; then
     ln -sf "$HOME/.local/share/themes" "$HOME/.themes"
 elif [[ ! -L "$HOME/.themes" ]]; then
-    rm -rf "$HOME/.themes/elegance-colors"
-    ln -sf "$HOME/.local/share/themes/elegance-colors" "$HOME/.themes/elegance-colors"
+    ln -sf "$themedir" "$HOME/.themes/elegance-colors"
 fi
 
 # Verify if User themes extension is installed and set schemadir

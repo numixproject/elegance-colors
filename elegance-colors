@@ -527,7 +527,7 @@ elif [[ `grep ",," "$makedir/$cssfile"` ]]; then
     grep ",," "$makedir/$cssfile" | sort -u
     return 1
 else
-    rm -rf "$themedir/$module"
+    rm -rf "$themedir"
     mkdir -p "$themedir"
     mv "$makedir" "$themedir"
     # Set the theme
