@@ -23,6 +23,7 @@ install: $(MAIN)
 	$(INSTALL_DATA) elegance-colors-prefs.desktop $(DESTDIR)/usr/share/applications/elegance-colors-prefs.desktop
 	$(INSTALL_DATA) README.md $(DESTDIR)/usr/share/elegance-colors/README.md
 	$(INSTALL_DATA) CREDITS $(DESTDIR)/usr/share/elegance-colors/CREDITS
+	$(INSTALL_DATA) elegance-colors.appdata.xml $(DESTDIR)/usr/share/appdata/elegance-colors.appdata.xml
 	$(INSTALL_DATA) elegance-colors.desktop $(DESTDIR)/etc/xdg/autostart/elegance-colors.desktop
 	$(INSTALL_DIRECTORY) $(DESTDIR)/usr/share/elegance-colors/modules
 	$(INSTALL_DATA) modules/* $(DESTDIR)/usr/share/elegance-colors/modules

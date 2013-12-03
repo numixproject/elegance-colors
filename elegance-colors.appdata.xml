@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2013 Satyajit Sahoo <your@email.com> -->
+<application>
+    <id type="desktop">elegance-colors-prefs.desktop</id>
+    <licence>GFDL</licence>
+    <name>Elegance Colors</name>
+    <summary>Chameleon theme for Gnome Shell</summary>
+    <description>
+        <p>
+        Elegance Colors is a highly customizable chameleon theme for Gnome Shell.
+        It can change colors according to the current GTK theme, wallpaper or
+        use a user defined color.
+        </p>
+        <p>
+        A GUI lets you customize various aspects of the the theme. You can also
+        export your customized theme, import/export settings from the GMenu.
+        </p>
+    </description>
+    <screenshots>
+        <screenshot type="default" width="624" height="351">http://raw.github.com/satya164/elegance-colors/master/screenshot.png</screenshot>
+    </screenshots>
+    <url type="homepage">http://github.com/satya164/elegance-colors</url>
+    <updatecontact>satyajit.happy@gmail.com</updatecontact>
+</application>
