@@ -1,4 +1,3 @@
-#!/bin/bash
 # Elegance Colors module for Gnome Shell
 
 check_theme() {
