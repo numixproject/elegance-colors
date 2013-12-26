@@ -529,8 +529,8 @@ else
     rm -rf "$themedir"
     mkdir -p "$themedir"
     mv "$makedir" "$themedir"
-    # Set the theme
-    set_theme
+    # Apply the theme
+    apply_theme
 fi
 # Remove the temporary directory
 rm -rf $(dirname "$makedir")
@@ -620,6 +620,8 @@ done < "$defaultconfig"
 }
 
 initialize() {
+# Initialize module
+init_module
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -654,10 +656,7 @@ for module in `ls "$moduledir/" | sort -u`; do
     fi
     unset module
 done
-if [[ ! -z "$module" ]]; then
-    # Initialize module
-    init_module
-else
+if [[ -z "$module" ]]; then
     show_err "Failed to initialize module"
     return 1
 fi
@@ -721,6 +720,7 @@ apply_changes() {
 load_module || return 1
 initialize || return 1
 make_theme || return 1
+set_theme || return 1
 }
 
 case "$1" in
