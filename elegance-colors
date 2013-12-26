@@ -47,6 +47,7 @@ notify-send -h int:transient:1 -i dialog-error "Elegance Colors" "$@"
 
 export_theme() {
 load_module || return 1
+init_module || return 1
 if [[ -f "$themedir/$module/$cssfile" ]]; then
     if [[ -z "$1" ]]; then
         themefile="Elegance Colors Custom.zip"
@@ -621,7 +622,7 @@ done < "$defaultconfig"
 
 initialize() {
 # Initialize module
-init_module
+init_module || return 1
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
