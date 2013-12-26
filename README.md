@@ -12,7 +12,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 Copyright (C) [Satyajit Sahoo](mailto:satyajit.happy@gmail.com)
 
-### How to install
+### Installation
 
 Ubuntu users can install Elegance Colors from our themes PPA using the following commands,
 
@@ -39,6 +39,8 @@ Extract the archive, navigate to the directory and type the following commands i
 To derive color from wallpaper, you need to install ImageMagick
 
 Also install the [User Theme Extension](https://extensions.gnome.org/extension/19/user-themes/) for Gnome Shell.
+
+### Setup
 
 A process runs in background which detects changes, generates the theme and reloads the theme accordingly. After installation, you must run the following command to start the background process,
 
