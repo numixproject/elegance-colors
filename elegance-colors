@@ -49,14 +49,13 @@ export_theme() {
 load_module || return 1
 if [[ -f "$themedir/$module/$cssfile" ]]; then
     if [[ -z "$1" ]]; then
-        read -p  "Enter a name for the theme: " themename
-        themefile="$themename.zip"
+        themefile="Elegance Colors Custom.zip"
         themepath="$HOME"
     else
         themefile="${1##*/}"
-        themename="${themefile%*.zip}"
         themepath="${1%/*}"
     fi
+    themename="${themefile%*.zip}"
     rm -rf "$tempdir/elegance-colors.tmp"
     mkdir -p "$tempdir/elegance-colors.tmp/$themename"
     cp -rf "$themedir/$module" "$tempdir/elegance-colors.tmp/$themename/$module"
@@ -621,8 +620,6 @@ done < "$defaultconfig"
 }
 
 initialize() {
-# Initialize module
-init_module
 # If config directory doesn't exist, create it
 [[ -d "$configdir" ]] || mkdir -p "$configdir"
 # If config file doesn't exist, copy the default config
@@ -657,7 +654,10 @@ for module in `ls "$moduledir/" | sort -u`; do
     fi
     unset module
 done
-if [[ -z "$module" ]]; then
+if [[ ! -z "$module" ]]; then
+    # Initialize module
+    init_module
+else
     show_err "Failed to initialize module"
     return 1
 fi
