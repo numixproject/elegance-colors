@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 27" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<linearGradient id="linearGradient39573-6-1">
+<stop offset="0" style="stop-color:#fff"/>
+<stop offset="1" style="stop-color:#fff;stop-opacity:0"/>
+</linearGradient>
+<linearGradient id="linearGradient39563-4-2">
+<stop offset="0" style="stop-color:#fff"/>
+<stop offset="1" style="stop-color:#fff;stop-opacity:0"/>
+</linearGradient>
+<radialGradient cx="50.5" cy="487.5" xlink:href="#linearGradient39573-6-1" id="radialGradient68157-0-8" r="10.5" gradientUnits="userSpaceOnUse"/>
+<radialGradient cx="49" cy="488" gradientTransform="matrix(1 0 0 .34868 0 317.8421)" xlink:href="#linearGradient39563-4-2" id="radialGradient68155-2-3" r="38" gradientUnits="userSpaceOnUse"/>
+</defs>
+<g style="color:#000" transform="translate(-11 -474.00001)">
+<rect width="76" x="11" y="487" rx="0" height="2" style="opacity:.494;fill:url(#radialGradient68155-2-3)"/>
+<path style="opacity:.431;fill:url(#radialGradient68157-0-8)" d="M 61,487.5 C 61,493.29899 56.29899,498 50.5,498 44.70101,498 40,493.29899 40,487.5 40,481.70101 44.70101,477 50.5,477 c 5.79899,0 10.5,4.70101 10.5,10.5 z" transform="matrix(1.28571 0 0 1.28571 -14.42857 -139.28571)"/>
+<path style="fill:#fff" d="M 61,487.5 C 61,493.29899 56.29899,498 50.5,498 44.70101,498 40,493.29899 40,487.5 40,481.70101 44.70101,477 50.5,477 c 5.79899,0 10.5,4.70101 10.5,10.5 z" transform="matrix(.4359 0 0 .4359 28.48718 275)"/>
+</g>
+</svg>

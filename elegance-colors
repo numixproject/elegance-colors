@@ -458,6 +458,16 @@ vals=(
     "$misc_tooltipborder"
     "$misc_insensitive"
 )
+# Additional stuff, useful for specific theme versions
+tile_previewbg=$(alpha "$highlight" "0.3")
+vars_=(
+    "${vars_[@]}"
+    "@tile_previewbg"
+)
+vals_=(
+    "${vals_[@]}"
+    "$tile_previewbg"
+)
 # Set a temporary directory
 makedir="$tempdir/elegance-colors-$(date +%H%M%S%N)/$module"
 # Copy Elegance Colors to create a new theme
@@ -512,6 +522,15 @@ do
     else
         show_info "Replacing '${vars[i]}' with '${vals[i]}'"
         sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/$cssfile"
+    fi
+done
+for (( i=0; i < ${#vars_[@]}; i++ ))
+do
+    if [[ -z "${vals_[i]}" ]]; then
+        show_warn "The value of '${vars_[i]}' variable is not set"
+    elif [[ `grep "${vars_[i]}" "$makedir/$cssfile"` ]]; then
+        show_info "Replacing '${vars_[i]}' with '${vals_[i]}'"
+        sed -i "s/${vars_[i]}/${vals_[i]}/g" "$makedir/$cssfile"
     fi
 done
 # Copy the newly created theme
