@@ -1626,6 +1626,7 @@ class EleganceColorsWindow : ApplicationWindow {
 
 		notebook = new Notebook ();
 		notebook.set_show_tabs (false);
+		notebook.set_show_border (false);
 		notebook.append_page (general_grid, null);
 		notebook.append_page (panel_grid, null);
 		notebook.append_page (overview_grid, null);
