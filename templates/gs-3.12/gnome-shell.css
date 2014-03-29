@@ -2204,7 +2204,7 @@ StScrollBar StButton#hhandle:active {
 
 /* Tile previews */
 .tile-preview {
-    background-color: @tile_previewbg;
+    background-color: @_tile_previewbg;
     border: 1px solid @selected_bg1; /* theme selected bg color */
 }
 
