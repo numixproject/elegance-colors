@@ -301,78 +301,74 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void export_theme () {
+    public string show_filedialog (Gtk.FileChooserAction action,
+                                   string title, string canceltext, string accepttext,
+                                   string filterpattern, string filename) {
 
-        var exportdialog = new Gtk.FileChooserDialog (
-                               "Export theme", this,
-                               Gtk.FileChooserAction.SAVE,
-                               "Cancel", Gtk.ResponseType.CANCEL,
-                               "Export", Gtk.ResponseType.ACCEPT, null);
+        var filechooser = new Gtk.FileChooserDialog (
+                              title, this, action,
+                              canceltext, Gtk.ResponseType.CANCEL,
+                              accepttext, Gtk.ResponseType.ACCEPT, null);
 
         var filter = new Gtk.FileFilter ();
-        filter.add_pattern ("*.zip");
+        filter.add_pattern (filterpattern);
 
-        exportdialog.set_filter (filter);
-        exportdialog.set_current_name ("Elegance Colors Custom.zip");
-        exportdialog.set_do_overwrite_confirmation (true);
+        filechooser.set_filter (filter);
+        filechooser.set_do_overwrite_confirmation (true);
 
-        if (exportdialog.run () == Gtk.ResponseType.ACCEPT) {
+        if (action == Gtk.FileChooserAction.SAVE) {
+            filechooser.set_current_name (filename);
+        }
+
+        string current_path = null;
+
+        if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+            current_path = filechooser.get_file ().get_path ();
+        }
+
+        filechooser.close ();
+
+        return current_path;
+    }
+
+    void export_theme () {
+        string file_path = show_filedialog (Gtk.FileChooserAction.SAVE,
+                                            "Export theme", "Cancel", "Export",
+                                            "*.zip", "Elegance Colors Custom.zip");
+
+         if (file_path != null) {
             try {
-                string theme_path = exportdialog.get_file ().get_path ();
-                Process.spawn_command_line_sync ("%s export \"%s\"".printf (elegance_colors, theme_path));
+                Process.spawn_command_line_sync ("%s export \"%s\"".printf (elegance_colors, file_path));
             } catch (Error e) {
                 stderr.printf ("Failed to export theme: %s\n", e.message);
             }
         }
-
-        exportdialog.close ();
     }
 
     void export_settings () {
+        string file_path = show_filedialog (Gtk.FileChooserAction.SAVE,
+                                            "Export settings", "Cancel", "Export",
+                                            "*.ini", "elegance-colors-exported.ini");
 
-        var exportsettings = new Gtk.FileChooserDialog (
-                                 "Export settings", this,
-                                 Gtk.FileChooserAction.SAVE,
-                                 "Cancel", Gtk.ResponseType.CANCEL,
-                                 "Export", Gtk.ResponseType.ACCEPT, null);
-
-        var filter = new Gtk.FileFilter ();
-        filter.add_pattern ("*.ini");
-
-        exportsettings.set_filter (filter);
-        exportsettings.set_current_name ("elegance-colors-exported.ini");
-        exportsettings.set_do_overwrite_confirmation (true);
-
-        if (exportsettings.run () == Gtk.ResponseType.ACCEPT) {
+        if (file_path != null) {
             try {
-                string keyfile_str = key_file.to_data ();
-                var exportpath = File.new_for_path (exportsettings.get_file ().get_path ());
+                var exportpath = File.new_for_path (file_path);
                 var dos = new DataOutputStream (exportpath.replace (null, false, FileCreateFlags.REPLACE_DESTINATION));
-                dos.put_string (keyfile_str);
+                dos.put_string (key_file.to_data ());
             } catch (Error e) {
                 stderr.printf ("Failed to export settings: %s\n", e.message);
             }
         }
-
-        exportsettings.close ();
     }
 
     void import_settings () {
+        string file_path = show_filedialog (Gtk.FileChooserAction.OPEN,
+                                            "Import settings", "Cancel", "Import",
+                                            "*.ini", "elegance-colors.ini");
 
-        var importsettings = new Gtk.FileChooserDialog (
-                                 "Import settings", this,
-                                 Gtk.FileChooserAction.OPEN,
-                                 "Cancel", Gtk.ResponseType.CANCEL,
-                                 "Import", Gtk.ResponseType.ACCEPT, null);
-
-        var filter = new Gtk.FileFilter ();
-        filter.add_pattern ("*.ini");
-
-        importsettings.set_filter (filter);
-
-        if (importsettings.run () == Gtk.ResponseType.ACCEPT) {
+        if (file_path != null) {
             try {
-                var importpath = File.new_for_path (importsettings.get_file ().get_path ());
+                var importpath = File.new_for_path (file_path);
                 key_file.load_from_file (importpath.get_path (), KeyFileFlags.NONE);
             } catch (Error e) {
                 stderr.printf ("Failed to import settings: %s\n", e.message);
@@ -380,8 +376,6 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
 
             on_load_keyfile ();
         }
-
-        importsettings.close ();
     }
 
     void show_about (SimpleAction simple, Variant? parameter) {
@@ -825,7 +819,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
                     } catch (Error e) {
                         stderr.printf ("Could not read preset title: %s\n", e.message);
                     }
-                
+
                     if (!titlechanged == true) {
                         title = preset;
                     }
@@ -864,7 +858,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
                     } catch (Error e) {
                         stderr.printf ("Could not read preset title: %s\n", e.message);
                     }
-                
+
                     if (!titlechanged == true) {
                         title = preset;
                     }
@@ -2121,7 +2115,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         list_undo.append (key_file.to_data (null,null));
 
         if (new_button_clicked == true) {
-                
+
         } else {
             list_redo = new List<string> ();
             redo_button.set_sensitive (false);
@@ -2141,7 +2135,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
 
         redo_button.set_sensitive (false);
         undo_button.set_sensitive (false);
-        clear_button.set_sensitive (false);        
+        clear_button.set_sensitive (false);
     }
 
     void on_undo_clicked () {
@@ -2153,7 +2147,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         unowned string? data = list_undo.nth_data (list_undo.length ()-1);
 
         try {
-            key_file.load_from_data (data,-1, KeyFileFlags.NONE);            
+            key_file.load_from_data (data,-1, KeyFileFlags.NONE);
         } catch (KeyFileError e) {
             stderr.printf ("Failed to undo: %s\n", e.message);
         }
@@ -2174,7 +2168,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
 
         new_button_clicked = false;
-        
+
     }
 
     void on_redo_clicked () {
