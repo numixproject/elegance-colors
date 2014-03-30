@@ -873,7 +873,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
 
         var liststore = new Gtk.ListStore (1, typeof (string));
 
-        for (int i = 0; i < titles.length; i++){
+        for (int i = 0; i < titles.length; i++) {
             Gtk.TreeIter iter;
             liststore.append (out iter);
             liststore.set (iter, 0, titles[i]);
@@ -1602,48 +1602,40 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         buttons.set_layout (Gtk.ButtonBoxStyle.END);
         buttons.add (apply_button);
 
+        Gtk.Grid[] cat_grids = { general_grid,
+                                 panel_grid,
+                                 overview_grid,
+                                 dash_grid,
+                                 menu_grid,
+                                 dialog_grid,
+                                 button_grid,
+                                 buttonfocus_grid,
+                                 entry_grid,
+                                 misc_grid };
+
+        string[] cat_titles = { "General settings",
+                                "Panel",
+                                "Activities overview",
+                                "Dash",
+                                "Popup menu",
+                                "Modal dialogs",
+                                "Buttons",
+                                "Focused buttons",
+                                "Entry",
+                                "Miscellaneous" };
+
         notebook = new Gtk.Notebook ();
         notebook.set_show_tabs (false);
         notebook.set_show_border (false);
-        notebook.append_page (general_grid, null);
-        notebook.append_page (panel_grid, null);
-        notebook.append_page (overview_grid, null);
-        notebook.append_page (dash_grid, null);
-        notebook.append_page (menu_grid, null);
-        notebook.append_page (dialog_grid, null);
-        notebook.append_page (button_grid, null);
-        notebook.append_page (buttonfocus_grid, null);
-        notebook.append_page (entry_grid, null);
-        notebook.append_page (misc_grid, null);
-
-        var mainbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
-        mainbox.set_border_width (10);
-        mainbox.add (notebook);
-        mainbox.add (buttons);
 
         var listmodel = new Gtk.ListStore (2, typeof (string), typeof (int));
-        Gtk.TreeIter iter;
 
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "General settings", 1, 0);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Panel", 1, 1);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Activities overview", 1, 2);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Dash", 1, 3);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Popup menu", 1, 4);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Modal dialogs", 1, 5);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Buttons", 1, 6);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Focused buttons", 1, 7);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Entry", 1, 8);
-        listmodel.append (out iter);
-        listmodel.set (iter, 0, "Miscellaneous", 1, 9);
+        for (int i = 0; i < cat_grids.length; i++) {
+            Gtk.TreeIter iter;
+            listmodel.append (out iter);
+            listmodel.set (iter, 0, cat_titles[i], 1, i);
+            notebook.append_page (cat_grids[i], null);
+        }
 
         var treeview = new Gtk.TreeView.with_model (listmodel);
         var treepath = new Gtk.TreePath.from_string ("0");
@@ -1653,6 +1645,11 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         var treecell = new Gtk.CellRendererText ();
         treecell.set_padding (10, 5);
         treeview.insert_column_with_attributes (-1, null, treecell, "text", 0);
+
+        var mainbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+        mainbox.set_border_width (10);
+        mainbox.add (notebook);
+        mainbox.add (buttons);
 
         var selection = treeview.get_selection ();
         selection.changed.connect (on_selection_changed);
