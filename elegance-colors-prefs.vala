@@ -197,10 +197,10 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
     string misc_tooltipborder_value;
     string misc_insensitive_value;
 
-    // Toolbar
-    Gtk.ToolButton undo_button;
-    Gtk.ToolButton redo_button;
-    Gtk.ToolButton clear_button;
+    // HeaderBar
+    Gtk.Button undo_button;
+    Gtk.Button redo_button;
+    Gtk.Button clear_button;
 
     List<string> list_undo = new List<string> ();
     List<string> list_redo = new List<string> ();
@@ -1595,23 +1595,6 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         misc_grid.attach (misc_insensitive_label, 0, 5, 2, 1);
         misc_grid.attach_next_to (misc_insensitive_color, misc_insensitive_label, Gtk.PositionType.RIGHT, 1, 1);
 
-        // Toolbar
-        undo_button = new Gtk.ToolButton (null, "Undo");
-        undo_button.set_icon_name ("edit-undo");
-        undo_button.set_tooltip_text ("Undo the last change");
-        redo_button = new Gtk.ToolButton (null, "Redo");
-        redo_button.set_icon_name ("edit-redo");
-        redo_button.set_tooltip_text ("Redo the last undone change");
-        clear_button = new Gtk.ToolButton (null, "Clear");
-        clear_button.set_icon_name ("edit-clear");
-        clear_button.set_tooltip_text ("Clear all changes");
-
-        var toolbar = new Gtk.Toolbar ();
-        toolbar.get_style_context ().add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-        toolbar.add (undo_button);
-        toolbar.add (redo_button);
-        toolbar.add (clear_button);
-
         // Apply button
         apply_button = new Gtk.Button.with_mnemonic ("Apply");
 
@@ -1681,8 +1664,28 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         hbox.add (mainbox);
 
         var vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        vbox.add (toolbar);
         vbox.add (hbox);
+
+        // HeaderBar
+        undo_button = new Gtk.Button.from_icon_name ("edit-undo-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        undo_button.set_tooltip_text ("Undo the last change");
+        redo_button = new Gtk.Button.from_icon_name ("edit-redo-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        redo_button.set_tooltip_text ("Redo the last undone change");
+        clear_button = new Gtk.Button.from_icon_name ("edit-clear-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        clear_button.set_tooltip_text ("Clear all changes");
+
+        var actions_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        actions_box.set_homogeneous (true);
+        actions_box.get_style_context ().add_class ("linked");
+        actions_box.add (undo_button);
+        actions_box.add (redo_button);
+        actions_box.add (clear_button);
+
+        var headerbar = new Gtk.HeaderBar ();
+        headerbar.set_show_close_button (true);
+        headerbar.set_title ("Elegance Colors");
+        headerbar.set_subtitle ("Configure Gnome Shell theme");
+        headerbar.pack_start (actions_box);
 
         // Setup widgets
         set_states ();
@@ -1693,6 +1696,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         notebook.set_current_page (0);
         apply_button.set_sensitive (false);
 
+        this.set_titlebar(headerbar);
         this.add (vbox);
 
         list_undo = new List<string> ();
@@ -2085,7 +2089,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
             key_file.set_string ("Misc", "misc_insensitive", misc_insensitive_color.get_rgba ().to_string ());
         });
 
-        // Toolbar
+        // HeaderBar
         undo_button.clicked.connect (on_undo_clicked);
         redo_button.clicked.connect (on_redo_clicked);
         clear_button.clicked.connect (on_clear_clicked);
