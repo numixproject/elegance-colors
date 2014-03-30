@@ -1651,6 +1651,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         treeview.set_cursor (treepath, null, false);
 
         var treecell = new Gtk.CellRendererText ();
+        treecell.set_padding (10, 5);
         treeview.insert_column_with_attributes (-1, null, treecell, "text", 0);
 
         var selection = treeview.get_selection ();
