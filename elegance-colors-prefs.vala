@@ -255,10 +255,6 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         about_action.activate.connect (this.show_about);
         this.add_action (about_action);
 
-        var quit_action = new SimpleAction ("quit", null);
-        quit_action.activate.connect (this.quit_window);
-        this.add_action (quit_action);
-
         // Set variables
         var script = File.new_for_path ("elegance-colors");
         var presets = File.new_for_path ("presets");
@@ -391,10 +387,6 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
             "website", "https://github.com/satya164/elegance-colors",
             "website-label", "Elegance Colors on GitHub",
             null);
-    }
-
-    void quit_window () {
-        destroy ();
     }
 
     void load_config () {
