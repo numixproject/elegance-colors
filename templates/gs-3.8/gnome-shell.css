@@ -78,7 +78,8 @@ StScrollBar StBin#trough {
 }
 
 StScrollBar StButton#vhandle {
-    background-gradient-direction: horizontal;
+    background-image: none;
+    background-gradient-direction: horizontal; /* @button_bg1 */
     background-gradient-start: @button_bg1;
     background-gradient-end: @button_bg2;
     border-width: 1px;
@@ -88,21 +89,24 @@ StScrollBar StButton#vhandle {
 }
 
 StScrollBar StButton#vhandle:hover {
-    background-gradient-direction: horizontal;
+    background-image: none;
+    background-gradient-direction: horizontal; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#vhandle:active {
-    background-gradient-direction: horizontal;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#hhandle {
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_bg1 */
     background-gradient-start: @button_bg1;
     background-gradient-end: @button_bg2;
     border-width: 1px;
@@ -112,14 +116,16 @@ StScrollBar StButton#hhandle {
 }
 
 StScrollBar StButton#hhandle:hover {
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
 }
 
 StScrollBar StButton#hhandle:active {
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
@@ -173,7 +179,9 @@ StScrollBar StButton#hhandle:active {
     -arrow-rise: 9px;
     arrow_true*/
     /*arrow_false
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
+    /*arrow_false
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     border-color: @menu_border;
@@ -193,10 +201,10 @@ StScrollBar StButton#hhandle:active {
 }
 
 .popup-sub-menu {
-    background-color: rgba(0,0,0,0.05);
-    border-color: rgba(0,0,0,0.1);
-    border-top-width: 1px;
-    border-bottom-width: 1px;
+    background-image: none;
+    background-gradient-direction: none;
+    background-color: rgba(0,0,0,0.03);
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.6);
 }
 
 .popup-sub-menu:scrolled .popup-menu-item:ltr {
@@ -256,7 +264,8 @@ StScrollBar StButton#hhandle:active {
 
 .popup-menu-item:active {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -284,7 +293,7 @@ StScrollBar StButton#hhandle:active {
     -gradient-end: @misc_separator2;
     -margin-horizontal: 0em;
     height: 1px;
-    padding: 1px 0;
+    padding: 8px 0;
 }
 
 .popup-alternating-menu-item:alternate {
@@ -364,7 +373,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog-button,
 .app-view-control {
     color: @button_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_bg1 */
     background-gradient-start: @button_bg1;
     background-gradient-end: @button_bg2;
     border-width: 1px;
@@ -384,7 +394,8 @@ StScrollBar StButton#hhandle:active {
 .hotplug-notification-item:hover,
 .modal-dialog-button:hover {
     color: @button_hoverfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
@@ -396,7 +407,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog-button:focus,
 .app-view-control:focus {
     color: @buttonfocus_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @buttonfocus_bg1 */
     background-gradient-start: @buttonfocus_bg1;
     background-gradient-end: @buttonfocus_bg2;
     border-color: @buttonfocus_border;
@@ -408,7 +420,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog-button:focus:hover,
 .app-view-control:focus:hover {
     color: @buttonfocus_hoverfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @buttonfocus_hoverbg1;
     background-gradient-end: @buttonfocus_hoverbg2;
     border-color: @buttonfocus_hoverborder;
@@ -420,7 +433,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog-button:focus:active,
 .app-view-control:focus:active {
     color: @buttonfocus_activefg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @buttonfocus_activebg1 */
     background-gradient-start: @buttonfocus_activebg1;
     background-gradient-end: @buttonfocus_activebg2;
     border-color: @buttonfocus_activeborder;
@@ -444,7 +458,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog-button:pressed,
 .app-view-control:checked {
     color: @button_activefg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_activebg1 */
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
@@ -465,14 +480,16 @@ StScrollBar StButton#hhandle:active {
 
 .hotplug-resident-eject-button:hover {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
 
 .hotplug-resident-eject-button:active {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
@@ -539,7 +556,8 @@ StScrollBar StButton#hhandle:active {
 .notification StEntry:focus,
 .modal-dialog StEntry {
     color: @entry_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @entry_bg1 */
     background-gradient-start: @entry_bg1;
     background-gradient-end: @entry_bg2;
     border-width: 1px;
@@ -553,7 +571,8 @@ StScrollBar StButton#hhandle:active {
 
 #searchEntry {
     color: @overview_searchfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @overview_searchbg1 */
     background-gradient-start: @overview_searchbg1;
     background-gradient-end: @overview_searchbg2;
     border-width: 1px;
@@ -562,13 +581,15 @@ StScrollBar StButton#hhandle:active {
     box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.3);
     entryshadow_true*/
     /*entryshadow_false
+    box-shadow: none;
     entryshadow_false*/
 }
 
 #searchEntry:focus,
 #searchEntry:hover {
     color: @overview_searchfocusfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @overview_searchfocusbg1 */
     background-gradient-start: @overview_searchfocusbg1;
     background-gradient-end: @overview_searchfocusbg2;
     border-width: 1px;
@@ -599,7 +620,8 @@ StScrollBar StButton#hhandle:active {
 
 #panel {
     color: @panel_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @panel_bg1 */
     background-gradient-start: @panel_bg1;
     background-gradient-end: @panel_bg2;
     border-color: @panel_border;
@@ -693,6 +715,8 @@ StScrollBar StButton#hhandle:active {
 .panel-button {
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
+    color: @panel_fg;
+    font-weight: bold;
     border: 1px solid transparent;
     border-top-width: 0;
     border-bottom-width: 0;
@@ -719,27 +743,32 @@ StScrollBar StButton#hhandle:active {
 
 .panel-button:hover {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
+    text-shadow: none;
 }
 
 .panel-button:active,
 .panel-button:overview,
 .panel-button:focus {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
+    text-shadow: none;
 }
 
 .panel-status-button:active,
 .panel-status-button:checked,
 .panel-status-button:focus {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -748,6 +777,7 @@ StScrollBar StButton#hhandle:active {
 .panel-button:active > .system-status-icon,
 .panel-button:checked > .system-status-icon,
 .panel-button:focus > .system-status-icon {
+    icon-shadow: none;
 }
 
 .panel-menu {
@@ -802,7 +832,8 @@ StScrollBar StButton#hhandle:active {
 
 .status-chooser-combo.popup-combo-menu {
     color: @menu_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     padding: .4em 0em;
@@ -834,7 +865,8 @@ StScrollBar StButton#hhandle:active {
     border: @dash_bwidthpx solid @dash_border;
     border-right: 0;
     border-radius: @roundnesspx 0 0 @roundnesspx;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dash_bg1 */
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     padding: 9px 7px 9px 9px;
@@ -866,7 +898,8 @@ StScrollBar StButton#hhandle:active {
 
 .window-caption {
     color: @misc_tooltipfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @misc_tooltipbg1 */
     background-gradient-start: @misc_tooltipbg1;
     background-gradient-end: @misc_tooltipbg2;
     border: 1px solid @misc_tooltipborder;
@@ -887,7 +920,6 @@ StScrollBar StButton#hhandle:active {
     border-radius: 16px;
     height: 28px;
     width: 28px;
-    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
 }
 
 .window-close {
@@ -951,9 +983,10 @@ StScrollBar StButton#hhandle:active {
 }
 
 .messages-indicator-highlight {
+    background-image: none;
+    background-gradient-direction: vertical;
     background-gradient-start: transparent;
     background-gradient-end: rgba(255,255,255,0.5);
-    background-gradient-direction: vertical;
     height: 6px;
 }
 
@@ -963,7 +996,8 @@ StScrollBar StButton#hhandle:active {
     color: @dash_fg;
     font-size: @font_sizept;
     padding: 4px 0;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dash_bg1 */
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     border: @dash_bwidthpx solid @dash_border;
@@ -1037,7 +1071,7 @@ StScrollBar StButton#hhandle:active {
     -gradient-height: 1px;
     -gradient-start: @misc_separator1;
     -gradient-end: @misc_separator2;
-    -margin-horizontal: 1em;
+    -margin-horizontal: 1.5em;
     height: 1px;
 }
 
@@ -1047,6 +1081,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .search-statustext {
+    color: #efefef;
     font-size: 2em;
     font-weight: bold;
 }
@@ -1057,14 +1092,15 @@ StScrollBar StButton#hhandle:active {
 
 .dash-label {
     color: @misc_tooltipfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @misc_tooltipbg1 */
     background-gradient-start: @misc_tooltipbg1;
     background-gradient-end: @misc_tooltipbg2;
     border: 1px solid @misc_tooltipborder;
     border-radius: @roundnesspx;
     padding: 2px 12px;
     text-align: center;
-    -x-offset: 6px;
+    -x-offset: 8px;
 }
 
 /* Application Launchers, Grid and List results */
@@ -1134,7 +1170,7 @@ StScrollBar StButton#hhandle:active {
 .search-provider-icon,
 .list-search-result,
 .grid-search-result .overview-icon {
-    padding: 3px;
+    padding: 4px;
     border: 1px solid transparent;
     border-radius: @roundnesspx;
     text-align: center;
@@ -1162,7 +1198,9 @@ StScrollBar StButton#hhandle:active {
     -arrow-rise: 9px;
     arrow_true*/
     /*arrow_false
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
+    /*arrow_false
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     border-color: @menu_border;
@@ -1178,18 +1216,22 @@ StScrollBar StButton#hhandle:active {
 }
 
 .app-well-app.running > .overview-icon {
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @misc_runningbg1 */
     background-gradient-start: @misc_runningbg1;
     background-gradient-end: @misc_runningbg2;
     border-color: @misc_runningbg2;
+    text-shadow: none;
 }
 
 .app-well-app.app-folder > .overview-icon {
     color: @dash_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dash_bg1 */
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     border-color: @dash_border;
+    text-shadow: none;
 }
 
 .app-well-app:hover > .overview-icon,
@@ -1198,10 +1240,12 @@ StScrollBar StButton#hhandle:active {
 .list-search-result:hover,
 .grid-search-result:hover .overview-icon {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
+    text-shadow: none;
     transition-duration: @transitionms;
 }
 
@@ -1230,10 +1274,13 @@ StScrollBar StButton#hhandle:active {
 .show-apps:checked > .overview-icon,
 .show-apps:active > .overview-icon {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
+    box-shadow: none;
+    transition-duration: @transitionms;
 }
 
 .show-apps:checked .show-apps-icon,
@@ -1252,7 +1299,8 @@ StScrollBar StButton#hhandle:active {
 .search-provider-icon:selected,
 .list-search-result:selected {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -1456,14 +1504,16 @@ StScrollBar StButton#hhandle:active {
 
 .calendar-day-base:hover {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
 
 .calendar-day-base:active {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
@@ -1509,7 +1559,8 @@ StScrollBar StButton#hhandle:active {
 
 .calendar-today:hover {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
 }
@@ -1610,7 +1661,8 @@ StScrollBar StButton#hhandle:active {
 .notification {
     color: @menu_fg;
     border-radius: @roundnesspx @roundnesspx 0 0;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     border: @menu_bwidthpx solid @menu_border;
@@ -1627,6 +1679,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .notification, #notification-container {
+    font-size: @font_sizept;
     width: 34em;
 }
 
@@ -1671,7 +1724,9 @@ StScrollBar StButton#hhandle:active {
     -arrow-rise: 9px;
     arrow_true*/
     /*arrow_false
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
+    /*arrow_false
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     border-color: @menu_border;
@@ -1781,6 +1836,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .hotplug-resident-mount {
+    color: @menu_fg;
     spacing: 8px;
     border-radius: @roundnesspx;
     transition-duration: @transitionms;
@@ -1788,7 +1844,8 @@ StScrollBar StButton#hhandle:active {
 
 .hotplug-resident-mount:hover {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -1854,7 +1911,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .chat-notification-scrollview {
-	max-height: 22em;
+    max-height: 22em;
 }
 
 .subscription-message {
@@ -1879,7 +1936,8 @@ StScrollBar StButton#hhandle:active {
 
 .summary-source-button:hover .summary-source {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -1887,6 +1945,7 @@ StScrollBar StButton#hhandle:active {
 
 .summary-source-button:focus .summary-source,
 .summary-source-button:selected .summary-source {
+    background-image: none;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255,255,255,0.2);
     background-gradient-end: rgba(255,255,255,0.2);
@@ -1900,6 +1959,7 @@ StScrollBar StButton#hhandle:active {
 
 .summary-source-counter {
     color: @textcolor;
+    background-image: none;
     background-color: @selected_bg2;
     border: 2px solid @textcolor;
     border-radius: 2.1em;
@@ -1922,7 +1982,8 @@ StScrollBar StButton#hhandle:active {
     height: 0.6em;
     border-radius: 0.3em;
     color: @dialog_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dialog_bg1 */
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
 }
@@ -1936,7 +1997,8 @@ StScrollBar StButton#hhandle:active {
 .osd-window,
 .switcher-list {
     color: @dialog_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dialog_bg1 */
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
     border: @dialog_bwidthpx solid @dialog_border;
@@ -1949,6 +2011,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .thumbnail-scroll-gradient-left {
+    background-image: none;
     background-gradient-direction: horizontal;
     background-gradient-start: rgba(33,33,33,1.0);
     background-gradient-end: rgba(33,33,33,0);
@@ -1959,6 +2022,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .thumbnail-scroll-gradient-right {
+    background-image: none;
     background-gradient-direction: horizontal;
     background-gradient-start: rgba(33,33,33,0);
     background-gradient-end: rgba(33,33,33,1.0);
@@ -1980,7 +2044,8 @@ StScrollBar StButton#hhandle:active {
 
 .switcher-list .item-box:selected {
     color: @textcolor;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @selected_bg1 */
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
@@ -2028,7 +2093,8 @@ StScrollBar StButton#hhandle:active {
 
 .workspace-switcher-container {
     color: @dialog_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dialog_bg1 */
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
     border: @dialog_bwidthpx solid @dialog_border;
@@ -2081,7 +2147,8 @@ StScrollBar StButton#hhandle:active {
 .modal-dialog {
     border-radius: @roundnesspx;
     color: @dialog_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @dialog_bg1 */
     background-gradient-start: @dialog_bg1;
     background-gradient-end: @dialog_bg2;
     border: @dialog_bwidthpx solid @dialog_border;
@@ -2397,7 +2464,8 @@ StScrollBar StButton#hhandle:active {
 /* On-screen Keyboard */
 
 #keyboard {
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @panel_bg1 */
     background-gradient-start: @panel_bg1;
     background-gradient-end: @panel_bg2;
     border-color: @panel_border;
@@ -2423,7 +2491,8 @@ StScrollBar StButton#hhandle:active {
     min-height: 30px;
     min-width: 30px;
     color: @button_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_bg1 */
     background-gradient-start: @button_bg1;
     background-gradient-end: @button_bg2;
     border-width: 1px;
@@ -2446,7 +2515,8 @@ StScrollBar StButton#hhandle:active {
 .keyboard-key:checked,
 .keyboard-key:hover {
     color: @button_hoverfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
@@ -2454,7 +2524,8 @@ StScrollBar StButton#hhandle:active {
 
 .keyboard-key:active {
     color: @button_activefg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_activebg1 */
     background-gradient-start: @button_activebg1;
     background-gradient-end: @button_activebg2;
     border-color: @button_activeborder;
@@ -2483,7 +2554,9 @@ StScrollBar StButton#hhandle:active {
     -arrow-rise: 9px;
     arrow_true*/
     /*arrow_false
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @menu_bg1 */
+    /*arrow_false
     background-gradient-start: @menu_bg1;
     background-gradient-end: @menu_bg2;
     border-color: @menu_border;
@@ -2502,6 +2575,7 @@ StScrollBar StButton#hhandle:active {
 }
 
 .candidate-index {
+    color: @menu_fg;
     padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
@@ -2602,19 +2676,20 @@ StScrollBar StButton#hhandle:active {
 }
 
 .login-dialog-user-list-item .login-dialog-user-list-item-name {
-    font-size: 20pt;
-    padding-left: 1em;
+    font-size: 20px;
+    padding-left: 18px;
+    font-weight: bold;
 }
 
 .login-dialog-user-list:expanded .login-dialog-user-list-item {
-    color: #999;
+    color: #bfbfbf;
 }
 
 .login-dialog-user-list-item,
 .login-dialog-user-list-item:hover .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:focus .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
-    color: white;
+    color: #bfbfbf;
     text-shadow: black 0 2px 2px;
 }
 
@@ -2749,7 +2824,8 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button:default {
     color: @buttonfocus_fg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @buttonfocus_bg1 */
     background-gradient-start: @buttonfocus_bg1;
     background-gradient-end: @buttonfocus_bg2;
     border-color: @buttonfocus_border;
@@ -2757,7 +2833,8 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button:default:focus {
     color: @buttonfocus_hoverfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @buttonfocus_hoverbg1 */
     background-gradient-start: @buttonfocus_hoverbg1;
     background-gradient-end: @buttonfocus_hoverbg2;
     border-color: @buttonfocus_hoverborder;
@@ -2765,7 +2842,8 @@ StScrollBar StButton#hhandle:active {
 
 .login-dialog .modal-dialog-button:default:hover {
     color: @button_hoverfg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @button_hoverbg1 */
     background-gradient-start: @button_hoverbg1;
     background-gradient-end: @button_hoverbg2;
     border-color: @button_hoverborder;
@@ -2774,7 +2852,8 @@ StScrollBar StButton#hhandle:active {
 .login-dialog .modal-dialog-button:default:active,
 .login-dialog .modal-dialog-button:default:pressed {
     color: @buttonfocus_activefg;
-    background-gradient-direction: vertical;
+    background-image: none;
+    background-gradient-direction: vertical; /* @buttonfocus_activebg1 */
     background-gradient-start: @buttonfocus_activebg1;
     background-gradient-end: @buttonfocus_activebg2;
     border-color: @buttonfocus_activeborder;

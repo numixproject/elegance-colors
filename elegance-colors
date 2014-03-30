@@ -520,6 +520,8 @@ do
     elif [[ ! `grep "${vars[i]}" "$makedir/$cssfile"` ]]; then
         [[ "${vars[i]}" =~ ^@_ ]] || show_warn "Template does not have any '${vars[i]}' variable"
     else
+        # Deal with background gradients
+        [[ "${vars[i]}" =~ $bg1 && "${vals[i]}" == "${vals[i+1]}" ]] && sed -i "s/background-gradient-direction.*\/\* ${vars[i]} \*\//background-gradient-direction: none;\n    background-color: ${vals[i]};/g" "$makedir/$cssfile"
         show_info "Replacing '${vars[i]}' with '${vals[i]}'"
         sed -i "s/${vars[i]}/${vals[i]}/g" "$makedir/$cssfile"
     fi
