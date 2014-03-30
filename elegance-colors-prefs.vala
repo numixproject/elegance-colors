@@ -1,4 +1,4 @@
-class EleganceColorsWindow : Gtk.ApplicationWindow {
+public class EleganceColorsWindow : Gtk.ApplicationWindow {
 
     // General
     Gtk.ComboBox combobox;
@@ -279,7 +279,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         create_widgets ();
     }
 
-    void init_process () {
+    private void init_process () {
 
         var theme_file = File.new_for_path (Environment.get_home_dir ()).get_child (".themes/elegance-colors/gnome-shell/gnome-shell.css");
 
@@ -327,7 +327,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         return current_path;
     }
 
-    void export_theme () {
+    private void export_theme () {
         string file_path = show_filedialog (Gtk.FileChooserAction.SAVE,
                                             "Export theme", "Cancel", "Export",
                                             "*.zip", "Elegance Colors Custom.zip");
@@ -341,7 +341,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void export_settings () {
+    private void export_settings () {
         string file_path = show_filedialog (Gtk.FileChooserAction.SAVE,
                                             "Export settings", "Cancel", "Export",
                                             "*.ini", "elegance-colors-exported.ini");
@@ -357,7 +357,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void import_settings () {
+    private void import_settings () {
         string file_path = show_filedialog (Gtk.FileChooserAction.OPEN,
                                             "Import settings", "Cancel", "Import",
                                             "*.ini", "elegance-colors.ini");
@@ -374,7 +374,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void show_about (SimpleAction simple, Variant? parameter) {
+    private void show_about (SimpleAction simple, Variant? parameter) {
         string license = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with This program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA";
 
         Gtk.show_about_dialog (this,
@@ -389,7 +389,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
             null);
     }
 
-    void load_config () {
+    private void load_config () {
 
         // Read the config file
         try {
@@ -399,7 +399,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void set_states () {
+    private void set_states () {
 
         try {
             var mode = key_file.get_string ("Settings", "mode");
@@ -768,7 +768,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void create_widgets () {
+    private void create_widgets () {
 
         // Create and setup widgets
 
@@ -1708,7 +1708,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         clear_button.set_sensitive (false);
     }
 
-    void connect_signals () {
+    private void connect_signals () {
         // General
         combobox.changed.connect (on_preset_selected);
         match_wallpaper.toggled.connect (() => {
@@ -2099,7 +2099,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         apply_button.clicked.connect (on_config_applied);
     }
 
-    void on_selection_changed (Gtk.TreeSelection selection) {
+    private void on_selection_changed (Gtk.TreeSelection selection) {
         Gtk.TreeModel model;
         Gtk.TreeIter iter;
 
@@ -2111,7 +2111,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void on_value_changed () {
+    private void on_value_changed () {
 
         apply_button.set_sensitive (true);
         undo_button.set_sensitive (true);
@@ -2127,7 +2127,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void on_clear_clicked () {
+    private void on_clear_clicked () {
 
         load_config ();
         set_states ();
@@ -2143,7 +2143,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         clear_button.set_sensitive (false);
     }
 
-    void on_undo_clicked () {
+    private void on_undo_clicked () {
 
         clear_button.set_sensitive (true);
         redo_button.set_sensitive (true);
@@ -2176,7 +2176,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
 
     }
 
-    void on_redo_clicked () {
+    private void on_redo_clicked () {
 
         undo_button.set_sensitive (true);
         list_undo.append (key_file.to_data (null,null));
@@ -2207,7 +2207,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         new_button_clicked = false;
     }
 
-    void on_preset_selected () {
+    private void on_preset_selected () {
 
         if (combobox.get_active () !=0) {
             var preset_file_usr = presets_dir_usr.get_child (presets [combobox.get_active ()]);
@@ -2231,12 +2231,12 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         }
     }
 
-    void on_load_keyfile () {
+    private void on_load_keyfile () {
         set_states ();
         on_value_changed ();
     }
 
-    void on_config_applied () {
+    private void on_config_applied () {
 
         try {
             string keyfile_str = key_file.to_data ();
@@ -2257,7 +2257,7 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
     }
 }
 
-class EleganceColorsPref : Gtk.Application {
+public class EleganceColorsPref : Gtk.Application {
 
     internal EleganceColorsPref () {
         Object (application_id: "org.elegance.colors");
