@@ -212,7 +212,7 @@ unset include_code include_dir include_css include_files
 read_config
 # General settings
 selected_bg1=$(shade "$highlight" "$selgradient")
-selected_bg2="$highlight"
+selected_bg2=$(shade "$highlight" "0")
 font_family=$(printf "$fontname" | sed 's/\ \w*$//')
 font_size=$(printf "$fontname" | sed 's/.* //')
 vars=(
