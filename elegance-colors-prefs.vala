@@ -1681,11 +1681,22 @@ class EleganceColorsWindow : Gtk.ApplicationWindow {
         actions_box.add (redo_button);
         actions_box.add (clear_button);
 
+        var menumodel = new GLib.Menu ();
+        menumodel.append ("Export theme", "win.export");
+        menumodel.append ("Export settings", "win.exsettings");
+        menumodel.append ("Import settings", "win.impsettings");
+        menumodel.append ("About", "win.about");
+
+        var menu_button = new Gtk.MenuButton ();
+        menu_button.set_menu_model (menumodel);
+        menu_button.set_image (new Gtk.Image.from_icon_name("view-sidebar-symbolic", Gtk.IconSize.SMALL_TOOLBAR));
+
         var headerbar = new Gtk.HeaderBar ();
         headerbar.set_show_close_button (true);
         headerbar.set_title ("Elegance Colors");
         headerbar.set_subtitle ("Configure Gnome Shell theme");
         headerbar.pack_start (actions_box);
+        headerbar.pack_end (menu_button);
 
         // Setup widgets
         set_states ();
@@ -2265,18 +2276,6 @@ class EleganceColorsPref : Gtk.Application {
     protected override void activate () {
         var window = new EleganceColorsWindow (this);
         window.show_all ();
-    }
-
-    protected override void startup () {
-        base.startup ();
-
-        var menu = new GLib.Menu ();
-        menu.append ("Export theme", "win.export");
-        menu.append ("Export settings", "win.exsettings");
-        menu.append ("Import settings", "win.impsettings");
-        menu.append ("About", "win.about");
-        menu.append ("Quit", "win.quit");
-        this.app_menu = menu;
     }
 }
 
