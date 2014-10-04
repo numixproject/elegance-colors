@@ -830,6 +830,11 @@ StScrollBar StButton#hhandle:active {
     color: transparent;
 }
 
+.panel-logo-icon {
+  padding-right: .4em;
+  icon-size: 1em;
+}
+
 .panel-button #appMenuIcon {
     /*panelicon_true
     panelicon_true*/
