@@ -50,7 +50,9 @@ To set the theme, choose the theme via Gnome Tweak Tool or run the following com
 
 `gsettings set org.gnome.shell.extensions.user-theme name 'elegance-colors'`
 
-You can launch the GUI from the menu which lets you customise various aspects of the the theme. You can also export your customized theme, import/export settings from the GMenu. Click on the title in the Gnome Shell top bar to get the GMenu.
+You can launch the GUI from the menu which lets you customise various aspects of the the theme. You can also export your customized theme, import/export settings from the GMenu. Click on the title in the Gnome Shell top bar to get the GMenu.  You can also launch the GUI by running:
+
+`elegance-colors-prefs`
 
 ### Advanced configuration
 
