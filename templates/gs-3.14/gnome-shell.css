@@ -892,7 +892,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
 }
 
 .panel-button:active,
@@ -905,7 +905,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
     border-image: none;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
 }
 
 .panel-status-button:active,
@@ -1398,7 +1398,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @misc_runningbg1;
     background-gradient-end: @misc_runningbg2;
     border-color: @misc_runningbg2;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
 }
 
 .app-well-app.app-folder > .overview-icon {
@@ -1408,7 +1408,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @dash_bg1;
     background-gradient-end: @dash_bg2;
     border-color: @dash_border;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
 }
 
 .app-well-app:hover > .overview-icon,
@@ -1422,7 +1422,7 @@ StScrollBar StButton#hhandle:active {
     background-gradient-start: @selected_bg1;
     background-gradient-end: @selected_bg2;
     border-color: @selected_bg2;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
     transition-duration: @transitionms;
 }
 
@@ -1744,7 +1744,7 @@ StScrollBar StButton#hhandle:active {
 
 .calendar-today {
     color: @selected_bg1;
-    text-shadow: none;
+    text-shadow: 0 0 transparent;
     font-weight: bold;
 }
 
